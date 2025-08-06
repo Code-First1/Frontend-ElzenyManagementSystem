@@ -1,26 +1,20 @@
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faStore, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import Logo from "../components/Logo";
-
-type Role = "admin" | "shopkeeper";
+import Logo from "../components/common/Logo";
+import type { Role } from "../context/AppContext";
+import { User, Shield, Store } from "lucide-react";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<Role>("shopkeeper");
+  const [role, setRole] = useState<Role>("seller");
 
   return (
-    <div
-      dir="rtl"
-      className="flex min-h-screen items-center justify-center bg-[#F2EFE0] p-5"
-    >
+    <div className="flex min-h-screen items-center justify-center bg-[#F2EFE0] p-5">
       <div className="w-full max-w-md rounded-xl border-2 border-[#8b4513]/20 bg-white shadow-xl">
         <div className="flex flex-col items-center space-y-4 pt-6 text-center">
-          <Logo />
+          <Logo size="lg" />
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#8b4513]">
-            <FontAwesomeIcon icon={faStore} className="text-2xl text-white" />
+            <Store className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-2xl text-[#5d4037]">محلات الزيني</h1>
           <p className="text-[#6d4c41]">
@@ -62,15 +56,15 @@ function Login() {
                 <div className="flex items-center space-x-2">
                   <div
                     className={`h-2 w-2 rounded-full ${
-                      role === "shopkeeper" ? "bg-[#8b4513]" : "bg-white"
+                      role === "seller" ? "bg-[#8b4513]" : "bg-white"
                     } `}
                   ></div>
                   <label
-                    htmlFor="shopkeeper"
+                    htmlFor="seller"
                     className="flex cursor-pointer items-center space-x-3 rounded-lg border border-[#8b4513]/20 px-4 py-3 transition-colors hover:bg-[#f5f5dc]/50"
-                    onClick={() => setRole("shopkeeper")}
+                    onClick={() => setRole("seller")}
                   >
-                    <FontAwesomeIcon icon={faUser} className="text-[#6d4c41]" />
+                    <User className="h-4 w-4 text-[#8b4513]" />
                     <span>بائع</span>
                   </label>
                 </div>
@@ -86,10 +80,7 @@ function Login() {
                     className="flex cursor-pointer items-center space-x-3 rounded-lg border border-[#8b4513]/20 px-4 py-3 transition-colors hover:bg-[#f5f5dc]/50"
                     onClick={() => setRole("admin")}
                   >
-                    <FontAwesomeIcon
-                      icon={faShieldHalved}
-                      className="text-[#6d4c41]"
-                    />
+                    <Shield className="h-4 w-4 text-[#8b4513]" />
                     <span>مدير</span>
                   </label>
                 </div>

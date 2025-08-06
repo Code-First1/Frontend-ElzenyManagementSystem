@@ -1,15 +1,16 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "../pages/Login";
 import { Toaster } from "react-hot-toast";
+import Home from "../pages/Home";
 
 const router = createBrowserRouter([
-  { path: "/" },
+  { path: "/", element: <Home /> },
   { path: "/login", element: <Login /> },
 ]);
 
 function AppRouter() {
   return (
-    <>
+    <div dir="rtl">
       <RouterProvider router={router} />
       <Toaster
         position="top-right"
@@ -43,7 +44,7 @@ function AppRouter() {
           },
         }}
       />
-    </>
+    </div>
   );
 }
 
