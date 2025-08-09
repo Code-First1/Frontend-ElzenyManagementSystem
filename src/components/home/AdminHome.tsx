@@ -20,15 +20,15 @@ function AdminHome() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="text-right">
-          <h1 className="text-3xl font-bold text-[#5d4037]">
+          <h1 className="text-secondary-foreground text-3xl font-bold">
             لوحة تحكم المدير
           </h1>
-          <p className="mt-1 text-[#6d4c41]">
+          <p className="text-muted-foreground mt-1">
             مرحباً بك، username - نظرة عامة على المتجر
           </p>
         </div>
         <div className="flex">
-          <button className="flex items-center gap-2 rounded-lg bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]">
+          <button className="bg-primary hover:bg-secondary-foreground flex items-center gap-2 rounded-lg px-4 py-2 text-white">
             <Settings className="h-4 w-4" />
             <p className="pb-1">إدارة النظام</p>
           </button>
@@ -37,62 +37,72 @@ function AdminHome() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-[#6d4c41]">
+            <CardTitle className="text-muted-foreground font-medium">
               إيرادات اليوم
             </CardTitle>
-            <DollarSign className="h-5 w-5 text-[#8b4513]" />
+            <DollarSign className="text-primary h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#5d4037]">$0.00</div>
-            <p className="text-sm text-[#6d4c41]"> مبيعة</p>
+            <div className="text-secondary-foreground text-2xl font-bold">
+              $0.00
+            </div>
+            <p className="text-muted-foreground text-sm"> مبيعة</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader className="flex items-center justify-between pb-2">
-            <CardTitle className="font-medium text-[#6d4c41]">
+            <CardTitle className="text-muted-foreground font-medium">
               إيرادات الأسبوع
             </CardTitle>
-            <TrendingUp className="h-5 w-5 text-[#8b4513]" />
+            <TrendingUp className="text-primary h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#5d4037]">$0.00</div>
-            <p className="text-sm text-[#6d4c41]">مبيعة</p>
+            <div className="text-secondary-foreground text-2xl font-bold">
+              $0.00
+            </div>
+            <p className="text-muted-foreground text-sm">مبيعة</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-[#6d4c41]">
+            <CardTitle className="text-muted-foreground font-medium">
               إجمالي المنتجات
             </CardTitle>
-            <Package className="h-5 w-5 text-[#8b4513]" />
+            <Package className="text-primary h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#5d4037]">7</div>
-            <p className="text-sm text-[#6d4c41]">منتجات نشطة</p>
+            <div className="text-secondary-foreground text-2xl font-bold">
+              7
+            </div>
+            <p className="text-muted-foreground text-sm">منتجات نشطة</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-[#6d4c41]">
+            <CardTitle className="text-muted-foreground font-medium">
               منتجات منخفضة المخزون
             </CardTitle>
-            <AlertTriangle className="h-5 w-5 text-[#8b4513]" />
+            <AlertTriangle className="text-primary h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#5d4037]">2</div>
-            <p className="text-sm text-[#6d4c41]">تحتاج إلى انتباه</p>
+            <div className="text-secondary-foreground text-2xl font-bold">
+              2
+            </div>
+            <p className="text-muted-foreground text-sm">تحتاج إلى انتباه</p>
           </CardContent>
         </Card>
       </div>
       {/* Quick Actions */}
-      <Card className="border-[#8b4513]/20">
+      <Card className="border-primary/20">
         <CardHeader>
-          <CardTitle className="text-[#5d4037]">إجراءات سريعة</CardTitle>
+          <CardTitle className="text-secondary-foreground">
+            إجراءات سريعة
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -120,16 +130,16 @@ function AdminHome() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Recent Sales */}
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center text-[#5d4037]">
+            <CardTitle className="text-secondary-foreground flex items-center">
               <Calendar className="ml-2 h-5 w-5" />
               المبيعات الحديثة
             </CardTitle>
           </CardHeader>
           <CardContent>
             {products.length ? (
-              <p className="py-4 text-center text-[#6d4c41]">
+              <p className="text-muted-foreground py-4 text-center">
                 لا توجد مبيعات حديثة
               </p>
             ) : (
@@ -140,18 +150,18 @@ function AdminHome() {
                     className="flex items-center justify-between rounded-lg bg-[#faf8f5] p-3"
                   >
                     <div className="text-right">
-                      <p className="font-medium text-[#5d4037]">
+                      <p className="font-medium text-secondary-foreground">
                         {sale.productName}
                       </p>
-                      <p className="text-sm text-[#6d4c41]">
+                      <p className="text-sm text-muted-foreground">
                         {sale.quantity} × ${sale.unitPrice.toFixed(2)} | بواسطة:{" "}
                         {sale.sellerName}
                       </p>
-                      <p className="text-xs text-[#6d4c41]">
+                      <p className="text-xs text-muted-foreground">
                         {new Date(sale.timestamp).toLocaleString("ar-EG")}
                       </p>
                     </div>
-                    <span className="font-semibold text-[#8b4513]">
+                    <span className="font-semibold text-primary">
                       ${sale.total.toFixed(2)}
                     </span>
                   </div>
@@ -162,16 +172,16 @@ function AdminHome() {
         </Card>
 
         {/* Top Products */}
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center text-[#5d4037]">
+            <CardTitle className="text-secondary-foreground flex items-center">
               <BarChart3 className="ml-2 h-5 w-5" />
               أكثر المنتجات مبيعاً
             </CardTitle>
           </CardHeader>
           <CardContent>
             {products.length ? (
-              <p className="py-4 text-center text-[#6d4c41]">
+              <p className="text-muted-foreground py-4 text-center">
                 لا توجد بيانات مبيعات
               </p>
             ) : (
@@ -188,11 +198,11 @@ function AdminHome() {
                       >
                         {index + 1}
                       </Badge>
-                      <span className="font-medium text-[#5d4037]">
+                      <span className="font-medium text-secondary-foreground">
                         {productName}
                       </span>
                     </div>
-                    <span className="text-sm text-[#6d4c41]">
+                    <span className="text-sm text-muted-foreground">
                       {quantity} مباع
                     </span>
                   </div>
@@ -205,16 +215,16 @@ function AdminHome() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Staff Performance */}
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center text-[#5d4037]">
+            <CardTitle className="text-secondary-foreground flex items-center">
               <Users className="ml-2 h-5 w-5" />
               أداء الموظفين
             </CardTitle>
           </CardHeader>
           <CardContent>
             {products.length ? (
-              <p className="py-4 text-center text-[#6d4c41]">
+              <p className="text-muted-foreground py-4 text-center">
                 لا توجد بيانات مبيعات
               </p>
             ) : (
@@ -224,8 +234,8 @@ function AdminHome() {
                     key={staff}
                     className="flex items-center justify-between rounded-lg bg-[#faf8f5] p-3"
                   >
-                    <span className="font-medium text-[#5d4037]">{staff}</span>
-                    <span className="font-semibold text-[#8b4513]">
+                    <span className="font-medium text-secondary-foreground">{staff}</span>
+                    <span className="font-semibold text-primary">
                       ${total.toFixed(2)}
                     </span>
                   </div>
@@ -236,9 +246,9 @@ function AdminHome() {
         </Card>
 
         {/* Stock Alerts */}
-        <Card className="border-[#8b4513]/20">
+        <Card className="border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center text-[#5d4037]">
+            <CardTitle className="text-secondary-foreground flex items-center">
               <AlertTriangle className="ml-2 h-5 w-5" />
               تنبيهات المخزون
             </CardTitle>
@@ -272,7 +282,7 @@ function AdminHome() {
                   <Button
                     variant="outline"
                     onClick={() => onNavigate("inventory")}
-                    className="mt-2 w-full border-[#8b4513]/30 text-[#5d4037]"
+                    className="mt-2 w-full border-primary/30 text-secondary-foreground"
                   >
                     عرض جميع التنبيهات ({lowStockProducts.length})
                   </Button>
