@@ -5,6 +5,8 @@ export type Role = "admin" | "seller";
 interface AppContextProps {
   role: Role;
   setRole: React.Dispatch<React.SetStateAction<Role>>;
+  isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -13,8 +15,14 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [role, setRole] = useState<Role>("seller");
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    !!localStorage.getItem("token"),
+  );
+
   return (
-    <AppContext.Provider value={{ role, setRole }}>
+    <AppContext.Provider
+      value={{ role, setRole, isAuthenticated, setIsAuthenticated }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -11,9 +11,19 @@ import {
 import { useAppContext } from "../../context/AppContext";
 import Logo from "./Logo";
 import NavbarLink from "./NavbarLink";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Navbar() {
   const { role, setRole } = useAppContext();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    navigate("/login");
+    toast.success("تم تسجيل الخروج بنجاح");
+  }
+
   return (
     <header className="border-primary/20 sticky top-0 z-50 border-b-2 bg-white shadow-sm">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
@@ -37,7 +47,11 @@ function Navbar() {
           <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
 
           {role === "admin" && (
-            <NavbarLink to="/settings" icon={Settings} text="لوحة الإدارة" />
+            <NavbarLink
+              to="/adminDashboard"
+              icon={Settings}
+              text="لوحة الإدارة"
+            />
           )}
         </nav>
 
@@ -51,7 +65,10 @@ function Navbar() {
             {role === "admin" ? "مدير" : "بائع"}
           </div>
           <p>Username</p>
-          <button className="flex items-center gap-2 rounded-md border border-[#E8DAD0] bg-[#FAF8F5] px-4 py-2 hover:bg-[#F2EFE0]">
+          <button
+            className="flex items-center gap-2 rounded-md border border-[#E8DAD0] bg-[#FAF8F5] px-4 py-2 hover:bg-[#F2EFE0]"
+            onClick={handleLogout}
+          >
             <LogOut className="h-5 w-5" />
             <p>تسجيل الخروج</p>
           </button>
