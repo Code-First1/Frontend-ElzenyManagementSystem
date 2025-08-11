@@ -6,4 +6,5 @@ export interface LoginPayload {
 export interface LoginResponse {
   displayName: string;
   token: string;
+  role: "Admin" | "Seller";
 }

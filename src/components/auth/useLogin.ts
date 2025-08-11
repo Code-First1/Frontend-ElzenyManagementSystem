@@ -7,7 +7,7 @@ import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
-  const { setIsAuthenticated } = useAppContext();
+  const { setIsAuthenticated, setRole } = useAppContext();
   const navigate = useNavigate();
   return useMutation<LoginResponse, APIError, LoginPayload>({
     mutationFn: login,
@@ -15,6 +15,7 @@ export const useLogin = () => {
       toast.success("تم تسجيل الدخول بنجاح");
       localStorage.setItem("token", data.token);
       setIsAuthenticated(true);
+      setRole(data.role === "Admin" ? "admin" : "seller");
       navigate("/");
     },
     onError: (err) => {
