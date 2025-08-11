@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
 function SellerHome() {
   const products = [""];
   return (
-    <div className="container mx-auto mt-20 space-y-6 p-6">
+    <>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="text-right">
@@ -252,7 +252,7 @@ function SellerHome() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 

@@ -1,22 +1,27 @@
 import {
   Archive,
+  ArrowLeftRight,
   Home,
   LogOut,
+  Menu,
   Package,
   Settings,
   Shield,
   ShoppingCart,
   User,
+  X,
 } from "lucide-react";
 import { useAppContext } from "../../context/AppContext";
 import Logo from "./Logo";
 import NavbarLink from "./NavbarLink";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 function Navbar() {
   const { role, setRole } = useAppContext();
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -26,62 +31,143 @@ function Navbar() {
 
   return (
     <header className="border-primary/20 sticky top-0 z-50 border-b-2 bg-white shadow-sm">
-      <div className="container mx-auto flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-2">
-          <Logo size="sm" />
-          <div>
-            <h1 className="text-secondary-foreground text-xl font-bold">
-              محلات الزيني
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              نظام إدارة المخزون والمبيعات
-            </p>
+      <div className="container mx-auto px-4 py-3">
+        {/* Desktop Navbar */}
+        <div className="hidden items-center justify-between xl:flex">
+          <div className="flex items-center gap-2">
+            <Logo size="sm" />
+            <div>
+              <h1 className="text-secondary-foreground text-xl font-bold">
+                محلات الزيني
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                نظام إدارة المخزون والمبيعات
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Navigations */}
-        <nav className="hidden items-center space-x-3 space-x-reverse md:flex">
-          <NavbarLink to="/" icon={Home} text="الرئيسية" />
-          <NavbarLink to="/products" icon={Package} text="المنتجات" />
-          <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
-          <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
+          {/* Desktop Navigation */}
+          <nav className="flex items-center space-x-3 space-x-reverse">
+            <NavbarLink to="/" icon={Home} text="الرئيسية" />
+            <NavbarLink to="/products" icon={Package} text="المنتجات" />
+            <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
+            <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
 
-          {role === "admin" && (
-            <NavbarLink
-              to="/adminDashboard"
-              icon={Settings}
-              text="لوحة الإدارة"
-            />
-          )}
-        </nav>
-
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2 rounded-full bg-[#f5deb3] px-3 py-1">
-            {role === "admin" ? (
-              <Shield className="h-5 w-5" />
-            ) : (
-              <User className="h-5 w-5" />
+            {role === "admin" && (
+              <NavbarLink
+                to="/adminDashboard"
+                icon={Settings}
+                text="لوحة الإدارة"
+              />
             )}
-            {role === "admin" ? "مدير" : "بائع"}
-          </div>
-          <p>Username</p>
-          <button
-            className="flex items-center gap-2 rounded-md border border-[#E8DAD0] bg-[#FAF8F5] px-4 py-2 hover:bg-[#F2EFE0]"
-            onClick={handleLogout}
-          >
-            <LogOut className="h-5 w-5" />
-            <p>تسجيل الخروج</p>
-          </button>
+          </nav>
 
-          <button
-            className="bg-primary hover:bg-secondary-foreground rounded-md px-4 py-2 text-white"
-            onClick={() =>
-              setRole((role) => (role === "admin" ? "seller" : "admin"))
-            }
-          >
-            <p>Switch Role For Test</p>
-          </button>
+          <div className="flex items-center gap-5">
+            <div className="mr-5 flex items-center gap-2 rounded-full bg-[#f5deb3] px-3 py-1">
+              {role === "admin" ? (
+                <Shield className="h-5 w-5" />
+              ) : (
+                <User className="h-5 w-5" />
+              )}
+              {role === "admin" ? "مدير" : "بائع"}
+            </div>
+            <p>Username</p>
+            <button
+              className="flex items-center gap-2 rounded-md border border-[#E8DAD0] bg-[#FAF8F5] px-4 py-2 hover:bg-[#F2EFE0]"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-5 w-5" />
+              <p>تسجيل الخروج</p>
+            </button>
+            <button
+              className="bg-primary hover:bg-secondary-foreground rounded-full p-3 text-white"
+              onClick={() =>
+                setRole((role) => (role === "admin" ? "seller" : "admin"))
+              }
+            >
+              <ArrowLeftRight className="h-5 w-5" />
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Navbar */}
+        <div className="flex items-center justify-between xl:hidden">
+          <div className="flex items-center gap-2">
+            <Logo size="sm" />
+            <div>
+              <h1 className="text-secondary-foreground text-lg font-bold">
+                محلات الزيني
+              </h1>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              className="bg-primary hover:bg-secondary-foreground rounded-full p-2 text-white"
+              onClick={() =>
+                setRole((role) => (role === "admin" ? "seller" : "admin"))
+              }
+            >
+              <ArrowLeftRight className="h-5 w-5" />
+            </button>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-primary p-2"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="absolute top-full right-0 left-0 z-50 bg-white shadow-lg xl:hidden">
+            <div className="container mx-auto px-4 py-3">
+              {/* Mobile Navigation */}
+              <nav className="flex flex-col space-y-3">
+                <NavbarLink to="/" icon={Home} text="الرئيسية" />
+                <NavbarLink to="/products" icon={Package} text="المنتجات" />
+                <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
+                <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
+                {role === "admin" && (
+                  <NavbarLink
+                    to="/adminDashboard"
+                    icon={Settings}
+                    text="لوحة الإدارة"
+                  />
+                )}
+              </nav>
+
+              {/* User Info and Logout */}
+              <div className="mt-4 flex flex-col space-y-3 border-t border-gray-200 pt-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 rounded-full bg-[#f5deb3] px-3 py-1">
+                    {role === "admin" ? (
+                      <Shield className="h-5 w-5" />
+                    ) : (
+                      <User className="h-5 w-5" />
+                    )}
+                    {role === "admin" ? "مدير" : "بائع"}
+                  </div>
+                  <p>Username</p>
+                </div>
+
+                <button
+                  className="flex w-full items-center justify-center gap-2 rounded-md border border-[#E8DAD0] bg-[#FAF8F5] px-4 py-2 hover:bg-[#F2EFE0]"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-5 w-5" />
+                  <p>تسجيل الخروج</p>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

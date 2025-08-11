@@ -1,15 +1,16 @@
-import Navbar from "../components/common/Navbar";
 import AdminHome from "../components/home/AdminHome";
 import SellerHome from "../components/home/SellerHome";
 import { useAppContext } from "../context/AppContext";
+import HomeLayout from "../layouts/HomeLayout";
 
 function Home() {
   const { role } = useAppContext();
   return (
-    <div>
-      <Navbar />
-      {role === "admin" ? <AdminHome /> : <SellerHome />}
-    </div>
+    <>
+      <HomeLayout>
+        {role === "admin" ? <AdminHome /> : <SellerHome />}
+      </HomeLayout>
+    </>
   );
 }
 

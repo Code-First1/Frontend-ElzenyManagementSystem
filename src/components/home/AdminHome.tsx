@@ -3,20 +3,21 @@ import {
   Archive,
   BarChart3,
   Calendar,
-  DollarSign,
   Package,
   Plus,
   Settings,
   ShoppingCart,
-  TrendingUp,
   Users,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
+import QuickStats from "../admin/QuickStats";
+import { useNavigate } from "react-router-dom";
 
 function AdminHome() {
+  const navigate = useNavigate();
   const products = [""];
   return (
-    <div className="container mx-auto mt-20 space-y-6 p-6">
+    <>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="text-right">
@@ -28,7 +29,10 @@ function AdminHome() {
           </p>
         </div>
         <div className="flex">
-          <button className="bg-primary hover:bg-secondary-foreground flex items-center gap-2 rounded-lg px-4 py-2 text-white">
+          <button
+            className="bg-primary hover:bg-secondary-foreground flex items-center gap-2 rounded-lg px-4 py-2 text-white"
+            onClick={() => navigate("/adminDashboard")}
+          >
             <Settings className="h-4 w-4" />
             <p className="pb-1">إدارة النظام</p>
           </button>
@@ -36,67 +40,8 @@ function AdminHome() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-primary/20">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-muted-foreground font-medium">
-              إيرادات اليوم
-            </CardTitle>
-            <DollarSign className="text-primary h-5 w-5" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-secondary-foreground text-2xl font-bold">
-              $0.00
-            </div>
-            <p className="text-muted-foreground text-sm"> مبيعة</p>
-          </CardContent>
-        </Card>
+      <QuickStats />
 
-        <Card className="border-primary/20">
-          <CardHeader className="flex items-center justify-between pb-2">
-            <CardTitle className="text-muted-foreground font-medium">
-              إيرادات الأسبوع
-            </CardTitle>
-            <TrendingUp className="text-primary h-5 w-5" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-secondary-foreground text-2xl font-bold">
-              $0.00
-            </div>
-            <p className="text-muted-foreground text-sm">مبيعة</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-primary/20">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-muted-foreground font-medium">
-              إجمالي المنتجات
-            </CardTitle>
-            <Package className="text-primary h-5 w-5" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-secondary-foreground text-2xl font-bold">
-              7
-            </div>
-            <p className="text-muted-foreground text-sm">منتجات نشطة</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-primary/20">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-muted-foreground font-medium">
-              منتجات منخفضة المخزون
-            </CardTitle>
-            <AlertTriangle className="text-primary h-5 w-5" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-secondary-foreground text-2xl font-bold">
-              2
-            </div>
-            <p className="text-muted-foreground text-sm">تحتاج إلى انتباه</p>
-          </CardContent>
-        </Card>
-      </div>
       {/* Quick Actions */}
       <Card className="border-primary/20">
         <CardHeader>
@@ -292,7 +237,7 @@ function AdminHome() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }
 

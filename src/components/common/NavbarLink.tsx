@@ -11,7 +11,7 @@ function NavbarLink({ to, icon: Icon, text }: NavbarLinkProps) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex items-center gap-2 rounded-md px-3 py-2 ${
+        `mr-5 flex items-center gap-2 rounded-md px-3 py-2 ${
           isActive
             ? "bg-primary text-white"
             : "text-secondary-foreground font-semibold hover:bg-[#F2EFE0]"
