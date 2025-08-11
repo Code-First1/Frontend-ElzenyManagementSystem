@@ -14,7 +14,9 @@ const AppContext = createContext<AppContextProps | undefined>(undefined);
 export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [role, setRole] = useState<Role>("seller");
+  const [role, setRole] = useState<Role>(
+    (localStorage.getItem("role") as Role) ?? "seller",
+  );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     !!localStorage.getItem("token"),
   );

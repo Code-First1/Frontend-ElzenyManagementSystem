@@ -14,6 +14,8 @@ export const useLogin = () => {
     onSuccess: (data) => {
       toast.success("تم تسجيل الدخول بنجاح");
       localStorage.setItem("token", data.token);
+      // TODO: set role to localstorage not secure handle it with get current user role from backend
+      localStorage.setItem("role", data.role === "Admin" ? "admin" : "seller");
       setIsAuthenticated(true);
       setRole(data.role === "Admin" ? "admin" : "seller");
       navigate("/");

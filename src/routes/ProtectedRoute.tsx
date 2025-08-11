@@ -21,7 +21,7 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
     } else if (
       isAuthenticated &&
       allowedRoles &&
-      !allowedRoles.includes(role) &&
+      !allowedRoles?.includes(role) &&
       !hasRedirected.current
     ) {
       hasRedirected.current = true;

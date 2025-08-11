@@ -25,6 +25,7 @@ function Navbar() {
 
   function handleLogout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate("/login");
     toast.success("تم تسجيل الخروج بنجاح");
   }
