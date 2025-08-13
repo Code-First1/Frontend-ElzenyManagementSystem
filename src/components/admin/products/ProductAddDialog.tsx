@@ -51,7 +51,7 @@ function ProductAddDialog({
           onClick={() => handleOpenAddDialog()}
           className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
         >
-          <Plus className="h-5 w-5" />
+          <Plus className="mt-[0.2rem] h-5 w-5" />
           إضافة منتج
         </button>
       </DialogTrigger>

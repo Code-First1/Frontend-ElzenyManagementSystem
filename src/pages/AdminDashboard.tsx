@@ -4,7 +4,7 @@ import AdminAnalysis from "../components/admin/AdminAnalysis";
 import AdminSalesReports from "../components/admin/AdminSalesReports";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminProducts from "../components/admin/products/AdminProducts";
-import AdminCategoires from "../components/admin/AdminCategoires";
+import AdminCategoires from "../components/admin/categories/AdminCategoires";
 
 export default function AdminDashboard() {
   return (

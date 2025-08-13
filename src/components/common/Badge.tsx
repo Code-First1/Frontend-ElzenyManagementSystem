@@ -14,8 +14,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
     const variantClasses = {
       default: "border-transparent bg-blue-600 text-white hover:bg-blue-600/90",
-      secondary:
-        "border-transparent bg-gray-200 text-gray-800 hover:bg-gray-200/90 dark:bg-gray-700 dark:text-gray-100",
+      secondary: "border-transparent bg-secondary  hover:bg-secondary-200/90",
       destructive:
         "border-transparent bg-red-600 text-white hover:bg-red-600/90 focus-visible:ring-red-500/20 dark:focus-visible:ring-red-500/40 dark:bg-red-600/60",
       outline: "border-gray-300 text-gray-800 hover:bg-secondary",
