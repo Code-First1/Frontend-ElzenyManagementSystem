@@ -4,13 +4,13 @@ import { Card, CardContent } from "../../ui/Card";
 function AdminAnalysis() {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-      <Card className="border-[#8b4513]/20">
+      <Card className="border-primary/20">
         <CardContent className="p-6">
-          <h3 className="mb-4 flex items-center text-lg font-semibold text-[#5d4037]">
+          <h3 className="text-secondary-foreground mb-4 flex items-center text-lg font-semibold">
             <Users className="ml-2 h-5 w-5" />
             مبيعات الموظفين
           </h3>
-          <p className="py-4 text-center text-[#6d4c41]">
+          <p className="text-muted-foreground py-4 text-center">
             لا توجد بيانات مبيعات
           </p>
           {/* {(() => {
@@ -28,7 +28,7 @@ function AdminAnalysis() {
                   );
 
                   return staffList.length === 0 ? (
-                    <p className="py-4 text-center text-[#6d4c41]">
+                    <p className="py-4 text-center text-muted-foreground">
                       لا توجد بيانات مبيعات
                     </p>
                   ) : (
@@ -38,10 +38,10 @@ function AdminAnalysis() {
                           key={staff}
                           className="flex items-center justify-between rounded-lg bg-[#faf8f5] p-3"
                         >
-                          <span className="font-medium text-[#5d4037]">
+                          <span className="font-medium text-secondary-foreground">
                             {staff}
                           </span>
-                          <span className="font-semibold text-[#8b4513]">
+                          <span className="font-semibold text-primary">
                             ${total.toFixed(2)}
                           </span>
                         </div>
@@ -52,13 +52,13 @@ function AdminAnalysis() {
         </CardContent>
       </Card>
 
-      <Card className="border-[#8b4513]/20">
+      <Card className="border-primary/20">
         <CardContent className="p-6">
-          <h3 className="mb-4 flex items-center text-lg font-semibold text-[#5d4037]">
+          <h3 className="text-secondary-foreground mb-4 flex items-center text-lg font-semibold">
             <Package className="ml-2 h-5 w-5" />
             أداء المنتجات
           </h3>
-          <p className="py-4 text-center text-[#6d4c41]">
+          <p className="text-muted-foreground py-4 text-center">
             لا توجد بيانات مبيعات
           </p>
           {/* {(() => {
@@ -76,7 +76,7 @@ function AdminAnalysis() {
                     .slice(0, 5);
 
                   return productList.length === 0 ? (
-                    <p className="py-4 text-center text-[#6d4c41]">
+                    <p className="py-4 text-center text-muted-foreground">
                       لا توجد بيانات مبيعات
                     </p>
                   ) : (
@@ -86,10 +86,10 @@ function AdminAnalysis() {
                           key={product}
                           className="flex items-center justify-between rounded-lg bg-[#faf8f5] p-3"
                         >
-                          <span className="line-clamp-1 font-medium text-[#5d4037]">
+                          <span className="line-clamp-1 font-medium text-secondary-foreground">
                             {product}
                           </span>
-                          <span className="font-semibold text-[#8b4513]">
+                          <span className="font-semibold text-primary">
                             ${revenue.toFixed(2)}
                           </span>
                         </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Logo from "../components/common/Logo";
 import { Store } from "lucide-react";
 import { useLogin } from "../components/auth/useLogin";
+import { Input } from "../components/common/Input";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -36,26 +37,26 @@ function Login() {
           <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
             <div className="flex flex-col gap-2">
               <label htmlFor="username">اسم المستخدم</label>
-              <input
+              <Input
                 id="username"
                 type="text"
                 placeholder="أدخل اسم المستخدم"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="focus-visible:border-ring focus-visible:ring-ring/50 border-primary/20 h-12 rounded-md border px-3 text-base transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
+                className="py-5"
                 required
               />
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="password">كلمة المرور</label>
-              <input
+              <Input
                 id="password"
                 type="password"
                 placeholder="أدخل كلمة المرور"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="focus-visible:border-ring focus-visible:ring-ring/50 border-primary/20 h-12 rounded-md border px-3 text-base transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
+                className="py-5"
                 required
               />
             </div>

@@ -10,16 +10,16 @@ function AdminOverview() {
       <QuickStats />
 
       {/* Tob Products */}
-      <Card className="mt-10 border-[#8b4513]/20">
+      <Card className="border-primary/20 mt-10">
         <CardHeader>
-          <CardTitle className="flex items-center text-[#5d4037]">
+          <CardTitle className="text-secondary-foreground flex items-center">
             <BarChart3 className="ml-2 h-5 w-5" />
             أكثر المنتجات مبيعاً
           </CardTitle>
         </CardHeader>
         <CardContent>
           {products.length === 0 ? (
-            <p className="py-4 text-center text-[#6d4c41]">
+            <p className="text-muted-foreground py-4 text-center">
               لا توجد بيانات مبيعات
             </p>
           ) : (
@@ -36,11 +36,11 @@ function AdminOverview() {
                     >
                       {index + 1}
                     </Badge>
-                    <span className="font-medium text-[#5d4037]">
+                    <span className="font-medium text-secondary-foreground">
                       {productName}
                     </span>
                   </div>
-                  <span className="text-sm text-[#6d4c41]">
+                  <span className="text-sm text-muted-foreground">
                     {quantity} مباع
                   </span>
                 </div>

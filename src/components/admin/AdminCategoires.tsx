@@ -2,7 +2,9 @@ function AdminCategoires() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-[#5d4037]">إدارة الفئات</h2>
+        <h2 className="text-secondary-foreground text-xl font-semibold">
+          إدارة الفئات
+        </h2>
         {/* <CategoryDialogs
               isAddDialogOpen={categoryForm.isAddDialogOpen}
               setIsAddDialogOpen={categoryForm.setIsAddDialogOpen}
@@ -23,7 +25,7 @@ function AdminCategoires() {
         {/* {categories.map((category) => {
               const IconComponent = getCategoryIcon(category.icon);
               return (
-                <Card key={category.id} className="border-[#8b4513]/20">
+                <Card key={category.id} className="border-primary/20">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex flex-1 items-center space-x-4 space-x-reverse">
@@ -37,7 +39,7 @@ function AdminCategoires() {
                           />
                         </div>
                         <div className="flex-1 text-right">
-                          <h3 className="mb-1 font-semibold text-[#5d4037]">
+                          <h3 className="mb-1 font-semibold text-secondary-foreground">
                             {category.name}
                           </h3>
                           <div className="flex flex-wrap gap-1">
@@ -59,7 +61,7 @@ function AdminCategoires() {
                           variant="outline"
                           size="sm"
                           onClick={() => categoryForm.handleEdit(category)}
-                          className="border-[#8b4513]/30"
+                          className="border-primary/30"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
