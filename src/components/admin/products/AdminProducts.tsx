@@ -1,11 +1,4 @@
-import { Edit, Plus, Search, Package } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogOverlay,
-  DialogTrigger,
-} from "../../../ui/Dialog";
+import { Search, Package } from "lucide-react";
 import { useState } from "react";
 import type {
   Category,
@@ -13,9 +6,7 @@ import type {
 } from "../../../types/adminDashboard.interfaces";
 import { useProductForm } from "./useProductForm";
 import { Input } from "../../common/Input";
-
 import { DEFAULT_CATEGORIES, INITIAL_PRODUCTS } from "../../../constants";
-import { Badge } from "../../common/Badge";
 import { Card, CardContent } from "../../../ui/Card";
 import {
   Pagination,
@@ -26,8 +17,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../../../ui/Pagination";
-import ProductDeleteDialog from "./ProductDeleteDialog";
-import ProductFormFields from "./ProductFormFields";
+import ProductAddDialog from "./ProductAddDialog";
+import { usePagination } from "../../../hooks/usePagination";
+import ProductList from "./ProductList";
 
 function AdminProducts() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -49,28 +41,14 @@ function AdminProducts() {
       prev.map((p) => (p.id === id ? { ...p, ...updates } : p)),
     );
   };
-  const productForm = useProductForm(categories, addProduct, updateProduct);
-
-  const handleOpenAddDialog = () => {
-    setEditingProduct(null);
-    productForm.resetForm();
-    setIsFormOpen(true);
-  };
 
   const handleOpenEditDialog = (product: Product) => {
     setEditingProduct(product);
-
     productForm.handleEdit(product);
     setIsFormOpen(true);
   };
 
-  const handleSubmit = () => {
-    if (editingProduct) {
-      productForm.handleEdit(editingProduct);
-    } else {
-      productForm.handleAdd();
-    }
-  };
+  const productForm = useProductForm(categories, addProduct, updateProduct);
 
   const filteredProducts = products.filter(
     (product) =>
@@ -87,17 +65,13 @@ function AdminProducts() {
   );
 
   // Pagination state
-  const [productCurrentPage, setProductCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  // Pagination logic for products
-  const totalProductPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const productStartIndex = (productCurrentPage - 1) * itemsPerPage;
-  const productEndIndex = productStartIndex + itemsPerPage;
-  const paginatedProducts = filteredProducts.slice(
-    productStartIndex,
-    productEndIndex,
-  );
+  const {
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    itemsPerPage,
+    paginatedData: paginatedProducts,
+  } = usePagination(filteredProducts, 5);
 
   return (
     <>
@@ -108,52 +82,15 @@ function AdminProducts() {
           </h2>
         </div>
 
-        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-          <DialogOverlay
-            open={isFormOpen}
-            onClose={() => setIsFormOpen(false)}
-          />
-          <DialogTrigger>
-            <button
-              onClick={() => handleOpenAddDialog()}
-              className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
-            >
-              <Plus className="h-5 w-5" />
-              إضافة منتج
-            </button>
-          </DialogTrigger>
-          <DialogContent
-            open={isFormOpen}
-            className="max-w-2xl"
-            onClose={() => setIsFormOpen(false)}
-          >
-            <DialogHeader>
-              {editingProduct ? "تعديل المنتج" : "إضافة منتج جديد"}
-            </DialogHeader>
-            <ProductFormFields
-              categories={categories}
-              formData={productForm.formData}
-              setFormData={productForm.setFormData}
-              availableSubcategories={categories.flatMap(
-                (category) => category.subcategories,
-              )}
-            />
-            <div className="flex justify-end gap-5 pt-4">
-              <button
-                className="hover:bg-secondary rounded-md px-4 py-2 shadow-sm"
-                onClick={() => setIsFormOpen(false)}
-              >
-                إلغاء
-              </button>
-              <button
-                onClick={() => handleSubmit()}
-                className="bg-primary hover:bg-secondary-foreground rounded-md px-3 py-2 text-white"
-              >
-                {editingProduct ? "حفظ التعديلات" : "إضافة منتج"}
-              </button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        {/* Product Add Dialog */}
+        <ProductAddDialog
+          isFormOpen={isFormOpen}
+          setIsFormOpen={setIsFormOpen}
+          editingProduct={editingProduct}
+          setEditingProduct={setEditingProduct}
+          categories={categories}
+          productForm={productForm}
+        />
       </div>
 
       {/* Product Search Bar */}
@@ -189,59 +126,10 @@ function AdminProducts() {
             </CardContent>
           </Card>
         ) : (
-          paginatedProducts.map((product) => (
-            <Card key={product.id} className="border-primary/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 text-right">
-                    <h3 className="text-secondary-foreground mb-1 text-lg font-bold">
-                      {product.name}
-                    </h3>
-                    <p className="text-muted-foreground mb-2">
-                      {product.description}
-                    </p>
-                    <div className="flex items-center space-x-4">
-                      <span>
-                        الفئة:{" "}
-                        <Badge variant="outline">{product.category}</Badge>
-                      </span>
-                      <span>
-                        المخزون:{" "}
-                        <strong>
-                          {product.stock} {product.unit}
-                        </strong>
-                      </span>
-                      <span>
-                        الحد الأدنى: <strong>{product.minStock}</strong>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center space-x-4">
-                    <div className="flex flex-col items-center">
-                      <p className="text-muted-foreground text-sm">
-                        السعر لكل {product.unit}
-                      </p>
-                      <p className="text-primary text-lg font-bold">
-                        ${product.price.toFixed(2)}
-                      </p>
-                    </div>
-
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleOpenEditDialog(product)}
-                        className="bg-background border-primary/30 rounded-md border px-3 py-2 shadow-sm"
-                      >
-                        <Edit className="h-5 w-5" />
-                      </button>
-
-                      <ProductDeleteDialog product={product} />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+          <ProductList
+            products={paginatedProducts}
+            handleOpenEditDialog={handleOpenEditDialog}
+          />
         )}
 
         {/* Product Pagination */}
@@ -252,59 +140,53 @@ function AdminProducts() {
                 <PaginationItem>
                   <PaginationPrevious
                     onClick={() =>
-                      setProductCurrentPage((prev) => Math.max(prev - 1, 1))
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
                     className={
-                      productCurrentPage === 1
+                      currentPage === 1
                         ? "pointer-events-none opacity-50"
                         : "cursor-pointer"
                     }
                   />
                 </PaginationItem>
 
-                {Array.from(
-                  { length: Math.min(5, totalProductPages) },
-                  (_, i) => {
-                    let pageNum;
-                    if (totalProductPages <= 5) {
-                      pageNum = i + 1;
-                    } else if (productCurrentPage <= 3) {
-                      pageNum = i + 1;
-                    } else if (productCurrentPage >= totalProductPages - 2) {
-                      pageNum = totalProductPages - 4 + i;
-                    } else {
-                      pageNum = productCurrentPage - 2 + i;
-                    }
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
 
-                    return (
-                      <PaginationItem key={pageNum}>
-                        <PaginationLink
-                          onClick={() => setProductCurrentPage(pageNum)}
-                          isActive={productCurrentPage === pageNum}
-                          className="cursor-pointer"
-                        >
-                          {pageNum}
-                        </PaginationLink>
-                      </PaginationItem>
-                    );
-                  },
-                )}
-
-                {totalProductPages > 10 &&
-                  productCurrentPage < totalProductPages - 2 && (
-                    <PaginationItem>
-                      <PaginationEllipsis />
+                  return (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(pageNum)}
+                        isActive={currentPage === pageNum}
+                        className="cursor-pointer"
+                      >
+                        {pageNum}
+                      </PaginationLink>
                     </PaginationItem>
-                  )}
+                  );
+                })}
+
+                {totalPages > 10 && currentPage < totalPages - 2 && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
                 <PaginationItem>
                   <PaginationNext
                     onClick={() =>
-                      setProductCurrentPage((prev) =>
-                        Math.min(prev + 1, totalProductPages),
-                      )
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }
                     className={
-                      productCurrentPage === totalProductPages
+                      currentPage === totalPages
                         ? "pointer-events-none opacity-50"
                         : "cursor-pointer"
                     }
