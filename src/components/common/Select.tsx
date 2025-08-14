@@ -85,7 +85,8 @@ function SelectTrigger({
 
   return (
     <button
-      className={`focus:border-primary focus:ring-primary/50 flex w-full items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm whitespace-nowrap transition-all outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800/30 ${
+      type="button"
+      className={`focus:border-primary focus:ring-primary/50 flex w-full items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm whitespace-nowrap text-gray-400 transition-all outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800/30 ${
         size === "default" ? "h-9" : "h-8"
       } ${className}`}
       onClick={() => setOpen(!open)}

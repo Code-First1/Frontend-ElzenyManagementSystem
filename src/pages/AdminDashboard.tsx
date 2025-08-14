@@ -5,6 +5,7 @@ import AdminSalesReports from "../components/admin/AdminSalesReports";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminProducts from "../components/admin/products/AdminProducts";
 import AdminCategoires from "../components/admin/categories/AdminCategoires";
+import AdminUsers from "../components/admin/users/AdminUsers";
 
 export default function AdminDashboard() {
   return (
@@ -21,7 +22,7 @@ export default function AdminDashboard() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 gap-5">
+        <TabsList className="grid w-full grid-cols-6 gap-5">
           <TabsTrigger
             value="overview"
             className="data-[state=active]:bg-primary data-[state=active]:text-white"
@@ -39,6 +40,12 @@ export default function AdminDashboard() {
             className="data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             الفئات
+          </TabsTrigger>
+          <TabsTrigger
+            value="users"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+          >
+            المستخدمين
           </TabsTrigger>
           <TabsTrigger
             value="sales"
@@ -66,9 +73,12 @@ export default function AdminDashboard() {
           <AdminCategoires />
         </TabsContent>
 
+        <TabsContent value="users" className="space-y-6">
+          <AdminUsers />
+        </TabsContent>
+
         <TabsContent value="sales">
           <AdminSalesReports />
-          <div />
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-6">

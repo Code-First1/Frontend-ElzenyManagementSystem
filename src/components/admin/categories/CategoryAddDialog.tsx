@@ -56,7 +56,7 @@ function CategoryAddDialog({
         className="max-w-2xl"
         onClose={() => setIsFormOpen(false)}
       >
-        <DialogHeader>
+        <DialogHeader className="items-start">
           {editingCategory ? "تعديل الفئة" : "إضافة فئة جديدة"}
         </DialogHeader>
         <CategoryFormFields

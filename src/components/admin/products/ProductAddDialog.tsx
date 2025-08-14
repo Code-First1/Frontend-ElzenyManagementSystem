@@ -60,7 +60,7 @@ function ProductAddDialog({
         className="max-w-2xl"
         onClose={() => setIsFormOpen(false)}
       >
-        <DialogHeader>
+        <DialogHeader className="items-start">
           {editingProduct ? "تعديل المنتج" : "إضافة منتج جديد"}
         </DialogHeader>
         <ProductFormFields

@@ -121,7 +121,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       <button
-        className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+        className="absolute top-6 left-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
         onClick={onClose}
       >
         <X className="h-7 w-7" />
@@ -138,7 +138,7 @@ const DialogHeader = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={`flex flex-col gap-2 text-center sm:text-left ${className}`}
+      className={`flex flex-col gap-2 text-center text-lg font-bold sm:text-left ${className}`}
       {...props}
     />
   );
