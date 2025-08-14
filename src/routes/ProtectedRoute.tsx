@@ -1,7 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useAppContext, type Role } from "../context/AppContext";
-import { useEffect, useRef } from "react";
+import { useAppContext } from "../context/AppContext";
+import { useEffect } from "react";
+import type { Role } from "../types/auth.interfaces";
 import toast from "react-hot-toast";
+import Loader from "../components/common/Loader";
+import { useNavigate } from "react-router-dom";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -9,36 +11,34 @@ type ProtectedRouteProps = {
 };
 
 function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { isAuthenticated, role } = useAppContext();
+  const { isAuthenticated, currentUser, isLoading } = useAppContext();
   const navigate = useNavigate();
-  const hasRedirected = useRef(false);
+
+  const userRole = currentUser?.role.toLowerCase() as Role;
+  const isAuthorized = allowedRoles ? allowedRoles.includes(userRole) : true;
 
   useEffect(() => {
-    if (!isAuthenticated && !hasRedirected.current) {
-      hasRedirected.current = true;
+    if (isLoading) {
+      return;
+    }
+    if (!isAuthenticated) {
       toast.error("يرجى تسجيل الدخول");
       navigate("/login", { replace: true });
-    } else if (
-      isAuthenticated &&
-      allowedRoles &&
-      !allowedRoles?.includes(role) &&
-      !hasRedirected.current
-    ) {
-      hasRedirected.current = true;
+    } else if (!isAuthorized) {
       toast.error("ليس لديك صلاحية الوصول");
       navigate("/", { replace: true });
     }
-  }, [isAuthenticated, role, allowedRoles, navigate]);
+  }, [isLoading, isAuthenticated, isAuthorized, navigate]);
 
-  if (!isAuthenticated) {
-    return null;
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
-  if (allowedRoles && !allowedRoles.includes(role)) {
-    return null;
-  }
-
-  return <>{children}</>;
+  return children;
 }
 
 export default ProtectedRoute;

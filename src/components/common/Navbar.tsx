@@ -1,6 +1,5 @@
 import {
   Archive,
-  ArrowLeftRight,
   Home,
   LogOut,
   Menu,
@@ -19,7 +18,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 
 function Navbar() {
-  const { role, setRole } = useAppContext();
+  const { currentUser } = useAppContext();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -54,7 +53,7 @@ function Navbar() {
             <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
             <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
 
-            {role === "admin" && (
+            {currentUser?.role === "Admin" && (
               <NavbarLink
                 to="/adminDashboard"
                 icon={Settings}
@@ -65,14 +64,14 @@ function Navbar() {
 
           <div className="flex items-center gap-5">
             <div className="mr-5 flex items-center gap-2 rounded-full bg-[#f5deb3] px-3 py-1">
-              {role === "admin" ? (
+              {currentUser?.role === "Admin" ? (
                 <Shield className="h-5 w-5" />
               ) : (
                 <User className="h-5 w-5" />
               )}
-              {role === "admin" ? "مدير" : "بائع"}
+              {currentUser?.role === "Admin" ? "مدير" : "بائع"}
             </div>
-            <p>Username</p>
+            <p>{currentUser?.displayName}</p>
             <button
               className="flex items-center gap-2 rounded-md border border-[#E8DAD0] bg-[#FAF8F5] px-4 py-2 hover:bg-[#F2EFE0]"
               onClick={handleLogout}
@@ -80,14 +79,21 @@ function Navbar() {
               <LogOut className="h-5 w-5" />
               <p>تسجيل الخروج</p>
             </button>
-            <button
+            {/* <button
               className="bg-primary hover:bg-secondary-foreground rounded-full p-3 text-white"
               onClick={() =>
-                setRole((role) => (role === "admin" ? "seller" : "admin"))
+                setCurrentUser((prevUser) =>
+                  prevUser
+                    ? {
+                        ...prevUser,
+                        role: prevUser.role === "Admin" ? "Seller" : "Admin",
+                      }
+                    : prevUser,
+                )
               }
             >
               <ArrowLeftRight className="h-5 w-5" />
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -103,14 +109,21 @@ function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
+            {/* <button
               className="bg-primary hover:bg-secondary-foreground rounded-full p-2 text-white"
               onClick={() =>
-                setRole((role) => (role === "admin" ? "seller" : "admin"))
+                setCurrentUser((prevUser) =>
+                  prevUser
+                    ? {
+                        ...prevUser,
+                        role: prevUser.role === "Admin" ? "Seller" : "Admin",
+                      }
+                    : prevUser,
+                )
               }
             >
               <ArrowLeftRight className="h-5 w-5" />
-            </button>
+            </button> */}
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -135,7 +148,7 @@ function Navbar() {
                 <NavbarLink to="/products" icon={Package} text="المنتجات" />
                 <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
                 <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
-                {role === "admin" && (
+                {currentUser?.role === "Admin" && (
                   <NavbarLink
                     to="/adminDashboard"
                     icon={Settings}
@@ -148,12 +161,12 @@ function Navbar() {
               <div className="mt-4 flex flex-col space-y-3 border-t border-gray-200 pt-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 rounded-full bg-[#f5deb3] px-3 py-1">
-                    {role === "admin" ? (
+                    {currentUser?.role === "Admin" ? (
                       <Shield className="h-5 w-5" />
                     ) : (
                       <User className="h-5 w-5" />
                     )}
-                    {role === "admin" ? "مدير" : "بائع"}
+                    {currentUser?.role === "Admin" ? "مدير" : "بائع"}
                   </div>
                   <p>Username</p>
                 </div>

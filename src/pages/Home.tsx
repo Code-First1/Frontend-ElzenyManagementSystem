@@ -4,11 +4,11 @@ import { useAppContext } from "../context/AppContext";
 import HomeLayout from "../layouts/HomeLayout";
 
 function Home() {
-  const { role } = useAppContext();
+  const { currentUser } = useAppContext();
   return (
     <>
       <HomeLayout>
-        {role === "admin" ? <AdminHome /> : <SellerHome />}
+        {currentUser?.role === "Admin" ? <AdminHome /> : <SellerHome />}
       </HomeLayout>
     </>
   );

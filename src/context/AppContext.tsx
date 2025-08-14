@@ -1,40 +1,38 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext } from "react";
+import { useGetCurrentUserQuery } from "../components/auth/useAuth";
+import type { User } from "../types/auth.interfaces";
 
-export type Role = "admin" | "seller";
-
-interface AppContextProps {
-  role: Role;
-  setRole: React.Dispatch<React.SetStateAction<Role>>;
+type AppContextType = {
   isAuthenticated: boolean;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: User | null;
+  isLoading: boolean;
+};
+
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+export function AppContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { data: currentUser, isLoading, isSuccess } = useGetCurrentUserQuery();
+
+  const isAuthenticated = isSuccess && !!currentUser;
+
+  const value = {
+    isLoading,
+    isAuthenticated,
+    currentUser: currentUser ?? null,
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
-const AppContext = createContext<AppContextProps | undefined>(undefined);
-
-export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [role, setRole] = useState<Role>(
-    (localStorage.getItem("role") as Role) ?? "seller",
-  );
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    !!localStorage.getItem("token"),
-  );
-
-  return (
-    <AppContext.Provider
-      value={{ role, setRole, isAuthenticated, setIsAuthenticated }}
-    >
-      {children}
-    </AppContext.Provider>
-  );
-};
-
 // eslint-disable-next-line react-refresh/only-export-components
-export const useAppContext = (): AppContextProps => {
+export function useAppContext() {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error("useAppContext must be used within a AppContextProvider");
+    throw new Error("useAppContext must be used within an AppProvider");
   }
   return context;
-};
+}

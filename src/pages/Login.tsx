@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Logo from "../components/common/Logo";
 import { Store } from "lucide-react";
-import { useLogin } from "../components/auth/useLogin";
+import { useLogin } from "../components/auth/useAuth";
 import { Input } from "../components/common/Input";
 
 function Login() {
