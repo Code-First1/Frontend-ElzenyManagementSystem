@@ -9,8 +9,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
+import { useAppContext } from "../../context/AppContext";
 
 function SellerHome() {
+  const { currentUser } = useAppContext();
   const products = [""];
   return (
     <>
@@ -21,7 +23,7 @@ function SellerHome() {
             لوحة تحكم المتجر
           </h1>
           <p className="text-muted-foreground mt-1">
-            مرحباً بك، currentUser - إدارة المبيعات والمخزون
+            مرحباً بك، {currentUser?.displayName} - إدارة المبيعات والمخزون
           </p>
         </div>
       </div>

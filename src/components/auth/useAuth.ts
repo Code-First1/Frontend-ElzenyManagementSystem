@@ -18,14 +18,20 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const useLogin = () => {
-  // const { setCurrentUser } = useAppContext();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   return useMutation<LoginResponse, APIError, LoginPayload>({
     mutationFn: login,
     onSuccess: (data) => {
-      toast.success("تم تسجيل الدخول بنجاح");
       localStorage.setItem("token", data.token);
-      navigate("/");
+      const user: User = {
+        displayName: data.displayName,
+        role: data.role,
+        userName: "",
+      };
+      queryClient.setQueryData(["user"], user);
+      toast.success("تم تسجيل الدخول بنجاح");
+      navigate("/", { replace: true });
     },
     onError: (err) => {
       toast.error(err.errorMessage);

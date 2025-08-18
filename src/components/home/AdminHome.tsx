@@ -12,9 +12,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
 import QuickStats from "../admin/QuickStats";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 function AdminHome() {
   const navigate = useNavigate();
+  const { currentUser } = useAppContext();
   const products = [""];
   return (
     <>
@@ -25,7 +27,7 @@ function AdminHome() {
             لوحة تحكم المدير
           </h1>
           <p className="text-muted-foreground mt-1">
-            مرحباً بك، username - نظرة عامة على المتجر
+            مرحباً بك، {currentUser?.displayName} - نظرة عامة على المتجر
           </p>
         </div>
         <div className="flex">
