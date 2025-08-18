@@ -26,5 +26,9 @@ export async function api<T>(
     throw errorData;
   }
 
-  return res.json();
+  if (options.method === "DELETE" || res.status === 204) {
+    return {} as T;
+  }
+
+  return await res.json();
 }

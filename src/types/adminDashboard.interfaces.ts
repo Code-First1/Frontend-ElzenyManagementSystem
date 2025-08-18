@@ -1,21 +1,58 @@
+import { createCrudApi } from "../services/apiCrud";
+
+/////////////////////////////////// Products //////////////////////////////
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
-  price: number;
-  stock: number;
-  minStock: number;
   unit: string;
-  category: string;
-  subcategory: string;
-  type: "leather" | "box" | "accessory" | "glue" | "";
-  lastUpdated?: Date;
+  pricePerUnit: number;
+  pictureUrl: ""; // not added yet, need to handle
+  categoryName: string;
+  subCategoryName: string;
+}
+export type CreateProductDto = Omit<
+  Product,
+  "id" | "categoryName" | "subCategoryName"
+> & {
+  categoryId: number;
+  subCategoryId: number;
+};
+
+/////////////////////////////////// Categories //////////////////////////////
+export interface Category {
+  id: number;
+  name: string;
+  subCategories: SubCategory[];
+  color?: string; // not coming from backend
+  icon?: string; // not coming from backend
 }
 
-export interface Category {
-  id: string;
-  name: string;
-  color: string;
-  icon: string;
-  subcategories: string[];
+export type CreateCategoryDto = Omit<
+  Category,
+  "id" | "subCategories" | "color" | "icon"
+>;
+
+export interface GetCategoryResponse {
+  data: Category[];
+  pageIndex: number;
+  pageSize: number;
+  totalCount: number;
 }
+/////////////////////////////////// SubCategories //////////////////////////////
+export interface SubCategory {
+  id: number;
+  name: string;
+}
+export type CreateSubCategoryDto = Omit<SubCategory, "id"> & {
+  categoryId: number;
+};
+
+/////////////////////////////////// Create API instances //////////////////////////////
+export const categoryApi = createCrudApi<Category, CreateCategoryDto>(
+  "categories",
+);
+export const productApi = createCrudApi<Product, CreateProductDto>("products");
+export const subcategoryApi = createCrudApi<SubCategory, CreateSubCategoryDto>(
+  "subcategories",
+);

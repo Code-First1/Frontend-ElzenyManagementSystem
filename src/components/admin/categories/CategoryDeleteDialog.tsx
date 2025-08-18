@@ -13,9 +13,11 @@ import {
 } from "../../../ui/AlertDialog";
 import { useState } from "react";
 import type { Category } from "../../../types/adminDashboard.interfaces";
+import { useCategoryForm } from "./useCategoryForm";
 
 function CategoryDeleteDialog({ category }: { category: Category }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { deleteCategory } = useCategoryForm();
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger>
@@ -40,7 +42,10 @@ function CategoryDeleteDialog({ category }: { category: Category }) {
             إلغاء
           </AlertDialogCancel>
           <AlertDialogAction
-            // onClick={() => handleDeleteCategory(category.id, category.name)}
+            onClick={() => {
+              deleteCategory({ id: category.id });
+              setIsOpen(false);
+            }}
             className="bg-red-600 hover:bg-red-700"
           >
             حذف
