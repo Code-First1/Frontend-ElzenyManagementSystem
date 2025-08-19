@@ -18,7 +18,7 @@ import {
 } from "../../../ui/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import CategoryFormialog from "./CategorFormDialog";
+import CategoryFormDialog from "./CategorFormDialog";
 
 function AdminCategories() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,9 +56,6 @@ function AdminCategories() {
           <h3 className="mb-2 text-lg font-semibold text-red-700">
             حدث خطأ أثناء تحميل الفئات
           </h3>
-          <p className="text-red-600">
-            يرجى المحاولة مرة أخرى أو الاتصال بالدعم الفني
-          </p>
         </CardContent>
       </Card>
     );
@@ -72,7 +69,7 @@ function AdminCategories() {
         </h2>
 
         {/* Category Add Dialog */}
-        <CategoryFormialog />
+        <CategoryFormDialog />
       </div>
 
       {/* Category Search Bar */}

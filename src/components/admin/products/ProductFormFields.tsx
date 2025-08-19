@@ -1,6 +1,8 @@
-import type { Category } from "../../../types/adminDashboard.interfaces";
+import {
+  unitOptions,
+  type Product,
+} from "../../../types/adminDashboard.interfaces";
 import { Label } from "../../common/Label";
-import type { ProductFormData } from "./useProductForm";
 import {
   Select,
   SelectContent,
@@ -10,158 +12,187 @@ import {
 } from "../../common/Select";
 import { Input } from "../../common/Input";
 import { Textarea } from "../../common/Textarea";
+import { useProductForm } from "./useProductForm";
+import { useEffect } from "react";
 
-function ProductFormFields({
-  categories,
-  formData,
-  setFormData,
-  availableSubcategories,
-}: {
-  categories: Category[];
-  formData: ProductFormData;
-  setFormData: (data: ProductFormData) => void;
-  availableSubcategories: string[];
-}) {
+function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
+  const {
+    handleUpdateProduct,
+    formData,
+    setFormData,
+    availableSubcategories,
+    handleAddProduct,
+    categories,
+  } = useProductForm();
+
+  useEffect(() => {
+    if (editingProduct !== null) {
+      const category = categories?.find(
+        (c) => c.name === editingProduct?.categoryName,
+      );
+
+      const subCategory = category?.subCategories?.find(
+        (s) => s.name === editingProduct?.subCategoryName,
+      );
+
+      setFormData({
+        name: editingProduct?.name || "",
+        unit: editingProduct?.unit || "",
+        description: editingProduct?.description || "",
+        pricePerUnit: editingProduct?.pricePerUnit || 0,
+        pictureUrl: editingProduct?.pictureUrl || "",
+        categoryId: category?.id || 0,
+        subCategoryId: subCategory?.id || 0,
+      });
+    }
+  }, [editingProduct, categories, setFormData]);
+
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="space-y-2 text-right">
-        <Label htmlFor="name">اسم المنتج</Label>
-        <Input
-          id="name"
-          value={formData.name}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFormData({ ...formData, name: e.target.value })
-          }
-          placeholder="أدخل اسم المنتج"
-          className="text-right"
-        />
-      </div>
+    <>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2 text-right">
+          <Label htmlFor="name">اسم المنتج</Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder="أدخل اسم المنتج"
+            className="text-right"
+          />
+        </div>
 
-      <div className="space-y-2 text-right">
-        <Label htmlFor="category">الفئة</Label>
-        <Select
-          value={formData.category}
-          onValueChange={(value) =>
-            setFormData({
-              ...formData,
-              category: value,
-              subcategory: "",
-              unit: "",
-            })
-          }
-        >
-          <SelectTrigger>{formData.category || "اختر الفئة"}</SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category.id} value={category.name}>
-                {category.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-2 text-right">
+          <Label htmlFor="category">الفئة</Label>
+          <Select
+            value={formData.categoryId.toString()}
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                categoryId: Number(value),
+              })
+            }
+          >
+            <SelectTrigger>
+              {categories?.find(
+                (category) => category.id === formData.categoryId,
+              )?.name || "اختر الفئة"}
+            </SelectTrigger>
+            <SelectContent>
+              {categories?.map((category) => (
+                <SelectItem key={category.id} value={category.id.toString()}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-2 text-right">
-        <Label htmlFor="subcategory">الفئة الفرعية</Label>
-        <Select
-          value={formData.subcategory}
-          onValueChange={(value) =>
-            setFormData({ ...formData, subcategory: value })
-          }
-        >
-          <SelectTrigger>
-            <SelectValue>
-              {formData.subcategory || "اختر الفئة الفرعية"}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {availableSubcategories.map((subcategory) => (
-              <SelectItem key={subcategory} value={subcategory}>
-                {subcategory}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-2 text-right">
+          <Label htmlFor="subcategory">الفئة الفرعية</Label>
+          <Select
+            value={formData.subCategoryId.toString()}
+            onValueChange={(value) =>
+              setFormData({ ...formData, subCategoryId: Number(value) })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue>
+                {availableSubcategories?.find(
+                  (category) => category.id === formData.subCategoryId,
+                )?.name || "اختر الفئة الفرعية"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {availableSubcategories.map((subcategory) => (
+                <SelectItem
+                  key={subcategory.id}
+                  value={subcategory.id.toString()}
+                >
+                  {subcategory.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-2 text-right">
-        <Label htmlFor="unit">الوحدة</Label>
-        <Select
-          value={formData.unit}
-          onValueChange={(value) =>
-            setFormData({
-              ...formData,
-              unit: value,
-            })
-          }
-        >
-          <SelectTrigger>
-            <SelectValue>{formData.unit || "اختر الوحدة"}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="متر">متر</SelectItem>
-            <SelectItem value="علبة">علبة</SelectItem>
-            <SelectItem value="رول">رول</SelectItem>
-            <SelectItem value="قطعة">قطعة</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-2 text-right">
+          <Label htmlFor="unit">الوحدة</Label>
+          <Select
+            value={formData.unit}
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                unit: value as typeof formData.unit,
+              })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue>
+                {unitOptions.find((unit) => unit.value === formData.unit)
+                  ?.label || "اختر الوحدة"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {unitOptions.map((unit) => (
+                <SelectItem key={unit.value} value={unit.value}>
+                  {unit.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-2 text-right">
-        <Label htmlFor="price">السعر لكل وحدة</Label>
-        <Input
-          id="price"
-          min={0}
-          value={formData.price}
-          onChange={(e) =>
-            setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })
-          }
-          className="text-right"
-        />
-      </div>
+        <div className="space-y-2 text-right">
+          <Label htmlFor="price">السعر لكل وحدة</Label>
+          <Input
+            id="price"
+            min={0}
+            value={formData.pricePerUnit}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                pricePerUnit: parseFloat(e.target.value) || 0,
+              })
+            }
+            className="text-right"
+          />
+        </div>
 
-      <div className="space-y-2 text-right">
-        <Label htmlFor="stock">المخزون الحالي</Label>
-        <Input
-          id="stock"
-          min="0"
-          value={formData.stock}
-          onChange={(e) =>
-            setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })
-          }
-          className="text-right"
-        />
+        <div className="col-span-2 space-y-2 text-right">
+          <Label htmlFor="description">الوصف</Label>
+          <Textarea
+            id="description"
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            placeholder="أدخل وصف المنتج"
+            className="text-right"
+          />
+        </div>
       </div>
-
-      <div className="space-y-2 text-right">
-        <Label htmlFor="minStock">الحد الأدنى للمخزون</Label>
-        <Input
-          id="minStock"
-          min="1"
-          value={formData.minStock}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              minStock: parseInt(e.target.value) || 1,
-            })
-          }
-          className="text-right"
-        />
+      <div className="mt-5 flex justify-end gap-5 pt-4">
+        {!editingProduct ? (
+          <button
+            type="button"
+            onClick={handleAddProduct}
+            className="disabled:bg-accent rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037] disabled:cursor-not-allowed"
+          >
+            إضافة
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() =>
+              handleUpdateProduct(editingProduct.id.toString(), formData)
+            }
+            className="disabled:bg-accent rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037] disabled:cursor-not-allowed"
+          >
+            تعديل
+          </button>
+        )}
       </div>
-
-      <div className="col-span-2 space-y-2 text-right">
-        <Label htmlFor="description">الوصف</Label>
-        <Textarea
-          id="description"
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-          placeholder="أدخل وصف المنتج"
-          className="text-right"
-        />
-      </div>
-    </div>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Edit, FolderPlus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -7,53 +7,38 @@ import {
   DialogTrigger,
 } from "../../../ui/Dialog";
 import ProductFormFields from "./ProductFormFields";
-import type {
-  Category,
-  Product,
-} from "../../../types/adminDashboard.interfaces";
-import type { useProductForm } from "./useProductForm";
+import type { Product } from "../../../types/adminDashboard.interfaces";
+import { useProductForm } from "./useProductForm";
 
-type ProductAddDialogProps = {
-  isFormOpen: boolean;
-  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  productForm: ReturnType<typeof useProductForm>;
-  editingProduct: Product | null;
-  setEditingProduct: React.Dispatch<React.SetStateAction<Product | null>>;
-  categories: Category[];
-};
-
-function ProductAddDialog({
-  isFormOpen,
-  setIsFormOpen,
-  productForm,
-  editingProduct,
-  setEditingProduct,
-  categories,
-}: ProductAddDialogProps) {
-  const handleOpenAddDialog = () => {
-    setEditingProduct(null);
-    productForm.resetForm();
-    setIsFormOpen(true);
-  };
-
-  const handleSubmit = () => {
-    if (editingProduct) {
-      productForm.handleEdit(editingProduct);
-    } else {
-      productForm.handleAdd();
-    }
-  };
+function ProductAddDialog({ product }: { product?: Product }) {
+  const { isFormOpen, setIsFormOpen, resetForm, setEditingProduct } =
+    useProductForm();
   return (
     <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
       <DialogOverlay open={isFormOpen} onClose={() => setIsFormOpen(false)} />
       <DialogTrigger>
-        <button
-          onClick={() => handleOpenAddDialog()}
-          className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
-        >
-          <Plus className="mt-[0.2rem] h-5 w-5" />
-          إضافة منتج
-        </button>
+        {!product ? (
+          <button
+            onClick={() => {
+              setIsFormOpen(true);
+              resetForm();
+            }}
+            className="flex items-center gap-1 rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]"
+          >
+            <FolderPlus className="mt-[0.2rem] h-5 w-5" />
+            <span> إضافة منتج</span>
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setEditingProduct(product);
+              setIsFormOpen(true);
+            }}
+            className="bg-background border-primary/30 rounded-md border px-3 py-2 shadow-sm"
+          >
+            <Edit className="h-5 w-5" />
+          </button>
+        )}
       </DialogTrigger>
       <DialogContent
         open={isFormOpen}
@@ -61,28 +46,18 @@ function ProductAddDialog({
         onClose={() => setIsFormOpen(false)}
       >
         <DialogHeader className="items-start">
-          {editingProduct ? "تعديل المنتج" : "إضافة منتج جديد"}
+          {product ? "تعديل المنتج" : "إضافة منتج جديد"}
         </DialogHeader>
-        <ProductFormFields
-          categories={categories}
-          formData={productForm.formData}
-          setFormData={productForm.setFormData}
-          availableSubcategories={categories.flatMap(
-            (category) => category.subcategories,
-          )}
-        />
-        <div className="flex justify-end gap-5 pt-4">
+        <div className="relative">
+          <ProductFormFields editingProduct={product} />
           <button
-            className="hover:bg-secondary rounded-md px-4 py-2 shadow-sm"
-            onClick={() => setIsFormOpen(false)}
+            className="hover:bg-secondary absolute bottom-[0.07rem] left-[6rem] rounded-md px-4 py-2 shadow-sm"
+            onClick={() => {
+              resetForm();
+              setIsFormOpen(false);
+            }}
           >
             إلغاء
-          </button>
-          <button
-            onClick={() => handleSubmit()}
-            className="bg-primary hover:bg-secondary-foreground rounded-md px-3 py-2 text-white"
-          >
-            {editingProduct ? "حفظ التعديلات" : "إضافة منتج"}
           </button>
         </div>
       </DialogContent>

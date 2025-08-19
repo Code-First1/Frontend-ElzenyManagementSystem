@@ -3,7 +3,7 @@ import { Card, CardContent } from "../../../ui/Card";
 import { Layers } from "lucide-react";
 import CategoryDeleteDialog from "./CategoryDeleteDialog";
 import { Badge } from "../../common/Badge";
-import CategoryFormialog from "./CategorFormDialog";
+import CategoryFormDialog from "./CategorFormDialog";
 
 function CategoryList({ categories }: { categories: Category[] }) {
   return (
@@ -22,7 +22,8 @@ function CategoryList({ categories }: { categories: Category[] }) {
                       {category.name}
                     </h3>
                     <div className="flex flex-wrap gap-1">
-                      {category.subCategories.map((subcategory) => (
+                      الفئات الفرعية:
+                      {category?.subCategories?.map((subcategory) => (
                         <Badge
                           key={
                             typeof subcategory === "string"
@@ -30,7 +31,7 @@ function CategoryList({ categories }: { categories: Category[] }) {
                               : subcategory.id
                           }
                           variant="outline"
-                          className="text-xs"
+                          className="text-sm"
                         >
                           {typeof subcategory === "string"
                             ? subcategory
@@ -42,16 +43,7 @@ function CategoryList({ categories }: { categories: Category[] }) {
                 </div>
 
                 <div className="flex space-x-2">
-                  <CategoryFormialog category={category} />
-                  {/* <button
-                    onClick={() => {
-                      setIsFormOpen(true);
-                      setEditingCategory(category);
-                    }}
-                    className="bg-background border-primary/30 rounded-md border px-3 py-2 shadow-sm"
-                  >
-                    <Edit className="h-5 w-5" />
-                  </button> */}
+                  <CategoryFormDialog category={category} />
                   <CategoryDeleteDialog category={category} />
                 </div>
               </div>

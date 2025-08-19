@@ -13,9 +13,11 @@ import {
 import type { Product } from "../../../types/adminDashboard.interfaces";
 import { useState } from "react";
 import { AlertTriangle, Trash2 } from "lucide-react";
+import { useProductForm } from "./useProductForm";
 
 function ProductDeleteDialog({ product }: { product: Product }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { deleteProduct } = useProductForm();
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger>
@@ -42,7 +44,7 @@ function ProductDeleteDialog({ product }: { product: Product }) {
           <AlertDialogAction
             className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
             onClick={() => {
-              // handleDeleteProduct(product.id, product.name)
+              deleteProduct({ id: product.id });
             }}
           >
             حذف

@@ -1,108 +1,131 @@
-import { useState } from "react";
-import type {
-  Category,
-  Product,
+import { useMemo, useState } from "react";
+import {
+  categoryApi,
+  productApi,
+  type CreateProductDto,
+  type GetCategoryResponse,
+  type Product,
 } from "../../../types/adminDashboard.interfaces";
 import toast from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { APIError } from "../../../services/api";
 
-export interface ProductFormData {
-  name: string;
-  category: string;
-  subcategory: string;
-  unit: string;
-  price: number;
-  stock: number;
-  type: "leather" | "box" | "accessory" | "glue" | "";
-  minStock: number;
-  description: string;
-}
-
-export function useProductForm(
-  categories: Category[],
-  onAddProduct: (product: Omit<Product, "id">) => void,
-  onUpdateProduct: (id: string, updates: Partial<Product>) => void,
-) {
+export function useProductForm() {
+  const queryClient = useQueryClient();
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  const [formData, setFormData] = useState<ProductFormData>({
+  const [formData, setFormData] = useState<CreateProductDto>({
     name: "",
-    category: categories[0]?.name || "",
-    subcategory: "",
     unit: "",
-    price: 0,
-    stock: 0,
-    type: "",
-    minStock: 1,
     description: "",
+    pricePerUnit: 0,
+    pictureUrl: "",
+    categoryId: 0,
+    subCategoryId: 0,
   });
 
   const resetForm = () => {
     setFormData({
       name: "",
-      category: categories[0]?.name || "",
-      subcategory: "",
       unit: "",
-      price: 0,
-      stock: 0,
-      minStock: 1,
-      type: "",
       description: "",
+      pricePerUnit: 0,
+      pictureUrl: "",
+      categoryId: 0,
+      subCategoryId: 0,
     });
   };
 
-  const handleAdd = () => {
-    if (!formData.name || formData.price <= 0 || formData.stock < 0) {
+  // Create Product mutation
+  const { mutate: createProduct } = useMutation<
+    { id: number },
+    APIError,
+    CreateProductDto
+  >({
+    mutationFn: productApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      setIsFormOpen(false);
+      toast.success("تم إضافة المنتج بنجاح");
+    },
+  });
+
+  // Add product
+  const handleAddProduct = () => {
+    console.log(formData);
+
+    if (!formData.name || formData.pricePerUnit <= 0) {
       toast.error("يرجى ملء جميع الحقول المطلوبة بقيم صحيحة");
       return;
     }
-
-    onAddProduct(formData);
-    resetForm();
-    setIsAddDialogOpen(false);
-    toast.success("تم إضافة المنتج بنجاح");
+    createProduct(formData);
   };
 
-  const handleEdit = (product: Product) => {
-    setEditingProduct(product);
-    setFormData({
-      name: product.name,
-      category: product.category,
-      subcategory: product.subcategory || "",
-      unit: product.unit,
-      type: product.type,
-      price: product.price,
-      stock: product.stock,
-      minStock: product.minStock,
-      description: product.description,
-    });
-    setIsEditDialogOpen(true);
-  };
+  // Update product mutation
+  const { mutate: updateProduct } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<Product> }) =>
+      productApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      setEditingProduct(null);
+      resetForm();
+      setIsFormOpen(false);
+      toast.success("تم تحديث المنتج بنجاح");
+    },
+    onError: () => {
+      toast.error("حدث خطأ أثناء تحديث المنتج");
+    },
+  });
 
-  const handleUpdate = () => {
-    if (
-      !editingProduct ||
-      !formData.name ||
-      formData.price <= 0 ||
-      formData.stock < 0
-    ) {
-      toast.error("يرجى ملء جميع الحقول المطلوبة بقيم صحيحة");
-      return;
+  // Update product
+  const handleUpdateProduct = (id: string, data: Partial<Product>) => {
+    const originalProduct = editingProduct;
+    if (originalProduct) {
+      const isChanged = Object.entries(data).some(
+        ([key, value]) =>
+          (originalProduct as unknown as Record<string, unknown>)[key] !==
+          value,
+      );
+      if (!isChanged) {
+        toast.error("لم يتم تعديل أي بيانات");
+        return;
+      }
     }
-
-    onUpdateProduct(editingProduct.id, formData);
-    setEditingProduct(null);
-    resetForm();
-    setIsEditDialogOpen(false);
-    toast.success("تم تحديث المنتج بنجاح");
+    updateProduct({ id, data });
   };
 
-  const selectedCategory = categories.find((c) => c.name === formData.category);
-  const availableSubcategories = selectedCategory?.subcategories || [];
+  // Delete SubCategory Mutation
+  const { mutate: deleteProduct } = useMutation<void, null, { id: number }>({
+    mutationFn: (data) => productApi.delete(data.id.toString()),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("تم حذف المنتج بنجاح");
+    },
+  });
+
+  // Fetch categories from backend
+  const { data } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => categoryApi.getAll<GetCategoryResponse>(),
+  });
+
+  const categories = data?.data;
+
+  // Find selected category based on categoryId
+  const selectedCategory = categories?.find(
+    (c) => c.id === formData.categoryId,
+  );
+  const availableSubcategories = useMemo(
+    () => selectedCategory?.subCategories || [],
+    [selectedCategory],
+  );
 
   return {
     editingProduct,
+    setEditingProduct,
     isAddDialogOpen,
     setIsAddDialogOpen,
     isEditDialogOpen,
@@ -110,9 +133,13 @@ export function useProductForm(
     formData,
     setFormData,
     resetForm,
-    handleAdd,
-    handleEdit,
-    handleUpdate,
+    setIsFormOpen,
+    isFormOpen,
+    handleAddProduct,
+    handleUpdateProduct,
+    deleteProduct,
+    selectedCategory,
     availableSubcategories,
+    categories,
   };
 }

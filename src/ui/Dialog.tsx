@@ -96,7 +96,7 @@ const DialogOverlay = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={`fixed inset-0 z-50 min-h-screen bg-black/50 transition-opacity duration-300 ease-in-out ${
+      className={`fixed inset-0 z-50 m-0 min-h-screen bg-black/50 transition-opacity duration-300 ease-in-out ${
         open ? "opacity-100" : "pointer-events-none opacity-0"
       } ${className}`}
       onClick={onClose}

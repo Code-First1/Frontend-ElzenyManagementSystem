@@ -27,7 +27,7 @@ function CategoryFormFields({
       setFormData((prev) => {
         return {
           ...prev,
-          categoryName: editingCategory.name,
+          categoryName: editingCategory?.name,
         };
       });
     }
@@ -101,7 +101,7 @@ function CategoryFormFields({
 
         <div className="mt-2 flex flex-wrap gap-2">
           {editingCategory
-            ? editingCategory.subCategories.map((subcategory) => (
+            ? editingCategory?.subCategories?.map((subcategory) => (
                 <Badge
                   key={subcategory.id}
                   variant="secondary"

@@ -1,11 +1,33 @@
 import { createCrudApi } from "../services/apiCrud";
 
+export const Unit = {
+  Meter: {
+    value: "Meter",
+    label: "متر",
+  },
+  Piece: {
+    value: "Piece",
+    label: "قطعة",
+  },
+  Roll: {
+    value: "Roll",
+    label: "رول",
+  },
+} as const;
+
+export type UnitValue = keyof typeof Unit;
+export type UnitLabel = (typeof Unit)[UnitValue]["label"];
+
+export const unitOptions = Object.values(Unit).map((unit) => ({
+  value: unit.value,
+  label: unit.label,
+}));
 /////////////////////////////////// Products //////////////////////////////
 export interface Product {
   id: number;
   name: string;
   description: string;
-  unit: string;
+  unit: UnitValue | "";
   pricePerUnit: number;
   pictureUrl: ""; // not added yet, need to handle
   categoryName: string;
@@ -18,6 +40,12 @@ export type CreateProductDto = Omit<
   categoryId: number;
   subCategoryId: number;
 };
+export interface GetProductResponse {
+  data: Product[];
+  pageIndex: number;
+  pageSize: number;
+  totalCount: number;
+}
 
 /////////////////////////////////// Categories //////////////////////////////
 export interface Category {

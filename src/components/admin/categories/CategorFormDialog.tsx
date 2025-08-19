@@ -10,7 +10,7 @@ import CategoryFormFields from "./CategoryFormFields";
 import { useCategoryForm } from "./useCategoryForm";
 import type { Category } from "../../../types/adminDashboard.interfaces";
 
-function CategoryFormialog({ category }: { category?: Category }) {
+function CategoryFormDialog({ category }: { category?: Category }) {
   const { isFormOpen, setIsFormOpen, resetForm, setEditingCategory } =
     useCategoryForm();
   return (
@@ -66,4 +66,4 @@ function CategoryFormialog({ category }: { category?: Category }) {
   );
 }
 
-export default CategoryFormialog;
+export default CategoryFormDialog;
