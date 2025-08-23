@@ -21,12 +21,12 @@ function AdminUsers() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-[#5d4037]">
+        <h2 className="text-secondary-foreground text-xl font-semibold">
           إدارة المستخدمين
         </h2>
         <button
           onClick={() => setIsUserRegDialogOpen(true)}
-          className="flex items-center gap-1 rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]"
+          className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
         >
           <UserPlus className="mt-1 h-4 w-4" />
           <span>تسجيل مستخدم جديد</span>
@@ -39,16 +39,16 @@ function AdminUsers() {
             <Loader />
           </div>
         ) : users?.length === 0 ? (
-          <Card className="border-[#8b4513]/20">
+          <Card className="border-primary/20">
             <CardContent className="flex flex-col items-center p-8">
-              <Users className="mx-auto mb-4 h-12 w-12 text-[#8b4513]/50" />
-              <h3 className="mb-2 text-lg font-semibold text-[#5d4037]">
+              <Users className="text-primary/50 mx-auto mb-4 h-12 w-12" />
+              <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
                 لا يوجد مستخدمين مسجلين
               </h3>
               <p className="mb-4 text-[#6d4c41]">قم بإضافة أول مستخدم للنظام</p>
               <button
                 onClick={() => setIsUserRegDialogOpen(true)}
-                className="flex items-center gap-1 rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]"
+                className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
               >
                 <UserPlus className="mt-1 h-4 w-4" />
                 <span>إضافة مستخدم</span>
@@ -59,7 +59,7 @@ function AdminUsers() {
           users?.map((user, i) => (
             <Card
               key={i}
-              className="group rounded-xl border border-[#8b4513]/15 bg-white transition-all duration-200 hover:border-[#8b4513]/25 hover:shadow-lg"
+              className="group border-primary/15 hover:border-primary/25 rounded-xl border bg-white transition-all duration-200 hover:shadow-lg"
             >
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
@@ -67,28 +67,28 @@ function AdminUsers() {
                   <div
                     className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl shadow-sm transition-colors duration-200 ${
                       user.role === "Admin"
-                        ? "border border-[#8b4513]/30 bg-[#8b4513]/10"
+                        ? "border-primary/30 bg-primary/10 border"
                         : "bg-[#f5e6d3]/90"
                     }`}
                   >
                     {user.role === "Admin" ? (
-                      <Shield className="h-7 w-7 text-[#8b4513]" />
+                      <Shield className="text-primary h-7 w-7" />
                     ) : (
-                      <User className="h-7 w-7 text-[#5d4037]" />
+                      <User className="text-secondary-foreground h-7 w-7" />
                     )}
                   </div>
 
                   {/* User Details */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="truncate text-lg font-semibold text-[#5d4037]">
+                      <h3 className="text-secondary-foreground truncate text-lg font-semibold">
                         {user.displayName}
                       </h3>
                       <Badge
                         className={`capitalize ${
                           user.role === "Admin"
-                            ? "bg-[#8b4513] text-white hover:bg-[#8b4513]/90"
-                            : "bg-[#d7b899] text-[#5d4037]"
+                            ? "bg-primary hover:bg-primary/90 text-white"
+                            : "text-secondary-foreground bg-[#d7b899]"
                         }`}
                       >
                         {user.role === "Admin" ? "مدير" : "بائع"}

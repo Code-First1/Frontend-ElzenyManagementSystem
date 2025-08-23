@@ -82,7 +82,7 @@ function AdminCategories() {
           placeholder="البحث في الفئات..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="h-16 border-[#8b4513]/30 py-4 pr-14 text-right text-lg focus:border-[#8b4513] focus:ring-[#8b4513]"
+          className="border-primary/30 focus:border-primary focus:ring-primary h-16 py-4 pr-14 text-right text-lg"
         />
       </div>
 

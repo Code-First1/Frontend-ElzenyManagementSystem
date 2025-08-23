@@ -176,7 +176,7 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
           <button
             type="button"
             onClick={handleAddProduct}
-            className="disabled:bg-accent rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037] disabled:cursor-not-allowed"
+            className="disabled:bg-accent bg-primary hover:bg-secondary-foreground rounded-md px-4 py-2 text-white"
           >
             إضافة
           </button>
@@ -186,7 +186,7 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
             onClick={() =>
               handleUpdateProduct(editingProduct.id.toString(), formData)
             }
-            className="disabled:bg-accent rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037] disabled:cursor-not-allowed"
+            className="disabled:bg-accent bg-primary hover:bg-secondary-foreground rounded-md px-4 py-2 text-white"
           >
             تعديل
           </button>

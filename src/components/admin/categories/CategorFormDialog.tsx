@@ -23,7 +23,7 @@ function CategoryFormDialog({ category }: { category?: Category }) {
               setIsFormOpen(true);
               resetForm();
             }}
-            className="flex items-center gap-1 rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]"
+            className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
           >
             <FolderPlus className="mt-[0.2rem] h-5 w-5" />
             <span>إضافة فئة</span>

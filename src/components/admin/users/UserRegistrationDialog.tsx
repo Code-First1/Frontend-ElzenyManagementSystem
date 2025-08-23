@@ -144,7 +144,7 @@ export function UserRegistrationDialog({
       >
         <DialogHeader className="my-3 text-right">
           <DialogTitle className="flex items-center space-x-2">
-            <UserPlus className="h-5 w-5 text-[#8b4513]" />
+            <UserPlus className="text-primary h-5 w-5" />
             <span>تسجيل مستخدم جديد</span>
           </DialogTitle>
         </DialogHeader>
@@ -152,7 +152,10 @@ export function UserRegistrationDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <div className="space-y-2">
-            <Label htmlFor="displayName" className="text-right text-[#5d4037]">
+            <Label
+              htmlFor="displayName"
+              className="text-secondary-foreground text-right"
+            >
               الاسم الكامل *
             </Label>
             <Input
@@ -165,14 +168,17 @@ export function UserRegistrationDialog({
                   displayName: e.target.value,
                 }))
               }
-              className="border-[#8b4513]/30 text-right"
+              className="border-primary/30 text-right"
               placeholder="أدخل الاسم الكامل"
             />
           </div>
 
           {/* userName */}
           <div className="space-y-2">
-            <Label htmlFor="userName" className="text-right text-[#5d4037]">
+            <Label
+              htmlFor="userName"
+              className="text-secondary-foreground text-right"
+            >
               اسم المستخدم *
             </Label>
             <Input
@@ -182,14 +188,14 @@ export function UserRegistrationDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, userName: e.target.value }))
               }
-              className="border-[#8b4513]/30 text-right"
+              className="border-primary/30 text-right"
               placeholder="أدخل اسم المستخدم"
             />
           </div>
 
           {/* Email (Optional) */}
           {/* <div className="space-y-2">
-            <Label htmlFor="email" className="text-right text-[#5d4037]">
+            <Label htmlFor="email" className="text-right text-secondary-foreground">
               البريد الإلكتروني (اختياري)
             </Label>
             <Input
@@ -199,7 +205,7 @@ export function UserRegistrationDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, email: e.target.value }))
               }
-              className="border-[#8b4513]/30 text-right"
+              className="border-primary/30 text-right"
               placeholder="أدخل البريد الإلكتروني"
              
             />
@@ -207,7 +213,9 @@ export function UserRegistrationDialog({
 
           {/* Role */}
           <div className="space-y-2">
-            <Label className="text-right text-[#5d4037]">نوع الحساب *</Label>
+            <Label className="text-secondary-foreground text-right">
+              نوع الحساب *
+            </Label>
             <Select
               value={formData.role}
               onValueChange={(value: string) =>
@@ -239,7 +247,10 @@ export function UserRegistrationDialog({
 
           {/* Password */}
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-right text-[#5d4037]">
+            <Label
+              htmlFor="password"
+              className="text-secondary-foreground text-right"
+            >
               كلمة المرور *
             </Label>
             <div className="relative">
@@ -250,13 +261,13 @@ export function UserRegistrationDialog({
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, password: e.target.value }))
                 }
-                className="border-[#8b4513]/30 pl-10 text-right"
+                className="border-primary/30 pl-10 text-right"
                 placeholder="أدخل كلمة المرور"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-1/2 left-3 -translate-y-1/2 transform text-[#6d4c41] hover:text-[#5d4037]"
+                className="hover:text-secondary-foreground absolute top-1/2 left-3 -translate-y-1/2 transform text-[#6d4c41]"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -271,7 +282,7 @@ export function UserRegistrationDialog({
           <div className="space-y-2">
             <Label
               htmlFor="confirmPassword"
-              className="text-right text-[#5d4037]"
+              className="text-secondary-foreground text-right"
             >
               تأكيد كلمة المرور *
             </Label>
@@ -286,13 +297,13 @@ export function UserRegistrationDialog({
                     confirmPassword: e.target.value,
                   }))
                 }
-                className="border-[#8b4513]/30 pl-10 text-right"
+                className="border-primary/30 pl-10 text-right"
                 placeholder="أعد إدخال كلمة المرور"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute top-1/2 left-3 -translate-y-1/2 transform text-[#6d4c41] hover:text-[#5d4037]"
+                className="hover:text-secondary-foreground absolute top-1/2 left-3 -translate-y-1/2 transform text-[#6d4c41]"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -309,8 +320,8 @@ export function UserRegistrationDialog({
               variant={formData.role === "admin" ? "default" : "secondary"}
               className={
                 formData.role === "admin"
-                  ? "bg-[#8b4513] text-white"
-                  : "bg-[#f5e6d3] text-[#5d4037]"
+                  ? "bg-primary text-white"
+                  : "text-secondary-foreground bg-[#f5e6d3]"
               }
             >
               {formData.role === "admin" ? (
@@ -332,14 +343,14 @@ export function UserRegistrationDialog({
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 rounded-md border-[#8b4513]/30 px-4 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+              className="border-primary/30 text-secondary-foreground flex-1 rounded-md px-4 py-2 hover:bg-[#f5f5dc]"
             >
               إلغاء
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]"
+              className="bg-primary hover:bg-secondary-foreground flex-1 rounded-md px-4 py-2 text-white"
             >
               {isSubmitting ? "جاري الإنشاء..." : "إنشاء حساب"}
             </button>

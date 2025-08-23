@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import Home from "../pages/Home";
 import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoute from "./ProtectedRoute";
+import Products from "../pages/Products";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute allowedRoles={["admin"]}>
         <AdminDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/products",
+    element: (
+      <ProtectedRoute allowedRoles={["admin", "seller"]}>
+        <Products />
       </ProtectedRoute>
     ),
   },

@@ -1,6 +1,9 @@
 import { Card, CardContent } from "../../../ui/Card";
 import ProductDeleteDialog from "./ProductDeleteDialog";
-import type { Product } from "../../../types/adminDashboard.interfaces";
+import {
+  unitOptions,
+  type Product,
+} from "../../../types/adminDashboard.interfaces";
 import ProductAddDialog from "./ProductAddDialog";
 import { Badge } from "../../common/Badge";
 
@@ -37,7 +40,8 @@ function ProductList({ products }: { products: Product[] }) {
           <div className="flex items-center justify-center space-x-4">
             <div className="flex flex-col items-center">
               <p className="text-muted-foreground text-sm">
-                السعر لكل {product.unit}
+                السعر لكل{" "}
+                {unitOptions.find((unit) => unit.value === product.unit)?.label}
               </p>
               <p className="text-primary text-lg font-bold">
                 ${product.pricePerUnit.toFixed(2)}
