@@ -1,14 +1,7 @@
-import { Filter, Package, Search } from "lucide-react";
+import { Package } from "lucide-react";
 import HomeLayout from "../layouts/HomeLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
-import { Input } from "../components/common/Input";
 import Loader from "../components/common/Loader";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "../components/common/Select";
 import { useMemo, useState } from "react";
 import { Badge } from "../components/common/Badge";
 import { useProductForm } from "../components/admin/products/useProductForm";
@@ -26,19 +19,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/Pagination";
+import Filters from "../components/common/Filters";
 
 function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
+  const [page, setPage] = useState(1);
   const { categories } = useProductForm();
 
-  const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery({
     queryKey: [
       "products",
       {
-        page,
+        pageIndex: page,
+        pageSize: 3,
         search: searchTerm,
         categoryId: selectedCategory,
         subcategoryId: selectedSubcategory,
@@ -71,9 +66,22 @@ function Products() {
     return category?.subCategories || [];
   }, [selectedCategory, categories]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+  const handleFilterChange = (filterName: string, value: string) => {
     setPage(1);
+    switch (filterName) {
+      case "searchTerm":
+        setSearchTerm(value);
+        break;
+      case "selectedCategory":
+        setSelectedCategory(value);
+        setSelectedSubcategory("all");
+        break;
+      case "selectedSubcategory":
+        setSelectedSubcategory(value);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleResetFilters = () => {
@@ -82,6 +90,8 @@ function Products() {
     setSelectedSubcategory("all");
     setPage(1);
   };
+
+  const filters = { searchTerm, selectedCategory, selectedSubcategory };
 
   return (
     <HomeLayout>
@@ -101,108 +111,15 @@ function Products() {
         </button>
       </div>
 
-      {/* Filters */}
-      <Card className="border-primary/20">
-        <CardHeader>
-          <CardTitle className="text-secondary-foreground flex items-center">
-            <Filter className="ml-2 h-5 w-5" />
-            تصفية المنتجات
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform text-[#6d4c41]" />
-              <Input
-                placeholder="البحث في المنتجات..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="border-primary/30 pr-10 text-right"
-              />
-            </div>
-
-            {/* Category Filter */}
-            <Select
-              value={selectedCategory}
-              onValueChange={(value) => {
-                setSelectedCategory(value);
-                // setSelectedSubcategory("all");
-              }}
-            >
-              <SelectTrigger>
-                {categories?.find(
-                  (category) => category.id.toString() === selectedCategory,
-                )?.name || "جميع الفئات"}
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">جميع الفئات</SelectItem>
-                {categories?.map((category) => (
-                  <SelectItem key={category.id} value={category.id.toString()}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Subcategory Filter */}
-            <Select
-              value={selectedSubcategory}
-              onValueChange={setSelectedSubcategory}
-            >
-              <SelectTrigger
-                className="border-primary/30"
-                disabled={
-                  selectedCategory === "all" ||
-                  availableSubcategories.length === 0
-                }
-              >
-                {availableSubcategories?.find(
-                  (category) => category.id.toString() === selectedSubcategory,
-                )?.name || "جميع الفئات الفرعية"}
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">جميع الفئات الفرعية</SelectItem>
-                {availableSubcategories.map((subcategory) => (
-                  <SelectItem
-                    key={subcategory.id}
-                    value={subcategory.id.toString()}
-                  >
-                    {subcategory.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* TODO: need to handle from backend */}
-            {/* Stock Filter */}
-            {/* <Select
-              value={stockFilter}
-              onValueChange={(value: typeof stockFilter) =>
-                setStockFilter(value)
-              }
-            >
-              <SelectTrigger className="border-primary/30">
-                <SelectValue>حالة المخزون</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">جميع المنتجات</SelectItem>
-                <SelectItem value="in-stock">متوفر</SelectItem>
-                <SelectItem value="low-stock">منخفض المخزون</SelectItem>
-                <SelectItem value="out-of-stock">نفد المخزون</SelectItem>
-              </SelectContent>
-            </Select> */}
-
-            {/* Reset Filters */}
-            <button
-              onClick={handleResetFilters}
-              className="bg-background border-primary/30 text-secondary-foreground rounded-md border shadow-sm hover:bg-[#f5f5dc]"
-            >
-              مسح التصفية
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Filters and Search */}
+      <Filters
+        forSection="products"
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onReset={handleResetFilters}
+        categories={categories}
+        availableSubcategories={availableSubcategories}
+      />
 
       {/* Results Summary */}
       <div className="flex items-center justify-between">
