@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Logo from "../components/common/Logo";
-import { Store } from "lucide-react";
+import { Eye, EyeOff, Store } from "lucide-react";
 import { useLogin } from "../components/auth/useAuth";
 import { Input } from "../components/common/Input";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { mutate: login, isPending } = useLogin();
 
@@ -48,56 +49,29 @@ function Login() {
               />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="relative flex flex-col gap-2">
               <label htmlFor="password">كلمة المرور</label>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="أدخل كلمة المرور"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="py-5"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="hover:text-secondary-foreground absolute bottom-1 left-3 -translate-y-1/2 transform text-[#6d4c41]"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
             </div>
-
-            {/* TODO: hide for now */}
-            {/* <div className="flex flex-col gap-2">
-              <label>اختر الدور</label>
-              <div className="grid grid-cols-2 gap-10">
-                <div className="flex items-center space-x-2">
-                  <div
-                    className={`h-2 w-2 rounded-full ${
-                      role === "seller" ? "bg-primary" : "bg-white"
-                    } `}
-                  ></div>
-                  <label
-                    htmlFor="seller"
-                    className="border-primary/20 flex cursor-pointer items-center space-x-3 rounded-lg border px-4 py-3 transition-colors hover:bg-[#f5f5dc]/50"
-                    onClick={() => setRole("seller")}
-                  >
-                    <User className="text-primary h-4 w-4" />
-                    <span>بائع</span>
-                  </label>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <div
-                    className={`h-2 w-2 rounded-full ${
-                      role === "admin" ? "bg-primary" : "bg-white"
-                    } `}
-                  ></div>
-                  <label
-                    htmlFor="admin"
-                    className="border-primary/20 flex cursor-pointer items-center space-x-3 rounded-lg border px-4 py-3 transition-colors hover:bg-[#f5f5dc]/50"
-                    onClick={() => setRole("admin")}
-                  >
-                    <Shield className="text-primary h-4 w-4" />
-                    <span>مدير</span>
-                  </label>
-                </div>
-              </div>
-            </div> */}
 
             <button
               type="submit"
