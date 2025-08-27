@@ -7,6 +7,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Store,
   User,
   X,
 } from "lucide-react";
@@ -52,6 +53,7 @@ function Navbar() {
             <NavbarLink to="/products" icon={Package} text="المنتجات" />
             <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
             <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
+            <NavbarLink to="/shop" icon={Store} text="المحل" />
 
             {currentUser?.role === "Admin" && (
               <NavbarLink
@@ -79,21 +81,6 @@ function Navbar() {
               <LogOut className="h-5 w-5" />
               <p>تسجيل الخروج</p>
             </button>
-            {/* <button
-              className="bg-primary hover:bg-secondary-foreground rounded-full p-3 text-white"
-              onClick={() =>
-                setCurrentUser((prevUser) =>
-                  prevUser
-                    ? {
-                        ...prevUser,
-                        role: prevUser.role === "Admin" ? "Seller" : "Admin",
-                      }
-                    : prevUser,
-                )
-              }
-            >
-              <ArrowLeftRight className="h-5 w-5" />
-            </button> */}
           </div>
         </div>
 
@@ -109,22 +96,6 @@ function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* <button
-              className="bg-primary hover:bg-secondary-foreground rounded-full p-2 text-white"
-              onClick={() =>
-                setCurrentUser((prevUser) =>
-                  prevUser
-                    ? {
-                        ...prevUser,
-                        role: prevUser.role === "Admin" ? "Seller" : "Admin",
-                      }
-                    : prevUser,
-                )
-              }
-            >
-              <ArrowLeftRight className="h-5 w-5" />
-            </button> */}
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-primary p-2"

@@ -28,7 +28,7 @@ type FiltersProps = {
   onReset: () => void;
   categories: Category[] | undefined;
   availableSubcategories: SubCategory[];
-  forSection: "products" | "inventory";
+  forSection: "products" | "inventory" | "shop";
 };
 
 function Filters({

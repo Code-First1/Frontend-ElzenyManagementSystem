@@ -6,6 +6,7 @@ import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import Products from "../pages/Products";
 import Inventory from "../pages/Inventory";
+import Shop from "../pages/Shop";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute allowedRoles={["admin", "seller"]}>
         <Inventory />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/shop",
+    element: (
+      <ProtectedRoute allowedRoles={["admin", "seller"]}>
+        <Shop />
       </ProtectedRoute>
     ),
   },

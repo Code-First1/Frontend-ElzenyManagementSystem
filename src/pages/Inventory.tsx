@@ -6,7 +6,7 @@ import Filters from "../components/common/Filters";
 import { useMemo, useState } from "react";
 import { useProductForm } from "../components/admin/products/useProductForm";
 import { Badge } from "../components/common/Badge";
-import StockStatusDialog from "../components/inventory/StockStatusDialog";
+import StockStatusDialog from "../components/inventory & shop/StockStatusDialog";
 import { useQuery } from "@tanstack/react-query";
 import {
   InventoryProductApi,
@@ -37,6 +37,23 @@ function Inventory() {
   const [showStockModal, setShowStockModal] = useState<string | null>(null);
   const sortParam = `${sortBy}${sortOrder}`;
   const { categories } = useProductForm();
+  const filters = {
+    searchTerm,
+    selectedCategory,
+    selectedSubcategory,
+    sortBy,
+    sortOrder,
+    stockFilter,
+  };
+  const availableSubcategories = useMemo(() => {
+    if (selectedCategory === "all" || !categories) {
+      return [];
+    }
+    const category = categories.find(
+      (c) => c.id.toString() === selectedCategory,
+    );
+    return category?.subCategories || [];
+  }, [selectedCategory, categories]);
 
   // Convert stockFilter to backend number format
   const getStockFilterValue = (
@@ -88,16 +105,6 @@ function Inventory() {
   const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / (data?.pageSize || 10));
 
-  const availableSubcategories = useMemo(() => {
-    if (selectedCategory === "all" || !categories) {
-      return [];
-    }
-    const category = categories.find(
-      (c) => c.id.toString() === selectedCategory,
-    );
-    return category?.subCategories || [];
-  }, [selectedCategory, categories]);
-
   const handleFilterChange = (filterName: string, value: string) => {
     setPage(1);
 
@@ -134,15 +141,6 @@ function Inventory() {
     setSortOrder("asc");
     setStockFilter("all");
     setPage(1);
-  };
-
-  const filters = {
-    searchTerm,
-    selectedCategory,
-    selectedSubcategory,
-    sortBy,
-    sortOrder,
-    stockFilter,
   };
 
   const getStockStatus = (product: InventoryProduct) => {
@@ -426,7 +424,7 @@ function Inventory() {
           )}
 
           {/* Server-side Pagination */}
-          {totalCount > 0 && totalPages > 1 && (
+          {totalPages > 1 && (
             <div className="mt-6 flex justify-center">
               <Pagination>
                 <PaginationContent>
