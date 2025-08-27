@@ -28,6 +28,7 @@ import {
 } from "../ui/Pagination";
 import Loader from "../components/common/Loader";
 import ProductDetailsDialog from "../components/inventory & shop/ProductDetailsDialog";
+import { SHOP_PAGE_SIZE } from "../constants";
 
 function Shop() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -96,7 +97,7 @@ function Shop() {
       "shopProducts",
       {
         pageIndex: page,
-        pageSize: 3,
+        pageSize: SHOP_PAGE_SIZE,
         search: searchTerm,
         categoryId: selectedCategory,
         subcategoryId: selectedSubcategory,
@@ -106,7 +107,7 @@ function Shop() {
       // Create sort parameter in the format: namedesc, nameasc, pricedesc, priceasc
       return shopProductApi.getAll<GetAllShopProductsResponse>({
         pageIndex: page,
-        pageSize: 3,
+        pageSize: SHOP_PAGE_SIZE,
         search: searchTerm || undefined,
         categoryId:
           selectedCategory === "all" ? undefined : Number(selectedCategory),
@@ -117,10 +118,7 @@ function Shop() {
       });
     },
   });
-  const shopProducts = useMemo(
-    () => data?.data.filter((shopProduct) => shopProduct.quantity > 0) || [],
-    [data],
-  );
+  const shopProducts = useMemo(() => data?.data || [], [data]);
   const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / (data?.pageSize || 10));
 

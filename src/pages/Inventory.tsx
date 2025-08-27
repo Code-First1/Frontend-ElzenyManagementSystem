@@ -23,6 +23,7 @@ import {
   PaginationPrevious,
 } from "../ui/Pagination";
 import Loader from "../components/common/Loader";
+import { INVENTORY_PAGE_SIZE } from "../constants";
 
 function Inventory() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -76,7 +77,7 @@ function Inventory() {
       "inventoryProducts",
       {
         pageIndex: page,
-        pageSize: 1,
+        pageSize: INVENTORY_PAGE_SIZE,
         search: searchTerm,
         categoryId: selectedCategory,
         subcategoryId: selectedSubcategory,
@@ -88,7 +89,7 @@ function Inventory() {
       // Create sort parameter in the format: namedesc, nameasc, pricedesc, priceasc
       return InventoryProductApi.getAll<GetAllInventoryProductsResponse>({
         pageIndex: page,
-        pageSize: 1,
+        pageSize: INVENTORY_PAGE_SIZE,
         search: searchTerm || undefined,
         categoryId:
           selectedCategory === "all" ? undefined : Number(selectedCategory),

@@ -17,6 +17,7 @@ import {
 import ProductAddDialog from "./ProductAddDialog";
 import ProductList from "./ProductList";
 import { useQuery } from "@tanstack/react-query";
+import { DASHBOARD_PRODUCTS_PAGE_SIZE } from "../../../constants";
 
 function AdminProducts() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,7 +28,7 @@ function AdminProducts() {
     queryFn: () =>
       productApi.getAll<GetProductResponse>({
         pageIndex: page,
-        pageSize: 4,
+        pageSize: DASHBOARD_PRODUCTS_PAGE_SIZE,
         search: searchTerm || undefined,
       }),
   });

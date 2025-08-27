@@ -28,7 +28,7 @@ type FiltersProps = {
   onReset: () => void;
   categories: Category[] | undefined;
   availableSubcategories: SubCategory[];
-  forSection: "products" | "inventory" | "shop";
+  forSection: "products" | "inventory" | "shop" | "selling";
 };
 
 function Filters({
@@ -112,28 +112,31 @@ function Filters({
           </Select>
 
           {/* Stock Filter */}
-          <Select
-            value={filters.stockFilter || "all"}
-            onValueChange={(value) => onFilterChange("stockFilter", value)}
-          >
-            <SelectTrigger className="border-primary/30">
-              <SelectValue>
-                {filters.stockFilter === "good"
-                  ? "متوفر"
-                  : filters.stockFilter === "critical"
-                    ? "منخفض المخزون"
-                    : filters.stockFilter === "out-of-stock"
-                      ? "نفد المخزون"
-                      : "حالة المخزون"}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">جميع المنتجات</SelectItem>
-              <SelectItem value="good">متوفر</SelectItem>
-              <SelectItem value="critical">منخفض المخزون</SelectItem>
-              <SelectItem value="out-of-stock">نفد المخزون</SelectItem>
-            </SelectContent>
-          </Select>
+          {forSection === "products" ||
+            (forSection === "shop" && (
+              <Select
+                value={filters.stockFilter || "all"}
+                onValueChange={(value) => onFilterChange("stockFilter", value)}
+              >
+                <SelectTrigger className="border-primary/30">
+                  <SelectValue>
+                    {filters.stockFilter === "good"
+                      ? "متوفر"
+                      : filters.stockFilter === "critical"
+                        ? "منخفض المخزون"
+                        : filters.stockFilter === "out-of-stock"
+                          ? "نفد المخزون"
+                          : "حالة المخزون"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">جميع المنتجات</SelectItem>
+                  <SelectItem value="good">متوفر</SelectItem>
+                  <SelectItem value="critical">منخفض المخزون</SelectItem>
+                  <SelectItem value="out-of-stock">نفد المخزون</SelectItem>
+                </SelectContent>
+              </Select>
+            ))}
 
           {forSection === "inventory" && (
             <>

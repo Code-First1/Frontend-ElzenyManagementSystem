@@ -19,6 +19,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import CategoryFormDialog from "./CategorFormDialog";
+import { DASHBOARD_CATEGORIES_PAGE_SIZE } from "../../../constants";
 
 function AdminCategories() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,7 +30,7 @@ function AdminCategories() {
     queryFn: () =>
       categoryApi.getAll<GetCategoryResponse>({
         pageIndex: page,
-        pageSize: 4,
+        pageSize: DASHBOARD_CATEGORIES_PAGE_SIZE,
         search: searchTerm || undefined,
       }),
   });
