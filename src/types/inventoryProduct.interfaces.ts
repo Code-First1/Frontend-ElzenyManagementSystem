@@ -23,6 +23,7 @@ export interface GetInventoryCounts {
   goodProductsCount: number;
   criticalProductsCount: number;
   emptyProductsCount: number;
+  totalProductsCount: number;
 }
 /////////////////////////////////// Create API instances //////////////////////////////
 export const InventoryProductApi = createCrudApi<

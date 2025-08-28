@@ -196,6 +196,7 @@ function Inventory() {
   const goodCount = countsData?.goodProductsCount;
   const criticalCount = countsData?.criticalProductsCount;
   const emptyCount = countsData?.emptyProductsCount;
+  const allItemsCount = countsData?.totalProductsCount;
 
   const { data: goodProducts } = useQuery({
     queryKey: ["inventoryGoodProducts"],
@@ -230,8 +231,7 @@ function Inventory() {
           <CardContent className="p-4 text-center">
             <Package className="mx-auto mb-2 h-8 w-8 text-[#8b4513]" />
             <div className="text-2xl font-bold text-[#5d4037]">
-              {/* TODO: handle it from backend count api */}
-              {data?.totalCount}
+              {allItemsCount}
             </div>
             <p className="text-sm text-[#6d4c41]">إجمالي المنتجات</p>
           </CardContent>
