@@ -20,6 +20,7 @@ import {
   PaginationPrevious,
 } from "../ui/Pagination";
 import Filters from "../components/common/Filters";
+import { useNavigate } from "react-router-dom";
 
 function Products() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,7 +28,7 @@ function Products() {
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
   const [page, setPage] = useState(1);
   const { categories } = useProductForm();
-
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: [
       "products",
@@ -104,7 +105,7 @@ function Products() {
           <p className="mt-1 text-[#6d4c41]">عرض وتصفح جميع المنتجات المتاحة</p>
         </div>
         <button
-          onClick={() => {}}
+          onClick={() => navigate("/selling")}
           className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
         >
           بيع منتج
@@ -278,7 +279,7 @@ function Products() {
 
                     {/* {product.stock > 0 && ( */}
                     <button
-                      onClick={() => {}}
+                      onClick={() => navigate("/selling")}
                       className="bg-primary hover:bg-secondary-foreground rounded-md px-4 py-2 text-white"
                     >
                       بيع الآن

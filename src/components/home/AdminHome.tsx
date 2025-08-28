@@ -53,21 +53,33 @@ function AdminHome() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <button className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-green-600 text-white hover:bg-green-700">
+            <button
+              className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-green-600 text-white hover:bg-green-700"
+              onClick={() => navigate("/selling")}
+            >
               <ShoppingCart className="h-6 w-6" />
               <span>بيع منتج</span>
             </button>
 
-            <button className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
+            <button
+              className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+              onClick={() => navigate("/products")}
+            >
               <Package className="h-6 w-6" />
               <span>عرض المنتجات</span>
             </button>
 
-            <button className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-orange-600 text-white hover:bg-orange-700">
+            <button
+              className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-orange-600 text-white hover:bg-orange-700"
+              onClick={() => navigate("/inventory")}
+            >
               <Archive className="h-6 w-6" />
               <span>إدارة المخزون</span>
             </button>
-            <button className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-purple-600 text-white hover:bg-purple-700">
+            <button
+              className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-purple-600 text-white hover:bg-purple-700"
+              onClick={() => navigate("/adminDashboard")}
+            >
               <Plus className="h-6 w-6" />
               <span>إضافة منتج</span>
             </button>

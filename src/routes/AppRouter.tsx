@@ -8,6 +8,7 @@ import Products from "../pages/Products";
 import Inventory from "../pages/Inventory";
 import Shop from "../pages/Shop";
 import Selling from "../pages/Selling";
+import Reports from "../pages/Reports";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute allowedRoles={["admin", "seller"]}>
         <Selling />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/reports",
+    element: (
+      <ProtectedRoute allowedRoles={["admin", "seller"]}>
+        <Reports />
       </ProtectedRoute>
     ),
   },
