@@ -59,11 +59,11 @@ function StockStatusDialog({
   const filteredProducts = modalProducts.filter((product) => {
     if (showStockModal === "good") {
       return product.quantity > product.minimumQuantity;
-    } else if (showStockModal === "low") {
+    } else if (showStockModal === "critical") {
       return (
         product.quantity === product.minimumQuantity && product.quantity > 0
       );
-    } else if (showStockModal === "critical") {
+    } else if (showStockModal === "empty") {
       return product.quantity === 0;
     }
 

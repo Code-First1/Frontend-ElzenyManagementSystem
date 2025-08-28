@@ -9,8 +9,13 @@ import { Badge } from "../components/common/Badge";
 import StockStatusDialog from "../components/inventory & shop/StockStatusDialog";
 import { useQuery } from "@tanstack/react-query";
 import {
+  InventoryDashboardCountsApi,
+  InventoryDashboardCriticalProductsApi,
+  InventoryDashboardEmptyProductsApi,
+  InventoryDashboardGoodProductsApi,
   InventoryProductApi,
   type GetAllInventoryProductsResponse,
+  type GetInventoryCounts,
   type InventoryProduct,
 } from "../types/inventoryProduct.interfaces";
 import { unitOptions } from "../types/adminDashboard.interfaces";
@@ -182,6 +187,35 @@ function Inventory() {
     }
   };
 
+  const { data: countsData } = useQuery({
+    queryKey: ["inventoryCounts"],
+    queryFn: () => {
+      return InventoryDashboardCountsApi.getAll<GetInventoryCounts>();
+    },
+  });
+  const goodCount = countsData?.goodProductsCount;
+  const criticalCount = countsData?.criticalProductsCount;
+  const emptyCount = countsData?.emptyProductsCount;
+
+  const { data: goodProducts } = useQuery({
+    queryKey: ["inventoryGoodProducts"],
+    queryFn: () => {
+      return InventoryDashboardGoodProductsApi.getAll();
+    },
+  });
+  const { data: criticalProducts } = useQuery({
+    queryKey: ["inventoryCriticalProducts"],
+    queryFn: () => {
+      return InventoryDashboardCriticalProductsApi.getAll();
+    },
+  });
+  const { data: emptyProducts } = useQuery({
+    queryKey: ["inventoryEmptyProducts"],
+    queryFn: () => {
+      return InventoryDashboardEmptyProductsApi.getAll();
+    },
+  });
+
   return (
     <HomeLayout>
       {/* Header */}
@@ -196,6 +230,7 @@ function Inventory() {
           <CardContent className="p-4 text-center">
             <Package className="mx-auto mb-2 h-8 w-8 text-[#8b4513]" />
             <div className="text-2xl font-bold text-[#5d4037]">
+              {/* TODO: handle it from backend count api */}
               {data?.totalCount}
             </div>
             <p className="text-sm text-[#6d4c41]">إجمالي المنتجات</p>
@@ -208,34 +243,19 @@ function Inventory() {
         >
           <CardContent className="p-4 text-center">
             <CheckCircle className="mx-auto mb-2 h-8 w-8 text-green-600" />
-            <div className="text-2xl font-bold text-green-700">
-              {
-                inventoryProducts.filter(
-                  (inventoryProduct) =>
-                    inventoryProduct.quantity >
-                    inventoryProduct.minimumQuantity,
-                ).length
-              }
-            </div>
+            <div className="text-2xl font-bold text-green-700">{goodCount}</div>
             <p className="text-sm text-green-600">مخزون جيد</p>
           </CardContent>
         </Card>
 
         <Card
           className="cursor-pointer border-yellow-200 transition-shadow hover:shadow-md"
-          onClick={() => setShowStockModal("low")}
+          onClick={() => setShowStockModal("critical")}
         >
           <CardContent className="p-4 text-center">
             <AlertCircle className="mx-auto mb-2 h-8 w-8 text-yellow-600" />
             <div className="text-2xl font-bold text-yellow-700">
-              {
-                inventoryProducts.filter(
-                  (inventoryProduct) =>
-                    inventoryProduct.quantity ===
-                      inventoryProduct.minimumQuantity &&
-                    inventoryProduct.quantity > 0,
-                ).length
-              }
+              {criticalCount}
             </div>
             <p className="text-sm text-yellow-600">مخزون منخفض</p>
           </CardContent>
@@ -243,17 +263,11 @@ function Inventory() {
 
         <Card
           className="cursor-pointer border-red-200 transition-shadow hover:shadow-md"
-          onClick={() => setShowStockModal("critical")}
+          onClick={() => setShowStockModal("empty")}
         >
           <CardContent className="p-4 text-center">
             <AlertTriangle className="mx-auto mb-2 h-8 w-8 text-red-600" />
-            <div className="text-2xl font-bold text-red-700">
-              {
-                inventoryProducts.filter(
-                  (inventoryProduct) => inventoryProduct.quantity === 0,
-                ).length
-              }
-            </div>
+            <div className="text-2xl font-bold text-red-700">{emptyCount}</div>
             <p className="text-sm text-red-600">نفد المخزون</p>
           </CardContent>
         </Card>
@@ -489,7 +503,13 @@ function Inventory() {
         setShowStockModal={setShowStockModal}
         getStockStatus={getStockStatus}
         getModalTitle={getModalTitle}
-        modalProducts={inventoryProducts}
+        modalProducts={
+          (showStockModal === "good"
+            ? goodProducts
+            : showStockModal === "critical"
+              ? criticalProducts
+              : emptyProducts) ?? []
+        }
         categories={categories ?? []}
       />
     </HomeLayout>

@@ -19,9 +19,23 @@ export interface GetAllInventoryProductsResponse {
   totalCount: number;
   data: InventoryProduct[];
 }
+export interface GetInventoryCounts {
+  goodProductsCount: number;
+  criticalProductsCount: number;
+  emptyProductsCount: number;
+}
 /////////////////////////////////// Create API instances //////////////////////////////
 export const InventoryProductApi = createCrudApi<
   InventoryProduct,
   null,
   UpdateInventoryProduct
 >("inventoryProducts");
+export const InventoryDashboardCountsApi = createCrudApi<GetInventoryCounts>(
+  "InventoryDashboard/counts",
+);
+export const InventoryDashboardGoodProductsApi =
+  createCrudApi<InventoryProduct>("InventoryDashboard/good");
+export const InventoryDashboardCriticalProductsApi =
+  createCrudApi<InventoryProduct>("InventoryDashboard/critical");
+export const InventoryDashboardEmptyProductsApi =
+  createCrudApi<InventoryProduct>("InventoryDashboard/empty");

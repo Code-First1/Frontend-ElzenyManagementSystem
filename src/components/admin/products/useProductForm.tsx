@@ -55,8 +55,6 @@ export function useProductForm() {
 
   // Add product
   const handleAddProduct = () => {
-    console.log(formData);
-
     if (!formData.name || formData.pricePerUnit <= 0) {
       toast.error("يرجى ملء جميع الحقول المطلوبة بقيم صحيحة");
       return;
