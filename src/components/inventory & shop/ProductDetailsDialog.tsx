@@ -50,20 +50,44 @@ function ProductDetailsDialog({
 
                 <div>
                   <label className="text-sm font-semibold text-[#5d4037]">
-                    السعر:{" "}
+                    السعر بالتجزئة:{" "}
                   </label>
                   <span className="font-bold text-[#8b4513]">
-                    ${showProductModal.product.pricePerUnit.toFixed(2)}
+                    ${showProductModal.product.priceForRetail.toFixed(2)}
                   </span>
                 </div>
                 <div>
                   <label className="text-sm font-semibold text-[#5d4037]">
-                    الوحدة:{" "}
+                    الوحدة بالتجزئة:{" "}
                   </label>
                   <span className="text-[#6d4c41]">
                     {
                       unitOptions.find(
-                        (unit) => unit.value === showProductModal.product.unit,
+                        (unit) =>
+                          unit.value === showProductModal.product.unitForRetail,
+                      )?.label
+                    }
+                  </span>
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-[#5d4037]">
+                    السعر بالجملة:{" "}
+                  </label>
+                  <span className="font-bold text-[#8b4513]">
+                    ${showProductModal.product.prieceForWholeSale.toFixed(2)}
+                  </span>
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-[#5d4037]">
+                    الوحدة بالجملة:{" "}
+                  </label>
+                  <span className="text-[#6d4c41]">
+                    {
+                      unitOptions.find(
+                        (unit) =>
+                          unit.value ===
+                          showProductModal.product.unitForWholeSale,
                       )?.label
                     }
                   </span>
@@ -77,7 +101,8 @@ function ProductDetailsDialog({
                     {showProductModal.quantity}{" "}
                     {
                       unitOptions.find(
-                        (unit) => unit.value === showProductModal.product.unit,
+                        (unit) =>
+                          unit.value === showProductModal.product.unitForRetail,
                       )?.label
                     }
                   </span>
@@ -107,7 +132,7 @@ function ProductDetailsDialog({
                     $
                     {(
                       showProductModal.quantity *
-                      showProductModal.product.pricePerUnit
+                      showProductModal.product.priceForRetail
                     ).toFixed(2)}
                   </span>
                 </div>

@@ -75,7 +75,7 @@ function Login() {
 
             <button
               type="submit"
-              className="bg-primary mt-5 h-12 w-full cursor-pointer rounded-md text-white transition-colors disabled:pointer-events-none disabled:opacity-50"
+              className="bg-primary disabled: mt-5 h-12 w-full cursor-pointer rounded-md text-white transition-colors disabled:opacity-50"
               disabled={!username.trim() || !password.trim() || isPending}
             >
               {isPending ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}

@@ -132,8 +132,9 @@ function Selling() {
       if (newQuantity > product.quantity) {
         toast.error(
           `الكمية المطلوبة تتجاوز المخزون المتاح (${product.quantity} ${
-            unitOptions.find((unit) => unit.value === product.product.unit)
-              ?.label
+            unitOptions.find(
+              (unit) => unit.value === product.product.unitForRetail,
+            )?.label
           })`,
         );
         return;
@@ -149,8 +150,9 @@ function Selling() {
       if (quantity > product.quantity) {
         toast.error(
           `الكمية المطلوبة تتجاوز المخزون المتاح (${product.quantity} ${
-            unitOptions.find((unit) => unit.value === product.product.unit)
-              ?.label
+            unitOptions.find(
+              (unit) => unit.value === product.product.unitForRetail,
+            )?.label
           })`,
         );
         return;
@@ -248,7 +250,7 @@ function Selling() {
                                   </span>
                                   <span className="font-bold text-[#8b4513]">
                                     $
-                                    {shopProduct.product.pricePerUnit.toFixed(
+                                    {shopProduct.product.priceForRetail.toFixed(
                                       2,
                                     )}
                                   </span>
@@ -265,7 +267,7 @@ function Selling() {
                                         unitOptions.find(
                                           (unit) =>
                                             unit.value ===
-                                            shopProduct.product.unit,
+                                            shopProduct.product.unitForRetail,
                                         )?.label
                                       }
                                     </span>
@@ -326,11 +328,7 @@ function Selling() {
                   <PaginationItem>
                     <PaginationPrevious
                       onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                      className={
-                        page === 1
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
+                      className={page === 1 ? "opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
 
@@ -364,9 +362,7 @@ function Selling() {
                         setPage((p) => Math.min(p + 1, totalPages))
                       }
                       className={
-                        page === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
+                        page === totalPages ? "opacity-50" : "cursor-pointer"
                       }
                     />
                   </PaginationItem>

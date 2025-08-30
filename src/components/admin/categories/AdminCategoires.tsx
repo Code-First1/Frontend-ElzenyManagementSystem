@@ -75,7 +75,7 @@ function AdminCategories() {
 
       {/* Category Search Bar */}
       <div className="relative mt-4 w-full max-w-3xl">
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5">
+        <div className="absolute inset-y-0 right-0 flex items-center pr-5">
           <Search className="h-6 w-6 text-[#6d4c41]" />
         </div>
         <Input
@@ -123,11 +123,7 @@ function AdminCategories() {
                     <PaginationItem>
                       <PaginationPrevious
                         onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                        className={
-                          page === 1
-                            ? "pointer-events-none opacity-50"
-                            : "cursor-pointer"
-                        }
+                        className={page === 1 ? "opacity-50" : "cursor-pointer"}
                       />
                     </PaginationItem>
 
@@ -161,9 +157,7 @@ function AdminCategories() {
                           setPage((p) => Math.min(p + 1, totalPages))
                         }
                         className={
-                          page === totalPages
-                            ? "pointer-events-none opacity-50"
-                            : "cursor-pointer"
+                          page === totalPages ? "opacity-50" : "cursor-pointer"
                         }
                       />
                     </PaginationItem>

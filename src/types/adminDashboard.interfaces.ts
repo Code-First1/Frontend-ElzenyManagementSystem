@@ -27,8 +27,10 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  unit: UnitValue | "";
-  pricePerUnit: number;
+  unitForWholeSale: UnitValue | "";
+  unitForRetail: UnitValue | "";
+  prieceForWholeSale: number;
+  priceForRetail: number;
   pictureUrl: ""; // not added yet, need to handle
   categoryName: string;
   subCategoryName: string;

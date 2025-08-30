@@ -142,7 +142,7 @@ function SelectItem({
 
   return (
     <div
-      className={`hover:bg-secondary relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none focus:bg-gray-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:hover:bg-gray-700 dark:focus:bg-gray-700 ${className}`}
+      className={`hover:bg-secondary data-[disabled]: relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none focus:bg-gray-100 data-[disabled]:opacity-50 dark:hover:bg-gray-700 dark:focus:bg-gray-700 ${className}`}
       onClick={() => {
         setValue(value);
         setOpen(false);

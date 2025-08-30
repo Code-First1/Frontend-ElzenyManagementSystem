@@ -209,15 +209,29 @@ function Products() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-[#6d4c41]">
-                        السعر لكل{" "}
+                        السعر بالتجزئة لكل{" "}
                         {
                           unitOptions.find(
-                            (unit) => unit.value === product.unit,
+                            (unit) => unit.value === product.unitForRetail,
                           )?.label
                         }
                       </span>
                       <span className="text-primary text-lg font-bold">
-                        ${product.pricePerUnit.toFixed(2)}
+                        ${product.priceForRetail.toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-[#6d4c41]">
+                        السعر بالجملة لكل{" "}
+                        {
+                          unitOptions.find(
+                            (unit) => unit.value === product.unitForWholeSale,
+                          )?.label
+                        }
+                      </span>
+                      <span className="text-primary text-lg font-bold">
+                        ${product.prieceForWholeSale.toFixed(2)}
                       </span>
                     </div>
 
@@ -301,11 +315,7 @@ function Products() {
               <PaginationItem>
                 <PaginationPrevious
                   onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                  className={
-                    page === 1
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
+                  className={page === 1 ? "opacity-50" : "cursor-pointer"}
                 />
               </PaginationItem>
 
@@ -337,9 +347,7 @@ function Products() {
                 <PaginationNext
                   onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
                   className={
-                    page === totalPages
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
+                    page === totalPages ? "opacity-50" : "cursor-pointer"
                   }
                 />
               </PaginationItem>

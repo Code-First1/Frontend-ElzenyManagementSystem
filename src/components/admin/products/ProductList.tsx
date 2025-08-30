@@ -41,10 +41,14 @@ function ProductList({ products }: { products: Product[] }) {
             <div className="flex flex-col items-center">
               <p className="text-muted-foreground text-sm">
                 السعر لكل{" "}
-                {unitOptions.find((unit) => unit.value === product.unit)?.label}
+                {
+                  unitOptions.find(
+                    (unit) => unit.value === product.unitForRetail,
+                  )?.label
+                }
               </p>
               <p className="text-primary text-lg font-bold">
-                ${product.pricePerUnit.toFixed(2)}
+                ${product.priceForRetail.toFixed(2)}
               </p>
             </div>
 

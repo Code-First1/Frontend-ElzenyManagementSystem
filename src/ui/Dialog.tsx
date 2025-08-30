@@ -97,7 +97,7 @@ const DialogOverlay = React.forwardRef<
     <div
       ref={ref}
       className={`fixed inset-0 z-50 m-0 min-h-screen bg-black/50 transition-opacity duration-300 ease-in-out ${
-        open ? "opacity-100" : "pointer-events-none opacity-0"
+        open ? "opacity-100" : "opacity-0"
       } ${className}`}
       onClick={onClose}
       {...props}
@@ -115,7 +115,7 @@ const DialogContent = React.forwardRef<
       className={`fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-white p-6 shadow-lg transition-all duration-300 ease-in-out ${
         open
           ? "translate-y-0 scale-100 opacity-100"
-          : "pointer-events-none translate-y-4 scale-95 opacity-0"
+          : "translate-y-4 scale-95 opacity-0"
       } sm:max-w-lg ${className}`}
       {...props}
     >

@@ -10,7 +10,7 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className = "", variant = "default", asChild = false, ...props }, ref) => {
     const baseClasses =
-      "inline-flex items-center justify-center rounded-md border px-2 py-0.5  font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-blue-500 focus-visible:ring-blue-500/50 focus-visible:ring-[3px] aria-invalid:ring-red-500/20 dark:aria-invalid:ring-red-500/40 aria-invalid:border-red-500 transition-all overflow-hidden";
+      "inline-flex items-center justify-center rounded-md border px-2 py-0.5  font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]: focus-visible:border-blue-500 focus-visible:ring-blue-500/50 focus-visible:ring-[3px] aria-invalid:ring-red-500/20 dark:aria-invalid:ring-red-500/40 aria-invalid:border-red-500 transition-all overflow-hidden";
 
     const variantClasses = {
       default: "border-transparent bg-primary text-white hover:bg-primary/90",

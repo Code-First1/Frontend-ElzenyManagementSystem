@@ -79,7 +79,7 @@ export function TabsTrigger({
         isActive
           ? "bg-primary border-transparent text-white"
           : "text-muted-foreground border-transparent hover:bg-[#f5e6d3]"
-      } focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:outline-primary focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 ${className}`}
+      } focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:outline-primary disabled: focus-visible:ring-[3px] focus-visible:outline-1 disabled:opacity-50 ${className}`}
     >
       {children}
     </button>

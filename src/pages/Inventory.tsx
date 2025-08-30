@@ -381,7 +381,7 @@ function Inventory() {
                                   unitOptions.find(
                                     (unit) =>
                                       unit.value ===
-                                      inventoryProduct.product.unit,
+                                      inventoryProduct.product.unitForRetail,
                                   )?.label
                                 }
                               </span>
@@ -394,7 +394,9 @@ function Inventory() {
                           <div className="text-center">
                             <p className="font-bold text-[#8b4513]">
                               $
-                              {inventoryProduct.product.pricePerUnit.toFixed(2)}
+                              {inventoryProduct.product.priceForRetail.toFixed(
+                                2,
+                              )}
                             </p>
                             <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
@@ -402,24 +404,47 @@ function Inventory() {
                                 unitOptions.find(
                                   (unit) =>
                                     unit.value ===
-                                    inventoryProduct.product.unit,
+                                    inventoryProduct.product.unitForRetail,
                                 )?.label
                               }
+                              {"   "}
+                              بالتجزئة
                             </p>
                           </div>
 
                           <div className="text-center">
+                            <p className="font-bold text-[#8b4513]">
+                              $
+                              {inventoryProduct.product.prieceForWholeSale.toFixed(
+                                2,
+                              )}
+                            </p>
+                            <p className="text-sm text-[#6d4c41]">
+                              لكل{" "}
+                              {
+                                unitOptions.find(
+                                  (unit) =>
+                                    unit.value ===
+                                    inventoryProduct.product.unitForWholeSale,
+                                )?.label
+                              }
+                              {"   "}
+                              بالجملة
+                            </p>
+                          </div>
+
+                          {/* <div className="text-center">
                             <p className="font-semibold text-[#5d4037]">
                               $
                               {(
                                 inventoryProduct.quantity *
-                                inventoryProduct.product.pricePerUnit
+                                inventoryProduct.product.priceForRetail
                               ).toFixed(2)}
                             </p>
                             <p className="text-sm text-[#6d4c41]">
                               قيمة المخزون
                             </p>
-                          </div>
+                          </div> */}
 
                           <div className="text-center">
                             <Badge
@@ -446,11 +471,7 @@ function Inventory() {
                   <PaginationItem>
                     <PaginationPrevious
                       onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                      className={
-                        page === 1
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
+                      className={page === 1 ? "opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
 
@@ -484,9 +505,7 @@ function Inventory() {
                         setPage((p) => Math.min(p + 1, totalPages))
                       }
                       className={
-                        page === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
+                        page === totalPages ? "opacity-50" : "cursor-pointer"
                       }
                     />
                   </PaginationItem>

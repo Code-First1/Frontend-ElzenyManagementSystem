@@ -51,7 +51,7 @@ function ProductAddDialog({ product }: { product?: Product }) {
         <div className="relative">
           <ProductFormFields editingProduct={product} />
           <button
-            className="hover:bg-secondary absolute bottom-[0.07rem] left-[6rem] rounded-md px-4 py-2 shadow-sm"
+            className={`hover:bg-secondary absolute left-[6rem] rounded-md px-4 py-2 shadow-sm ${product ? "bottom-[0.07rem]" : "bottom-[5rem]"}`}
             onClick={() => {
               resetForm();
               setIsFormOpen(false);

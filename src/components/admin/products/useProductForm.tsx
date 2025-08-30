@@ -9,6 +9,10 @@ import {
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { APIError } from "../../../services/api";
+import {
+  InventoryProductApi,
+  type UpdateInventoryProduct,
+} from "../../../types/inventoryProduct.interfaces";
 
 export function useProductForm() {
   const queryClient = useQueryClient();
@@ -16,12 +20,15 @@ export function useProductForm() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [inventoryProductId, setInventoryProductId] = useState(0);
 
   const [formData, setFormData] = useState<CreateProductDto>({
     name: "",
-    unit: "",
     description: "",
-    pricePerUnit: 0,
+    unitForRetail: "",
+    unitForWholeSale: "",
+    priceForRetail: 0,
+    prieceForWholeSale: 0,
     pictureUrl: "",
     categoryId: 0,
     subCategoryId: 0,
@@ -30,9 +37,11 @@ export function useProductForm() {
   const resetForm = () => {
     setFormData({
       name: "",
-      unit: "",
       description: "",
-      pricePerUnit: 0,
+      unitForRetail: "",
+      unitForWholeSale: "",
+      priceForRetail: 0,
+      prieceForWholeSale: 0,
       pictureUrl: "",
       categoryId: 0,
       subCategoryId: 0,
@@ -41,21 +50,26 @@ export function useProductForm() {
 
   // Create Product mutation
   const { mutate: createProduct } = useMutation<
-    { id: number },
+    { productId: number; inventoryProductId: number },
     APIError,
     CreateProductDto
   >({
     mutationFn: productApi.create,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       setIsFormOpen(false);
       toast.success("تم إضافة المنتج بنجاح");
+      setInventoryProductId(data.inventoryProductId);
     },
   });
 
   // Add product
   const handleAddProduct = () => {
-    if (!formData.name || formData.pricePerUnit <= 0) {
+    if (
+      !formData.name ||
+      formData.priceForRetail <= 0 ||
+      formData.prieceForWholeSale <= 0
+    ) {
       toast.error("يرجى ملء جميع الحقول المطلوبة بقيم صحيحة");
       return;
     }
@@ -121,6 +135,29 @@ export function useProductForm() {
     [selectedCategory],
   );
 
+  // Create minimum Quantity mutation
+  const { mutate: updateInventoryProduct } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateInventoryProduct }) =>
+      InventoryProductApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["inventoryProducts"] });
+      setIsFormOpen(false);
+      toast.success("تم اضافة الحد الادني بنجاح");
+    },
+    onError: () => {
+      toast.error("حدث خطأ أثناء تحديث المنتج");
+    },
+  });
+
+  // handle add minimum Quantity
+  const handleUpdateInventoryProduct = (
+    id: string,
+    data: UpdateInventoryProduct,
+  ) => {
+    if (data.minimumQuantity <= 0) toast.error("يرجي اضافة قيمة صحيحة");
+    else updateInventoryProduct({ id, data });
+  };
+
   return {
     editingProduct,
     setEditingProduct,
@@ -139,5 +176,7 @@ export function useProductForm() {
     selectedCategory,
     availableSubcategories,
     categories,
+    inventoryProductId,
+    handleUpdateInventoryProduct,
   };
 }

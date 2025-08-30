@@ -1,10 +1,4 @@
-import {
-  BarChart3,
-  DollarSign,
-  Package,
-  ShoppingBag,
-  Store,
-} from "lucide-react";
+import { BarChart3, Package, ShoppingBag, Store } from "lucide-react";
 import HomeLayout from "../layouts/HomeLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Filters from "../components/common/Filters";
@@ -141,7 +135,7 @@ function Shop() {
           </CardContent>
         </Card>
 
-        <Card className="border-green-200">
+        {/* <Card className="border-green-200">
           <CardContent className="p-4 text-center">
             <DollarSign className="mx-auto mb-2 h-8 w-8 text-green-600" />
             <div className="text-2xl font-bold text-green-700">
@@ -150,14 +144,14 @@ function Shop() {
                 .reduce(
                   (total, shopProduct) =>
                     total +
-                    shopProduct.quantity * shopProduct.product.pricePerUnit,
+                    shopProduct.quantity * shopProduct.product.priceForRetail,
                   0,
                 )
                 .toFixed(2)}
             </div>
             <p className="text-sm text-green-600">قيمة المخزون</p>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <Card className="border-blue-200">
           <CardContent className="p-4 text-center">
@@ -269,16 +263,38 @@ function Shop() {
                         <div className="mt-3 flex items-center justify-between">
                           <div className="flex flex-col items-center gap-1">
                             <div className="font-bold text-[#8b4513]">
-                              ${shopProduct.product.pricePerUnit.toFixed(2)}
+                              ${shopProduct.product.priceForRetail.toFixed(2)}
                             </div>
                             <div className="text-sm text-[#6d4c41]">
                               لكل{" "}
                               {
                                 unitOptions.find(
                                   (unit) =>
-                                    unit.value === shopProduct.product.unit,
+                                    unit.value ===
+                                    shopProduct.product.unitForRetail,
                                 )?.label
-                              }
+                              }{" "}
+                              بالتجزئة
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col items-center gap-1">
+                            <div className="font-bold text-[#8b4513]">
+                              $
+                              {shopProduct.product.prieceForWholeSale.toFixed(
+                                2,
+                              )}
+                            </div>
+                            <div className="text-sm text-[#6d4c41]">
+                              لكل{" "}
+                              {
+                                unitOptions.find(
+                                  (unit) =>
+                                    unit.value ===
+                                    shopProduct.product.unitForWholeSale,
+                                )?.label
+                              }{" "}
+                              بالجملة
                             </div>
                           </div>
 
@@ -291,7 +307,8 @@ function Shop() {
                                 {
                                   unitOptions.find(
                                     (unit) =>
-                                      unit.value === shopProduct.product.unit,
+                                      unit.value ===
+                                      shopProduct.product.unitForRetail,
                                   )?.label
                                 }
                               </span>
@@ -322,11 +339,7 @@ function Shop() {
                   <PaginationItem>
                     <PaginationPrevious
                       onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                      className={
-                        page === 1
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
+                      className={page === 1 ? "opacity-50" : "cursor-pointer"}
                     />
                   </PaginationItem>
 
@@ -360,9 +373,7 @@ function Shop() {
                         setPage((p) => Math.min(p + 1, totalPages))
                       }
                       className={
-                        page === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
+                        page === totalPages ? "opacity-50" : "cursor-pointer"
                       }
                     />
                   </PaginationItem>

@@ -13,9 +13,10 @@ import {
 import { Input } from "../../common/Input";
 import { Textarea } from "../../common/Textarea";
 import { useProductForm } from "./useProductForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
+  const [minimumQuantity, setMinimumQuantity] = useState(0);
   const {
     handleUpdateProduct,
     formData,
@@ -23,6 +24,8 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
     availableSubcategories,
     handleAddProduct,
     categories,
+    inventoryProductId,
+    handleUpdateInventoryProduct,
   } = useProductForm();
 
   useEffect(() => {
@@ -37,9 +40,11 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
 
       setFormData({
         name: editingProduct?.name || "",
-        unit: editingProduct?.unit || "",
         description: editingProduct?.description || "",
-        pricePerUnit: editingProduct?.pricePerUnit || 0,
+        unitForRetail: editingProduct?.unitForRetail || "",
+        unitForWholeSale: editingProduct?.unitForWholeSale || "",
+        priceForRetail: editingProduct?.priceForRetail || 0,
+        prieceForWholeSale: editingProduct?.prieceForWholeSale || 0,
         pictureUrl: editingProduct?.pictureUrl || "",
         categoryId: category?.id || 0,
         subCategoryId: subCategory?.id || 0,
@@ -49,18 +54,20 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2 text-right">
-          <Label htmlFor="name">اسم المنتج</Label>
-          <Input
-            id="name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="أدخل اسم المنتج"
-            className="text-right"
-          />
-        </div>
+      {/* First row - Product name spanning full width */}
+      <div className="mb-4 w-[14rem] space-y-2 text-right">
+        <Label htmlFor="name">اسم المنتج</Label>
+        <Input
+          id="name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="أدخل اسم المنتج"
+          className="text-right"
+        />
+      </div>
 
+      {/* Rest of the fields in 2-column grid */}
+      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2 text-right">
           <Label htmlFor="category">الفئة</Label>
           <Select
@@ -116,20 +123,21 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
         </div>
 
         <div className="space-y-2 text-right">
-          <Label htmlFor="unit">الوحدة</Label>
+          <Label htmlFor="unitForRetail">الوحدة للتجزئة</Label>
           <Select
-            value={formData.unit}
+            value={formData.unitForRetail}
             onValueChange={(value) =>
               setFormData({
                 ...formData,
-                unit: value as typeof formData.unit,
+                unitForRetail: value as typeof formData.unitForRetail,
               })
             }
           >
             <SelectTrigger>
               <SelectValue>
-                {unitOptions.find((unit) => unit.value === formData.unit)
-                  ?.label || "اختر الوحدة"}
+                {unitOptions.find(
+                  (unit) => unit.value === formData.unitForRetail,
+                )?.label || "اختر الوحدة"}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -143,15 +151,59 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
         </div>
 
         <div className="space-y-2 text-right">
-          <Label htmlFor="price">السعر لكل وحدة</Label>
+          <Label htmlFor="priceForRetail">السعر للتجزئة</Label>
           <Input
-            id="price"
+            id="priceForRetail"
             min={0}
-            value={formData.pricePerUnit}
+            value={formData.priceForRetail}
             onChange={(e) =>
               setFormData({
                 ...formData,
-                pricePerUnit: parseFloat(e.target.value) || 0,
+                priceForRetail: parseFloat(e.target.value) || 0,
+              })
+            }
+            className="text-right"
+          />
+        </div>
+
+        <div className="space-y-2 text-right">
+          <Label htmlFor="unitForWholeSale">الوحدة للجملة</Label>
+          <Select
+            value={formData.unitForWholeSale}
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                unitForWholeSale: value as typeof formData.unitForWholeSale,
+              })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue>
+                {unitOptions.find(
+                  (unit) => unit.value === formData.unitForWholeSale,
+                )?.label || "اختر الوحدة"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {unitOptions.map((unit) => (
+                <SelectItem key={unit.value} value={unit.value}>
+                  {unit.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2 text-right">
+          <Label htmlFor="prieceForWholeSale">السعر للجملة</Label>
+          <Input
+            id="prieceForWholeSale"
+            min={0}
+            value={formData.prieceForWholeSale}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                prieceForWholeSale: parseFloat(e.target.value) || 0,
               })
             }
             className="text-right"
@@ -192,6 +244,43 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
           </button>
         )}
       </div>
+
+      {!editingProduct && (
+        <div className="mt-5 flex items-end gap-5 space-y-2 text-right">
+          <div className="m-0 space-y-1">
+            <Label htmlFor="minimumQuantity">
+              الحد الادني للمخزون
+              {inventoryProductId === 0 && (
+                <span className="text-sm text-red-500">
+                  * (يرجي اضافة المنتج اولا)
+                </span>
+              )}
+            </Label>
+            <Input
+              disabled={inventoryProductId === 0}
+              id="minimumQuantity"
+              placeholder="سيتم تعيينه تلقائياً عند إضافة المنتج"
+              value={minimumQuantity}
+              onChange={(e) => setMinimumQuantity(Number(e.target.value))}
+              className="text-right disabled:opacity-50"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              handleUpdateInventoryProduct(inventoryProductId.toString(), {
+                quantity: 0,
+                minimumQuantity,
+              })
+            }
+            disabled={inventoryProductId === 0}
+            className="disabled:bg-accent bg-primary hover:bg-secondary-foreground rounded-md px-4 py-2 text-white"
+          >
+            إضافة
+          </button>
+        </div>
+      )}
     </>
   );
 }
