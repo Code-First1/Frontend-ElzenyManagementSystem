@@ -224,48 +224,162 @@ function Shop() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            // <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            //   {shopProducts.map((shopProduct) => {
+            //     return (
+            //       <Card
+            //         key={shopProduct.id}
+            //         className="cursor-pointer border-[#8b4513]/10 transition-shadow hover:shadow-md"
+            //         onClick={() => setShowProductModal(shopProduct)}
+            //       >
+            //         <CardContent className="space-y-3 p-5">
+            //           {/* Product Icon */}
+            //           <div className="flex justify-center">
+            //             <div className="bg-secondary flex h-12 w-12 items-center justify-center rounded-lg">
+            //               <Package />
+            //             </div>
+            //           </div>
+
+            //           {/* Product Details */}
+            //           <div className="space-y-2 text-center">
+            //             <h3 className="line-clamp-2 font-semibold text-[#5d4037]">
+            //               {shopProduct.product.name}
+            //             </h3>
+            //             <p className="text-sm text-[#6d4c41]">
+            //               الفئة:{" "}
+            //               <Badge variant="outline">
+            //                 {shopProduct.product.categoryName}
+            //               </Badge>
+            //             </p>
+            //             {shopProduct.product.subCategoryName && (
+            //               <p className="text-sm text-[#6d4c41]">
+            //                 الفئة الفرعية:{" "}
+            //                 <Badge variant="outline">
+            //                   {shopProduct.product.subCategoryName}
+            //                 </Badge>
+            //               </p>
+            //             )}
+
+            //             <div className="mt-3 flex items-center justify-between">
+            //               <div className="flex flex-col items-center gap-1">
+            //                 <div className="font-bold text-[#8b4513]">
+            //                   ${shopProduct.product.priceForRetail.toFixed(2)}
+            //                 </div>
+            //                 <div className="text-sm text-[#6d4c41]">
+            //                   لكل{" "}
+            //                   {
+            //                     unitOptions.find(
+            //                       (unit) =>
+            //                         unit.value ===
+            //                         shopProduct.product.unitForRetail,
+            //                     )?.label
+            //                   }{" "}
+            //                   بالتجزئة
+            //                 </div>
+            //               </div>
+
+            //               <div className="flex flex-col items-center gap-1">
+            //                 <div className="font-bold text-[#8b4513]">
+            //                   $
+            //                   {shopProduct.product.prieceForWholeSale.toFixed(
+            //                     2,
+            //                   )}
+            //                 </div>
+            //                 <div className="text-sm text-[#6d4c41]">
+            //                   لكل{" "}
+            //                   {
+            //                     unitOptions.find(
+            //                       (unit) =>
+            //                         unit.value ===
+            //                         shopProduct.product.unitForWholeSale,
+            //                     )?.label
+            //                   }{" "}
+            //                   بالجملة
+            //                 </div>
+            //               </div>
+
+            //               <div className="flex flex-col items-center gap-1">
+            //                 <div className="space-x-1 text-sm font-semibold text-[#5d4037]">
+            //                   <span className="pt-1">
+            //                     {shopProduct.quantity}
+            //                   </span>
+            //                   <span>
+            //                     {
+            //                       unitOptions.find(
+            //                         (unit) =>
+            //                           unit.value ===
+            //                           shopProduct.product.unitForRetail,
+            //                       )?.label
+            //                     }
+            //                   </span>
+            //                 </div>
+            //                 <div className="text-sm text-[#6d4c41]">متوفر</div>
+            //               </div>
+            //             </div>
+
+            //             {/* {popularity > 0 && (
+            //               <Badge variant="secondary" className="text-xs">
+            //                 <Star className="ml-1 h-3 w-3" />
+            //                 {popularity} مبيعة
+            //               </Badge>
+            //             )} */}
+            //           </div>
+            //         </CardContent>
+            //       </Card>
+            //     );
+            //   })}
+            // </div>
+            <div className="space-y-3">
               {shopProducts.map((shopProduct) => {
                 return (
-                  <Card
-                    key={shopProduct.id}
-                    className="cursor-pointer border-[#8b4513]/10 transition-shadow hover:shadow-md"
-                    onClick={() => setShowProductModal(shopProduct)}
-                  >
-                    <CardContent className="space-y-3 p-5">
-                      {/* Product Icon */}
-                      <div className="flex justify-center">
+                  <Card key={shopProduct.id} className="border-[#8b4513]/10">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-4">
+                        {/* Product Icon */}
                         <div className="bg-secondary flex h-12 w-12 items-center justify-center rounded-lg">
                           <Package />
                         </div>
-                      </div>
 
-                      {/* Product Details */}
-                      <div className="space-y-2 text-center">
-                        <h3 className="line-clamp-2 font-semibold text-[#5d4037]">
-                          {shopProduct.product.name}
-                        </h3>
-                        <p className="text-sm text-[#6d4c41]">
-                          الفئة:{" "}
-                          <Badge variant="outline">
-                            {shopProduct.product.categoryName}
-                          </Badge>
-                        </p>
-                        {shopProduct.product.subCategoryName && (
-                          <p className="text-sm text-[#6d4c41]">
-                            الفئة الفرعية:{" "}
-                            <Badge variant="outline">
-                              {shopProduct.product.subCategoryName}
-                            </Badge>
-                          </p>
-                        )}
+                        {/* Product Details */}
+                        <div className="grid flex-1 grid-cols-1 items-center gap-4 md:grid-cols-6">
+                          <div className="space-y-2 text-right md:col-span-2">
+                            <h3 className="font-bold text-[#5d4037]">
+                              {shopProduct.product.name}
+                            </h3>
+                            <p className="text-sm text-[#6d4c41]">
+                              الفئة:{" "}
+                              <Badge variant="outline">
+                                {shopProduct.product.categoryName}
+                              </Badge>
+                            </p>
+                            {shopProduct.product.subCategoryName && (
+                              <p className="text-sm text-[#6d4c41]">
+                                الفئة الفرعية:{" "}
+                                <Badge variant="outline">
+                                  {shopProduct.product.subCategoryName}
+                                </Badge>
+                              </p>
+                            )}
+                          </div>
 
-                        <div className="mt-3 flex items-center justify-between">
-                          <div className="flex flex-col items-center gap-1">
-                            <div className="font-bold text-[#8b4513]">
+                          <div className="text-center">
+                            <p className="font-semibold text-[#6d4c41]">
+                              الكمية: {shopProduct.quantity}{" "}
+                              {
+                                unitOptions.find(
+                                  (unit) =>
+                                    unit.value ===
+                                    shopProduct.product.unitForRetail,
+                                )?.label
+                              }
+                            </p>
+                          </div>
+
+                          <div className="text-center">
+                            <p className="font-bold text-[#8b4513]">
                               ${shopProduct.product.priceForRetail.toFixed(2)}
-                            </div>
-                            <div className="text-sm text-[#6d4c41]">
+                            </p>
+                            <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
                               {
                                 unitOptions.find(
@@ -273,19 +387,20 @@ function Shop() {
                                     unit.value ===
                                     shopProduct.product.unitForRetail,
                                 )?.label
-                              }{" "}
+                              }
+                              {"   "}
                               بالتجزئة
-                            </div>
+                            </p>
                           </div>
 
-                          <div className="flex flex-col items-center gap-1">
-                            <div className="font-bold text-[#8b4513]">
+                          <div className="text-center">
+                            <p className="font-bold text-[#8b4513]">
                               $
                               {shopProduct.product.prieceForWholeSale.toFixed(
                                 2,
                               )}
-                            </div>
-                            <div className="text-sm text-[#6d4c41]">
+                            </p>
+                            <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
                               {
                                 unitOptions.find(
@@ -293,36 +408,12 @@ function Shop() {
                                     unit.value ===
                                     shopProduct.product.unitForWholeSale,
                                 )?.label
-                              }{" "}
+                              }
+                              {"   "}
                               بالجملة
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col items-center gap-1">
-                            <div className="space-x-1 text-sm font-semibold text-[#5d4037]">
-                              <span className="pt-1">
-                                {shopProduct.quantity}
-                              </span>
-                              <span>
-                                {
-                                  unitOptions.find(
-                                    (unit) =>
-                                      unit.value ===
-                                      shopProduct.product.unitForRetail,
-                                  )?.label
-                                }
-                              </span>
-                            </div>
-                            <div className="text-sm text-[#6d4c41]">متوفر</div>
+                            </p>
                           </div>
                         </div>
-
-                        {/* {popularity > 0 && (
-                          <Badge variant="secondary" className="text-xs">
-                            <Star className="ml-1 h-3 w-3" />
-                            {popularity} مبيعة
-                          </Badge>
-                        )} */}
                       </div>
                     </CardContent>
                   </Card>

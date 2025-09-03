@@ -1,6 +1,5 @@
 import {
   Archive,
-  FileText,
   Home,
   LogOut,
   Menu,
@@ -55,7 +54,6 @@ function Navbar() {
             <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
             <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
             <NavbarLink to="/shop" icon={Store} text="المحل" />
-            <NavbarLink to="/reports" icon={FileText} text="التقارير" />
 
             {currentUser?.role === "Admin" && (
               <NavbarLink

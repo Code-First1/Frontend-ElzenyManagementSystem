@@ -381,7 +381,7 @@ function Inventory() {
                                   unitOptions.find(
                                     (unit) =>
                                       unit.value ===
-                                      inventoryProduct.product.unitForRetail,
+                                      inventoryProduct.product.unitForWholeSale,
                                   )?.label
                                 }
                               </span>

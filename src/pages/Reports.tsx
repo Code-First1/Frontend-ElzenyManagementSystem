@@ -7,7 +7,6 @@ import {
   ShoppingBag,
   TrendingUp,
 } from "lucide-react";
-import HomeLayout from "../layouts/HomeLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import {
   Popover,
@@ -16,8 +15,9 @@ import {
 } from "../components/common/Popover";
 import { useState } from "react";
 import Calendar from "../components/common/Calender";
+import type { Invoice } from "../types/invoice.interfaces";
 
-function Reports() {
+function Reports({ invoices }: { invoices: Invoice[] }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
@@ -31,7 +31,7 @@ function Reports() {
   };
 
   return (
-    <HomeLayout>
+    <div>
       {/* Header */}
       <div className="text-right">
         <h1 className="text-3xl font-bold text-[#5d4037]">
@@ -190,7 +190,7 @@ function Reports() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {[].length === 0 ? (
+            {invoices.length === 0 ? (
               <div className="py-8 text-center">
                 <ShoppingBag className="mx-auto mb-4 h-12 w-12 text-[#8b4513]/50" />
                 <h3 className="mb-2 text-lg font-semibold text-[#5d4037]">
@@ -236,52 +236,47 @@ function Reports() {
 
                       {/* Transaction Items */}
                       <div className="space-y-2">
-                        {/* {transactionSales.map((sale) => {
-                          const product = products.find(
-                            (p) => p.id === sale.productId,
-                          );
-                          const category = categories.find(
-                            (c) => c.name === product?.category,
-                          );
-                          return (
-                            <div
-                              key={sale.id}
-                              className="sale-item flex items-center justify-between rounded bg-[#f9f9f9] p-2"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div
-                                  className="flex h-8 w-8 items-center justify-center rounded"
-                                  style={{
-                                    backgroundColor: category
-                                      ? `${category.color}20`
-                                      : "#8b451320",
-                                  }}
-                                >
-                                  <IconComponent
-                                    className="h-4 w-4"
+                        {invoices.flatMap((invoice) =>
+                          invoice.invoiceProduct.map((product) => {
+                            return (
+                              <div
+                                key={invoice.id}
+                                className="sale-item flex items-center justify-between rounded bg-[#f9f9f9] p-2"
+                              >
+                                <div className="flex items-center space-x-3">
+                                  <div
+                                    className="flex h-8 w-8 items-center justify-center rounded"
                                     style={{
-                                      color: category?.color || "#8b4513",
+                                      backgroundColor: "#8b451320",
                                     }}
-                                  />
-                                </div>
-                                <div>
-                                  <div className="font-semibold text-[#5d4037]">
-                                    {product?.name || "منتج محذوف"}
+                                  >
+                                    <Package
+                                      className="h-4 w-4"
+                                      style={{
+                                        color: "#8b4513",
+                                      }}
+                                    />
                                   </div>
-                                  <div className="text-sm text-[#6d4c41]">
-                                    {sale.quantity} {product?.unit || "وحدة"} ×
-                                    ${sale.unitPrice.toFixed(2)}
+                                  <div>
+                                    <div className="font-semibold text-[#5d4037]">
+                                      {product?.productName || "منتج محذوف"}
+                                    </div>
+                                    <div className="text-sm text-[#6d4c41]">
+                                      {product.quantity} وحدة × $
+                                      {product.pricePerUnit?.toFixed(2) ||
+                                        "0.00"}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="text-left">
+                                  <div className="font-bold text-[#8b4513]">
+                                    ${invoice.total?.toFixed(2) || "0.00"}
                                   </div>
                                 </div>
                               </div>
-                              <div className="text-left">
-                                <div className="font-bold text-[#8b4513]">
-                                  ${sale.total.toFixed(2)}
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })} */}
+                            );
+                          }),
+                        )}
                       </div>
                     </div>
                   );
@@ -291,7 +286,7 @@ function Reports() {
           </CardContent>
         </Card>
       </div>
-    </HomeLayout>
+    </div>
   );
 }
 
