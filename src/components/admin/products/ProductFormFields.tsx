@@ -46,6 +46,7 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
         priceForRetail: editingProduct?.priceForRetail || 0,
         prieceForWholeSale: editingProduct?.prieceForWholeSale || 0,
         pictureUrl: editingProduct?.pictureUrl || "",
+        quantityForOrigin: editingProduct?.quantityForOrigin || 0,
         categoryId: category?.id || 0,
         subCategoryId: subCategory?.id || 0,
       });
@@ -210,6 +211,22 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
           />
         </div>
 
+        <div className="space-y-2 text-right">
+          <Label htmlFor="quantityForOrigin">عدد الوحدات</Label>
+          <Input
+            id="quantityForOrigin"
+            min={0}
+            value={formData.quantityForOrigin}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                quantityForOrigin: parseFloat(e.target.value) || 0,
+              })
+            }
+            className="text-right"
+          />
+        </div>
+
         <div className="col-span-2 space-y-2 text-right">
           <Label htmlFor="description">الوصف</Label>
           <Textarea
@@ -247,7 +264,7 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
 
       {!editingProduct && (
         <div className="mt-5 flex items-end gap-5 space-y-2 text-right">
-          <div className="m-0 space-y-1">
+          <div className="m-0 space-y-2">
             <Label htmlFor="minimumQuantity">
               الحد الادني للمخزون
               {inventoryProductId === 0 && (

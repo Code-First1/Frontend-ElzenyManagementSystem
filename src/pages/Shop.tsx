@@ -5,13 +5,13 @@ import Filters from "../components/common/Filters";
 import { useMemo, useState } from "react";
 import { useProductForm } from "../components/admin/products/useProductForm";
 import { Badge } from "../components/common/Badge";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   shopProductApi,
   type GetAllShopProductsResponse,
   type ShopProduct,
+  type UpdateShopProduct,
 } from "../types/shopProduct.interfaces";
-import { unitOptions } from "../types/adminDashboard.interfaces";
 import {
   Pagination,
   PaginationContent,
@@ -23,8 +23,13 @@ import {
 import Loader from "../components/common/Loader";
 import ProductDetailsDialog from "../components/inventory & shop/ProductDetailsDialog";
 import { SHOP_PAGE_SIZE } from "../constants";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
+import ProductDeleteDialog from "../components/admin/products/ProductDeleteDialog";
+import { getUnitLabel } from "../utils/helper";
 
 function Shop() {
+  const { userRole } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
@@ -115,6 +120,19 @@ function Shop() {
   const shopProducts = useMemo(() => data?.data || [], [data]);
   const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / (data?.pageSize || 10));
+
+  const queryClient = useQueryClient();
+  const { mutate: deleteShopProduct } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateShopProduct }) =>
+      shopProductApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shopProducts"] });
+      toast.success("تم حذف المنتج بنجاح");
+    },
+    onError: () => {
+      toast.error("حدث خطأ أثناء حذف المنتج");
+    },
+  });
 
   return (
     <HomeLayout>
@@ -365,13 +383,7 @@ function Shop() {
                           <div className="text-center">
                             <p className="font-semibold text-[#6d4c41]">
                               الكمية: {shopProduct.quantity}{" "}
-                              {
-                                unitOptions.find(
-                                  (unit) =>
-                                    unit.value ===
-                                    shopProduct.product.unitForRetail,
-                                )?.label
-                              }
+                              {getUnitLabel(shopProduct.product.unitForRetail)}
                             </p>
                           </div>
 
@@ -381,13 +393,7 @@ function Shop() {
                             </p>
                             <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
-                              {
-                                unitOptions.find(
-                                  (unit) =>
-                                    unit.value ===
-                                    shopProduct.product.unitForRetail,
-                                )?.label
-                              }
+                              {getUnitLabel(shopProduct.product.unitForRetail)}
                               {"   "}
                               بالتجزئة
                             </p>
@@ -402,18 +408,32 @@ function Shop() {
                             </p>
                             <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
-                              {
-                                unitOptions.find(
-                                  (unit) =>
-                                    unit.value ===
-                                    shopProduct.product.unitForWholeSale,
-                                )?.label
-                              }
+                              {getUnitLabel(
+                                shopProduct.product.unitForWholeSale,
+                              )}
                               {"   "}
                               بالجملة
                             </p>
                           </div>
                         </div>
+
+                        {userRole === "admin" && (
+                          <ProductDeleteDialog
+                            productName={shopProduct.product.name}
+                            onClick={() =>
+                              deleteShopProduct({
+                                id: shopProduct.id.toString(),
+                                data: {
+                                  quantity: 0,
+                                  smallBoxesPerBigBox: 0,
+                                  fullBigBoxesCount: 0,
+                                  openedBigBoxRemaining: 0,
+                                  openedRollRemaining: 0,
+                                },
+                              })
+                            }
+                          />
+                        )}
                       </div>
                     </CardContent>
                   </Card>

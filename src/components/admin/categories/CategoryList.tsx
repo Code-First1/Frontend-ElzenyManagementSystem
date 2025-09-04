@@ -21,24 +21,26 @@ function CategoryList({ categories }: { categories: Category[] }) {
                     <h3 className="text-secondary-foreground mb-1 font-semibold">
                       {category.name}
                     </h3>
-                    <div className="flex flex-wrap gap-1">
-                      الفئات الفرعية:
-                      {category?.subCategories?.map((subcategory) => (
-                        <Badge
-                          key={
-                            typeof subcategory === "string"
+                    {category.subCategories.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        الفئات الفرعية:
+                        {category?.subCategories?.map((subcategory) => (
+                          <Badge
+                            key={
+                              typeof subcategory === "string"
+                                ? subcategory
+                                : subcategory.id
+                            }
+                            variant="outline"
+                            className="text-sm"
+                          >
+                            {typeof subcategory === "string"
                               ? subcategory
-                              : subcategory.id
-                          }
-                          variant="outline"
-                          className="text-sm"
-                        >
-                          {typeof subcategory === "string"
-                            ? subcategory
-                            : subcategory.name}
-                        </Badge>
-                      ))}
-                    </div>
+                              : subcategory.name}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 

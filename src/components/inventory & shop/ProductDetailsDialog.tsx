@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "../../ui/Dialog";
 import type { ShopProduct } from "../../types/shopProduct.interfaces";
-import { unitOptions } from "../../types/adminDashboard.interfaces";
+import { getUnitLabel } from "../../utils/helper";
 
 function ProductDetailsDialog({
   showProductModal,
@@ -61,12 +61,7 @@ function ProductDetailsDialog({
                     الوحدة بالتجزئة:{" "}
                   </label>
                   <span className="text-[#6d4c41]">
-                    {
-                      unitOptions.find(
-                        (unit) =>
-                          unit.value === showProductModal.product.unitForRetail,
-                      )?.label
-                    }
+                    {getUnitLabel(showProductModal.product.unitForRetail)}
                   </span>
                 </div>
 
@@ -83,13 +78,7 @@ function ProductDetailsDialog({
                     الوحدة بالجملة:{" "}
                   </label>
                   <span className="text-[#6d4c41]">
-                    {
-                      unitOptions.find(
-                        (unit) =>
-                          unit.value ===
-                          showProductModal.product.unitForWholeSale,
-                      )?.label
-                    }
+                    {getUnitLabel(showProductModal.product.unitForWholeSale)}
                   </span>
                 </div>
 
@@ -99,12 +88,7 @@ function ProductDetailsDialog({
                   </label>
                   <span className="text-[#6d4c41]">
                     {showProductModal.quantity}{" "}
-                    {
-                      unitOptions.find(
-                        (unit) =>
-                          unit.value === showProductModal.product.unitForRetail,
-                      )?.label
-                    }
+                    {getUnitLabel(showProductModal.product.unitForRetail)}
                   </span>
                 </div>
 

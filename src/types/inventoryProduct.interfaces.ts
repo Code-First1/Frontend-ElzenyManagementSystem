@@ -25,6 +25,11 @@ export interface GetInventoryCounts {
   emptyProductsCount: number;
   totalProductsCount: number;
 }
+
+export interface CreateInventoryToShopTransactions {
+  productId: number;
+  quantity: number;
+}
 /////////////////////////////////// Create API instances //////////////////////////////
 export const InventoryProductApi = createCrudApi<
   InventoryProduct,
@@ -40,3 +45,7 @@ export const InventoryDashboardCriticalProductsApi =
   createCrudApi<InventoryProduct>("InventoryDashboard/critical");
 export const InventoryDashboardEmptyProductsApi =
   createCrudApi<InventoryProduct>("InventoryDashboard/empty");
+export const InventoryToShopTransactionApi =
+  createCrudApi<CreateInventoryToShopTransactions>(
+    "inventoryToShopTransactions",
+  );

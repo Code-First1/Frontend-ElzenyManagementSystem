@@ -82,13 +82,13 @@ function AlertDialog({ open, onOpenChange, children }: AlertDialogProps) {
 }
 
 const AlertDialogTrigger = React.forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
+  HTMLDivElement,
+  React.ButtonHTMLAttributes<HTMLDivElement>
 >(({ className = "", children, ...props }, ref) => {
   return (
-    <button ref={ref} className={`${className}`} {...props}>
+    <div ref={ref} className={`${className}`} {...props}>
       {children}
-    </button>
+    </div>
   );
 });
 

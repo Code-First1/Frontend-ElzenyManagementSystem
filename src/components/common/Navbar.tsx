@@ -139,7 +139,7 @@ function Navbar() {
                     )}
                     {currentUser?.role === "Admin" ? "مدير" : "بائع"}
                   </div>
-                  <p>Username</p>
+                  <p>{currentUser?.displayName}</p>
                 </div>
 
                 <button

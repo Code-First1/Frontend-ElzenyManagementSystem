@@ -13,6 +13,10 @@ export const Unit = {
     value: "Roll",
     label: "رول",
   },
+  Box: {
+    value: "box",
+    label: "كرتونة",
+  },
 } as const;
 
 export type UnitValue = keyof typeof Unit;
@@ -32,6 +36,7 @@ export interface Product {
   prieceForWholeSale: number;
   priceForRetail: number;
   pictureUrl: ""; // not added yet, need to handle
+  quantityForOrigin: number;
   categoryName: string;
   subCategoryName: string;
 }

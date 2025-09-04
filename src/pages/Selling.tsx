@@ -25,10 +25,13 @@ import { Input } from "../components/common/Input";
 import toast from "react-hot-toast";
 import Cart from "../components/selling/Cart";
 import { SELLING_PAGE_SIZE } from "../constants";
+import { Label } from "../components/common/Label";
+import { Switch } from "../ui/Switch";
 
 export interface CartItem {
   shopProduct: ShopProduct;
   quantity: number;
+  isWholesale: boolean;
 }
 
 function Selling() {
@@ -41,6 +44,9 @@ function Selling() {
     [key: string]: number;
   }>({});
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [wholesaleMode, setWholesaleMode] = useState<{
+    [key: string]: boolean;
+  }>({});
   const filters = {
     searchTerm,
     selectedCategory,
@@ -123,43 +129,59 @@ function Selling() {
   };
 
   const addToCart = (product: ShopProduct, quantity: number = 1) => {
+    const isWholesale = wholesaleMode[product.id] || false;
     const existingItem = cart.find(
-      (item) => item.shopProduct.id === product.id,
+      (item) =>
+        item.shopProduct.id === product.id && item.isWholesale === isWholesale,
     );
 
     if (existingItem) {
       const newQuantity = existingItem.quantity + quantity;
-      if (newQuantity > product.quantity) {
-        toast.error(
-          `الكمية المطلوبة تتجاوز المخزون المتاح (${product.quantity} ${
-            unitOptions.find(
-              (unit) => unit.value === product.product.unitForRetail,
-            )?.label
-          })`,
-        );
-        return;
-      }
+      // if (newQuantity > product.quantity) {
+      //   toast.error(
+      //     `الكمية المطلوبة تتجاوز المخزون المتاح (${product.quantity} ${
+      //       unitOptions.find(
+      //         (unit) =>
+      //           unit.value ===
+      //           (isWholesale
+      //             ? product.product.unitForWholeSale
+      //             : product.product.unitForRetail),
+      //       )?.label
+      //     })`,
+      //   );
+      //   return;
+      // }
       setCart(
         cart.map((item) =>
-          item.shopProduct.id === product.id
+          item.shopProduct.id === product.id && item.isWholesale === isWholesale
             ? { ...item, quantity: newQuantity }
             : item,
         ),
       );
     } else {
-      if (quantity > product.quantity) {
-        toast.error(
-          `الكمية المطلوبة تتجاوز المخزون المتاح (${product.quantity} ${
-            unitOptions.find(
-              (unit) => unit.value === product.product.unitForRetail,
-            )?.label
-          })`,
-        );
-        return;
-      }
-      setCart([...cart, { shopProduct: product, quantity }]);
+      // if (quantity > product.quantity) {
+      //   toast.error(
+      //     `الكمية المطلوبة تتجاوز المخزون المتاح (${product.quantity} ${
+      //       unitOptions.find(
+      //         (unit) =>
+      //           unit.value ===
+      //           (isWholesale
+      //             ? product.product.unitForWholeSale
+      //             : product.product.unitForRetail),
+      //       )?.label
+      //     })`,
+      //   );
+      //   return;
+      // }
+      setCart([...cart, { shopProduct: product, quantity, isWholesale }]);
     }
-    toast.success(`تم إضافة ${product.product.name} إلى السلة`);
+    toast.success(
+      `تم إضافة ${product.product.name} إلى السلة ${isWholesale ? "(جملة)" : "(تجزئة)"}`,
+    );
+  };
+
+  const handleWholesaleModeChange = (productId: number, checked: boolean) => {
+    setWholesaleMode({ ...wholesaleMode, [productId]: checked });
   };
 
   return (
@@ -244,19 +266,37 @@ function Selling() {
                               </div>
 
                               <div className="space-y-1">
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between gap-1">
                                   <span className="text-sm text-[#6d4c41]">
                                     السعر:
                                   </span>
                                   <span className="font-bold text-[#8b4513]">
                                     $
-                                    {shopProduct.product.priceForRetail.toFixed(
-                                      2,
-                                    )}
+                                    {wholesaleMode[shopProduct.id]
+                                      ? shopProduct.product.prieceForWholeSale.toFixed(
+                                          2,
+                                        )
+                                      : shopProduct.product.priceForRetail.toFixed(
+                                          2,
+                                        )}
+                                  </span>
+                                  لكل
+                                  <span>
+                                    {
+                                      unitOptions.find(
+                                        (unit) =>
+                                          unit.value ===
+                                          (wholesaleMode[shopProduct.id]
+                                            ? shopProduct.product
+                                                .unitForWholeSale
+                                            : shopProduct.product
+                                                .unitForRetail),
+                                      )?.label
+                                    }
                                   </span>
                                 </div>
 
-                                <div className="flex items-center justify-between">
+                                {/* <div className="flex items-center justify-between">
                                   <span className="text-sm text-[#6d4c41]">
                                     المتاح:
                                   </span>
@@ -267,17 +307,44 @@ function Selling() {
                                         unitOptions.find(
                                           (unit) =>
                                             unit.value ===
-                                            shopProduct.product.unitForRetail,
+                                            (wholesaleMode[shopProduct.id]
+                                              ? shopProduct.product
+                                                  .unitForWholeSale
+                                              : shopProduct.product
+                                                  .unitForRetail),
                                         )?.label
                                       }
                                     </span>
                                   </div>
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>
 
                           <div className="mt-3 space-y-2">
+                            <div className="mt-4 rounded-lg border border-[#8b4513]/20 bg-[#f5f5dc]/50 p-3">
+                              <div className="flex items-center justify-between">
+                                <Label
+                                  htmlFor={`wholesale-switch-${shopProduct.id}`}
+                                  className="cursor-pointer text-base font-semibold text-[#5d4037]"
+                                >
+                                  بيع بالجملة
+                                </Label>
+                                <Switch
+                                  id={`wholesale-switch-${shopProduct.id}`}
+                                  checked={
+                                    wholesaleMode[shopProduct.id] || false
+                                  }
+                                  onCheckedChange={(checked) =>
+                                    handleWholesaleModeChange(
+                                      shopProduct.id,
+                                      checked,
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+
                             <div className="flex items-center space-x-2">
                               <button
                                 onClick={() => addToCart(shopProduct, 1)}
@@ -290,9 +357,7 @@ function Selling() {
 
                             <div className="flex items-center space-x-5">
                               <Input
-                                type="number"
-                                min={1}
-                                value={customQuantity[shopProduct.id] || 1}
+                                value={customQuantity[shopProduct.id] || 0}
                                 onChange={(e) =>
                                   handleCustomQuantityChange(
                                     shopProduct.id.toString(),

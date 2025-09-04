@@ -8,11 +8,9 @@ import {
   DialogTitle,
 } from "../../ui/Dialog";
 import { Badge } from "../common/Badge";
-import {
-  unitOptions,
-  type Category,
-} from "../../types/adminDashboard.interfaces";
+import { type Category } from "../../types/adminDashboard.interfaces";
 import type { InventoryProduct } from "../../types/inventoryProduct.interfaces";
+import { getUnitLabel } from "../../utils/helper";
 
 type StockStatusDialogProps = {
   showStockModal: string | null;
@@ -55,21 +53,6 @@ function StockStatusDialog({
   modalProducts,
   categories,
 }: StockStatusDialogProps) {
-  // Filter products based on the selected stock status
-  const filteredProducts = modalProducts.filter((product) => {
-    if (showStockModal === "good") {
-      return product.quantity > product.minimumQuantity;
-    } else if (showStockModal === "critical") {
-      return (
-        product.quantity === product.minimumQuantity && product.quantity > 0
-      );
-    } else if (showStockModal === "empty") {
-      return product.quantity === 0;
-    }
-
-    return false;
-  });
-
   return (
     <Dialog
       open={!!showStockModal}
@@ -91,12 +74,12 @@ function StockStatusDialog({
         </DialogHeader>
 
         <div className="space-y-3">
-          {filteredProducts.length === 0 ? (
+          {modalProducts.length === 0 ? (
             <p className="py-4 text-center text-[#6d4c41]">
               لا توجد منتجات في هذه الفئة
             </p>
           ) : (
-            filteredProducts.map((inventoryProduct) => {
+            modalProducts.map((inventoryProduct) => {
               const category = categories?.find(
                 (c) => c.name === inventoryProduct.product.categoryName,
               );
@@ -124,12 +107,7 @@ function StockStatusDialog({
                     </h4>
                     <p className="text-sm text-[#6d4c41]">
                       {inventoryProduct.quantity}{" "}
-                      {
-                        unitOptions.find(
-                          (unit) =>
-                            unit.value === inventoryProduct.product.unit,
-                        )?.label
-                      }{" "}
+                      {getUnitLabel(inventoryProduct.product.unitForWholeSale)}{" "}
                       - {inventoryProduct.product.categoryName}
                     </p>
                   </div>

@@ -1,7 +1,13 @@
-import { AlertCircle, AlertTriangle, CheckCircle, Package } from "lucide-react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  ArrowRightLeft,
+  CheckCircle,
+  Package,
+  Plus,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import HomeLayout from "../layouts/HomeLayout";
-
 import Filters from "../components/common/Filters";
 import { useMemo, useState } from "react";
 import { useProductForm } from "../components/admin/products/useProductForm";
@@ -18,7 +24,6 @@ import {
   type GetInventoryCounts,
   type InventoryProduct,
 } from "../types/inventoryProduct.interfaces";
-import { unitOptions } from "../types/adminDashboard.interfaces";
 import {
   Pagination,
   PaginationContent,
@@ -29,8 +34,13 @@ import {
 } from "../ui/Pagination";
 import Loader from "../components/common/Loader";
 import { INVENTORY_PAGE_SIZE } from "../constants";
+import { useAppContext } from "../context/AppContext";
+import AddStockDialog from "../components/inventory & shop/AddStockDialog";
+import TransferStockDialog from "../components/inventory & shop/TransferStockDialog";
+import { getUnitLabel } from "../utils/helper";
 
 function Inventory() {
+  const { userRole } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
@@ -41,6 +51,20 @@ function Inventory() {
   >("all");
   const [page, setPage] = useState(1);
   const [showStockModal, setShowStockModal] = useState<string | null>(null);
+  const [showAddStockModal, setShowAddStockModal] = useState<string | null>(
+    null,
+  );
+  const [addStockQuantity, setAddStockQuantity] = useState<string>("");
+  const [showTransferModal, setShowTransferModal] = useState<string | null>(
+    null,
+  );
+  const [transferQuantity, setTransferQuantity] = useState<string>("");
+
+  const openTransferModal = (productId: number) => {
+    setShowTransferModal(productId.toString());
+    setTransferQuantity("");
+  };
+
   const sortParam = `${sortBy}${sortOrder}`;
   const { categories } = useProductForm();
   const filters = {
@@ -91,7 +115,6 @@ function Inventory() {
       },
     ],
     queryFn: () => {
-      // Create sort parameter in the format: namedesc, nameasc, pricedesc, priceasc
       return InventoryProductApi.getAll<GetAllInventoryProductsResponse>({
         pageIndex: page,
         pageSize: INVENTORY_PAGE_SIZE,
@@ -178,9 +201,9 @@ function Inventory() {
     switch (status) {
       case "good":
         return "المنتجات ذات المخزون الجيد";
-      case "low":
-        return "المنتجات منخفضة المخزون";
       case "critical":
+        return "المنتجات منخفضة المخزون";
+      case "empty":
         return "المنتجات نافدة المخزون";
       default:
         return "المنتجات";
@@ -377,13 +400,9 @@ function Inventory() {
                               />
                               <span className="font-semibold text-[#5d4037]">
                                 {inventoryProduct.quantity}{" "}
-                                {
-                                  unitOptions.find(
-                                    (unit) =>
-                                      unit.value ===
-                                      inventoryProduct.product.unitForWholeSale,
-                                  )?.label
-                                }
+                                {getUnitLabel(
+                                  inventoryProduct.product.unitForWholeSale,
+                                )}
                               </span>
                             </div>
                             <p className="text-sm text-[#6d4c41]">
@@ -400,14 +419,9 @@ function Inventory() {
                             </p>
                             <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
-                              {
-                                unitOptions.find(
-                                  (unit) =>
-                                    unit.value ===
-                                    inventoryProduct.product.unitForRetail,
-                                )?.label
-                              }
-                              {"   "}
+                              {getUnitLabel(
+                                inventoryProduct.product.unitForRetail,
+                              )}{" "}
                               بالتجزئة
                             </p>
                           </div>
@@ -421,30 +435,12 @@ function Inventory() {
                             </p>
                             <p className="text-sm text-[#6d4c41]">
                               لكل{" "}
-                              {
-                                unitOptions.find(
-                                  (unit) =>
-                                    unit.value ===
-                                    inventoryProduct.product.unitForWholeSale,
-                                )?.label
-                              }
-                              {"   "}
+                              {getUnitLabel(
+                                inventoryProduct.product.unitForWholeSale,
+                              )}{" "}
                               بالجملة
                             </p>
                           </div>
-
-                          {/* <div className="text-center">
-                            <p className="font-semibold text-[#5d4037]">
-                              $
-                              {(
-                                inventoryProduct.quantity *
-                                inventoryProduct.product.priceForRetail
-                              ).toFixed(2)}
-                            </p>
-                            <p className="text-sm text-[#6d4c41]">
-                              قيمة المخزون
-                            </p>
-                          </div> */}
 
                           <div className="text-center">
                             <Badge
@@ -455,6 +451,33 @@ function Inventory() {
                             </Badge>
                           </div>
                         </div>
+
+                        {userRole === "admin" && (
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                setShowAddStockModal(
+                                  inventoryProduct.id.toString(),
+                                );
+                                setAddStockQuantity("");
+                              }}
+                              className="bg-primary hover:bg-secondary-foreground flex items-center justify-center rounded-md border border-[#8b4513]/30 px-4 py-2 text-white"
+                            >
+                              <Plus className="mt-1 h-4 w-4" />
+                              إضافة
+                            </button>
+                            <button
+                              onClick={() =>
+                                openTransferModal(inventoryProduct.id)
+                              }
+                              className="flex items-center justify-center rounded-md border border-[#8b4513]/30 px-3 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+                              disabled={inventoryProduct.quantity === 0}
+                            >
+                              <ArrowRightLeft className="mt-1 h-4 w-4" />
+                              نقل
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -530,6 +553,24 @@ function Inventory() {
               : emptyProducts) ?? []
         }
         categories={categories ?? []}
+      />
+
+      {/* Add Stock Modal */}
+      <AddStockDialog
+        showAddStockModal={showAddStockModal}
+        setShowAddStockModal={setShowAddStockModal}
+        addStockQuantity={addStockQuantity}
+        setAddStockQuantity={setAddStockQuantity}
+        products={inventoryProducts}
+      />
+
+      {/* Transfer Stock Modal */}
+      <TransferStockDialog
+        showTransferModal={showTransferModal}
+        transferQuantity={transferQuantity}
+        setShowTransferModal={setShowTransferModal}
+        setTransferQuantity={setTransferQuantity}
+        products={inventoryProducts}
       />
     </HomeLayout>
   );

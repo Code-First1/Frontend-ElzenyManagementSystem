@@ -8,7 +8,6 @@ import { useProductForm } from "../components/admin/products/useProductForm";
 import { useQuery } from "@tanstack/react-query";
 import {
   productApi,
-  unitOptions,
   type GetProductResponse,
 } from "../types/adminDashboard.interfaces";
 import {
@@ -21,6 +20,7 @@ import {
 } from "../ui/Pagination";
 import Filters from "../components/common/Filters";
 import { useNavigate } from "react-router-dom";
+import { getUnitLabel } from "../utils/helper";
 
 function Products() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -209,12 +209,7 @@ function Products() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-[#6d4c41]">
-                        السعر بالتجزئة لكل{" "}
-                        {
-                          unitOptions.find(
-                            (unit) => unit.value === product.unitForRetail,
-                          )?.label
-                        }
+                        السعر بالتجزئة لكل {getUnitLabel(product.unitForRetail)}
                       </span>
                       <span className="text-primary text-lg font-bold">
                         ${product.priceForRetail.toFixed(2)}
@@ -224,11 +219,7 @@ function Products() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-[#6d4c41]">
                         السعر بالجملة لكل{" "}
-                        {
-                          unitOptions.find(
-                            (unit) => unit.value === product.unitForWholeSale,
-                          )?.label
-                        }
+                        {getUnitLabel(product.unitForWholeSale)}
                       </span>
                       <span className="text-primary text-lg font-bold">
                         ${product.prieceForWholeSale.toFixed(2)}

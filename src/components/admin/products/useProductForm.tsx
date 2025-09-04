@@ -30,6 +30,7 @@ export function useProductForm() {
     priceForRetail: 0,
     prieceForWholeSale: 0,
     pictureUrl: "",
+    quantityForOrigin: 0,
     categoryId: 0,
     subCategoryId: 0,
   });
@@ -42,6 +43,7 @@ export function useProductForm() {
       unitForWholeSale: "",
       priceForRetail: 0,
       prieceForWholeSale: 0,
+      quantityForOrigin: 0,
       pictureUrl: "",
       categoryId: 0,
       subCategoryId: 0,

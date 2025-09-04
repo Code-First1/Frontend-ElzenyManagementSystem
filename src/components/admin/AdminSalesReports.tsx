@@ -1,17 +1,20 @@
-import { DollarSign, Loader } from "lucide-react";
-import { Card, CardContent } from "../../ui/Card";
+import { Loader } from "lucide-react";
 import {
   InvoiceApi,
   type GetAllInvoicesResponse,
 } from "../../types/invoice.interfaces";
 import { useQuery } from "@tanstack/react-query";
 import Reports from "../../pages/Reports";
+import { useState } from "react";
 
 function AdminSalesReports() {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const { data, isLoading } = useQuery({
-    queryKey: ["invoices"],
+    queryKey: ["invoices", { CreateAt: selectedDate.toISOString() }],
     queryFn: () => {
-      return InvoiceApi.getAll<GetAllInvoicesResponse>();
+      return InvoiceApi.getAll<GetAllInvoicesResponse>({
+        CreateAt: selectedDate.toISOString(),
+      });
     },
   });
   const inovices = data?.data;
@@ -22,27 +25,16 @@ function AdminSalesReports() {
           تقارير المبيعات
         </h2>
       </div>
-
       {isLoading ? (
         <div className="flex h-30 w-full items-center justify-center">
-          <Loader size="lg" color="text-primary" />
-        </div>
-      ) : inovices?.length === 0 ? (
-        <div className="space-y-4">
-          <Card className="border-primary/20">
-            <CardContent className="p-8 text-center">
-              <DollarSign className="text-primary/50 mx-auto mb-4 h-12 w-12" />
-              <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
-                لا توجد مبيعات
-              </h3>
-              <p className="text-muted-foreground">
-                ستظهر معاملات المبيعات هنا بمجرد البدء في بيع المنتجات.
-              </p>
-            </CardContent>
-          </Card>
+          <Loader color="text-primary" />
         </div>
       ) : (
-        <Reports invoices={inovices ?? []} />
+        <Reports
+          invoices={inovices ?? []}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
       )}
     </div>
   );

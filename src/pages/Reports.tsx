@@ -17,8 +17,13 @@ import { useState } from "react";
 import Calendar from "../components/common/Calender";
 import type { Invoice } from "../types/invoice.interfaces";
 
-function Reports({ invoices }: { invoices: Invoice[] }) {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+type ReportsProps = {
+  selectedDate: Date;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  invoices: Invoice[];
+};
+
+function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const formatDate = (date: Date) => {
@@ -33,15 +38,9 @@ function Reports({ invoices }: { invoices: Invoice[] }) {
   return (
     <div>
       {/* Header */}
-      <div className="text-right">
-        <h1 className="text-3xl font-bold text-[#5d4037]">
-          تقرير المبيعات اليومي
-        </h1>
-        <p className="mt-1 text-[#6d4c41]">عرض مبيعات يوم محدد بالتفصيل</p>
-      </div>
 
       {/* Date Selection */}
-      <Card className="border-[#8b4513]/20">
+      <Card className="my-5 border-[#8b4513]/20">
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-[#5d4037]">
             <div className="flex items-center">
@@ -202,81 +201,72 @@ function Reports({ invoices }: { invoices: Invoice[] }) {
               </div>
             ) : (
               <div className="space-y-4">
-                {[].map((transactionSales, index) => {
-                  //   const firstSale = transactionSales[0];
-                  //   const transactionTotal = transactionSales.reduce(
-                  //     (sum, sale) => sum + sale.total,
-                  //     0,
-                  //   );
-
+                {invoices.map((invoice) => {
                   return (
                     <div
-                      key={index}
+                      key={invoice.id}
                       className="transaction rounded-lg border border-[#8b4513]/10 p-4"
                     >
                       {/* Transaction Header */}
                       <div className="transaction-header mb-3 flex items-center justify-between border-b border-[#8b4513]/10 pb-2">
                         <div className="text-right">
                           <div className="font-semibold text-[#5d4037]">
-                            عملية رقم {index + 1}
+                            عملية رقم {invoice.id}
                           </div>
                           <div className="text-sm text-[#6d4c41]">
-                            {/* البائع: {firstSale.soldBy} */}
+                            البائع: {invoice.userName}
                           </div>
                         </div>
                         <div className="text-left">
                           <div className="font-bold text-[#8b4513]">
-                            {/* ${transactionTotal.toFixed(2)} */}
+                            ${invoice.total}
                           </div>
                           <div className="text-sm text-[#6d4c41]">
-                            {/* {formatTime(new Date(firstSale.timestamp))} */}
+                            {invoice.dateTime.split("T")[0]}
                           </div>
                         </div>
                       </div>
 
                       {/* Transaction Items */}
                       <div className="space-y-2">
-                        {invoices.flatMap((invoice) =>
-                          invoice.invoiceProduct.map((product) => {
-                            return (
+                        {invoice.invoiceProduct.map((product, i) => (
+                          <div
+                            key={i}
+                            className="sale-item flex items-center justify-between rounded bg-[#f9f9f9] p-2"
+                          >
+                            <div className="flex items-center space-x-3">
                               <div
-                                key={invoice.id}
-                                className="sale-item flex items-center justify-between rounded bg-[#f9f9f9] p-2"
+                                className="flex h-8 w-8 items-center justify-center rounded"
+                                style={{
+                                  backgroundColor: "#8b451320",
+                                }}
                               >
-                                <div className="flex items-center space-x-3">
-                                  <div
-                                    className="flex h-8 w-8 items-center justify-center rounded"
-                                    style={{
-                                      backgroundColor: "#8b451320",
-                                    }}
-                                  >
-                                    <Package
-                                      className="h-4 w-4"
-                                      style={{
-                                        color: "#8b4513",
-                                      }}
-                                    />
-                                  </div>
-                                  <div>
-                                    <div className="font-semibold text-[#5d4037]">
-                                      {product?.productName || "منتج محذوف"}
-                                    </div>
-                                    <div className="text-sm text-[#6d4c41]">
-                                      {product.quantity} وحدة × $
-                                      {product.pricePerUnit?.toFixed(2) ||
-                                        "0.00"}
-                                    </div>
-                                  </div>
+                                <Package
+                                  className="h-4 w-4"
+                                  style={{
+                                    color: "#8b4513",
+                                  }}
+                                />
+                              </div>
+                              <div>
+                                <div className="font-semibold text-[#5d4037]">
+                                  {product?.productName}
                                 </div>
-                                <div className="text-left">
-                                  <div className="font-bold text-[#8b4513]">
-                                    ${invoice.total?.toFixed(2) || "0.00"}
-                                  </div>
+                                <div className="text-sm text-[#6d4c41]">
+                                  {product.quantity} وحدة × $
+                                  {product.pricePerUnit?.toFixed(2) || "0.00"}
                                 </div>
                               </div>
-                            );
-                          }),
-                        )}
+                            </div>
+                            <div className="text-left">
+                              <div className="font-bold text-[#8b4513]">
+                                $
+                                {product.quantity * product.pricePerUnit ||
+                                  "0.00"}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   );

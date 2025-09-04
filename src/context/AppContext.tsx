@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react";
 import { useGetCurrentUserQuery } from "../components/auth/useAuth";
-import type { User } from "../types/auth.interfaces";
+import type { Role, User } from "../types/auth.interfaces";
 
 type AppContextType = {
   isAuthenticated: boolean;
   currentUser: User | null;
   isLoading: boolean;
+  userRole: Role;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -18,11 +19,13 @@ export function AppContextProvider({
   const { data: currentUser, isLoading, isSuccess } = useGetCurrentUserQuery();
 
   const isAuthenticated = isSuccess && !!currentUser;
+  const userRole = currentUser?.role.toLowerCase() as Role;
 
   const value = {
     isLoading,
     isAuthenticated,
     currentUser: currentUser ?? null,
+    userRole,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

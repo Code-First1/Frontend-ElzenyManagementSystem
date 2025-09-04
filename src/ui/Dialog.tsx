@@ -79,13 +79,13 @@ function Dialog({ open, onOpenChange, children }: DialogProps) {
 }
 
 const DialogTrigger = React.forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
+  HTMLDivElement,
+  React.ButtonHTMLAttributes<HTMLDivElement>
 >(({ className = "", children, ...props }, ref) => {
   return (
-    <button ref={ref} className={`${className}`} {...props}>
+    <div ref={ref} className={`${className}`} {...props}>
       {children}
-    </button>
+    </div>
   );
 });
 

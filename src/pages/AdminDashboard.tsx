@@ -53,12 +53,12 @@ export default function AdminDashboard() {
           >
             تقارير المبيعات
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="analytics"
             className="data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             التحليلات
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="overview">
