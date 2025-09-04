@@ -1,7 +1,7 @@
 import HomeLayout from "../layouts/HomeLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/Tabs";
 import AdminAnalysis from "../components/admin/AdminAnalysis";
-import AdminSalesReports from "../components/admin/AdminSalesReports";
+import AdminSalesReports from "../components/admin/reports/AdminSalesReports";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminProducts from "../components/admin/products/AdminProducts";
 import AdminCategoires from "../components/admin/categories/AdminCategoires";
@@ -22,7 +22,7 @@ export default function AdminDashboard() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6 gap-5">
+        <TabsList className="mb-20 grid w-full grid-cols-2 gap-2 md:mb-0 md:grid-cols-5">
           <TabsTrigger
             value="overview"
             className="data-[state=active]:bg-primary data-[state=active]:text-white"

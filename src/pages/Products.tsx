@@ -102,7 +102,9 @@ function Products() {
           <h1 className="text-secondary-foreground text-3xl font-bold">
             قائمة المنتجات
           </h1>
-          <p className="mt-1 text-[#6d4c41]">عرض وتصفح جميع المنتجات المتاحة</p>
+          <p className="text-muted-foreground mt-1">
+            عرض وتصفح جميع المنتجات المتاحة
+          </p>
         </div>
         <button
           onClick={() => navigate("/selling")}
@@ -125,7 +127,7 @@ function Products() {
       {/* Results Summary */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <p className="text-[#6d4c41]">
+          <p className="text-muted-foreground">
             عرض {products.length} من أصل {data?.totalCount || 0} منتج
           </p>
         </div>
@@ -134,7 +136,7 @@ function Products() {
           selectedSubcategory !== "all") && (
           <Badge
             variant="secondary"
-            className="text-secondary-foreground bg-[#f5e6d3]"
+            className="text-secondary-foreground bg-secondary"
           >
             تصفية نشطة
           </Badge>
@@ -153,7 +155,7 @@ function Products() {
             <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
               لا توجد منتجات
             </h3>
-            <p className="mb-4 text-[#6d4c41]">
+            <p className="text-muted-foreground mb-4">
               لم يتم العثور على منتجات تطابق معايير البحث
             </p>
             <button
@@ -203,12 +205,12 @@ function Products() {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <p className="text-right text-[#6d4c41]">
+                  <p className="text-muted-foreground text-right">
                     {product.description}
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-[#6d4c41]">
+                      <span className="text-muted-foreground text-sm">
                         السعر بالتجزئة لكل {getUnitLabel(product.unitForRetail)}
                       </span>
                       <span className="text-primary text-lg font-bold">
@@ -217,7 +219,7 @@ function Products() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-[#6d4c41]">
+                      <span className="text-muted-foreground text-sm">
                         السعر بالجملة لكل{" "}
                         {getUnitLabel(product.unitForWholeSale)}
                       </span>
@@ -227,7 +229,7 @@ function Products() {
                     </div>
 
                     {/* <div className="flex items-center justify-between">
-                      <span className="text-sm text-[#6d4c41]">
+                      <span className="text-sm text-muted-foreground">
                         المخزون المتاح
                       </span>
                       <div className="flex items-center space-x-2 ">
@@ -253,10 +255,10 @@ function Products() {
                     </div> */}
 
                     {/* <div className="flex items-center justify-between">
-                      <span className="text-sm text-[#6d4c41]">
+                      <span className="text-sm text-muted-foreground">
                         الحد الأدنى
                       </span>
-                      <span className="text-sm text-[#6d4c41]">
+                      <span className="text-sm text-muted-foreground">
                         {product.minStock} {product.unit}
                       </span>
                     </div> */}

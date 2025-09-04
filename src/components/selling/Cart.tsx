@@ -112,9 +112,9 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
 
   return (
     <div className="mt-22 space-y-6">
-      <Card className="sticky top-30 border-[#8b4513]/20">
+      <Card className="border-primary/20 sticky top-30">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between text-[#5d4037]">
+          <CardTitle className="text-secondary-foreground flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <ShoppingCart className="h-5 w-5" />
               <span>سلة المشتريات</span>
@@ -122,7 +122,7 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
             {cart.length > 0 && (
               <Badge
                 variant="secondary"
-                className="bg-[#f5e6d3] text-[#5d4037]"
+                className="bg-secondary text-secondary-foreground"
               >
                 {cart.length}
               </Badge>
@@ -133,9 +133,9 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
         <CardContent className="space-y-4">
           {cart.length === 0 ? (
             <div className="py-8 text-center">
-              <ShoppingCart className="mx-auto mb-4 h-12 w-12 text-[#8b4513]/50" />
-              <p className="text-[#6d4c41]">السلة فارغة</p>
-              <p className="mt-1 text-sm text-[#6d4c41]">
+              <ShoppingCart className="text-primary/50 mx-auto mb-4 h-12 w-12" />
+              <p className="text-muted-foreground">السلة فارغة</p>
+              <p className="text-muted-foreground mt-1 text-sm">
                 اختر المنتجات لإضافتها
               </p>
             </div>
@@ -150,7 +150,7 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
                       className="rounded-lg bg-[#faf8f5] p-3"
                     >
                       <div className="mb-2 flex items-start justify-between">
-                        <h4 className="text-right text-sm font-medium text-[#5d4037]">
+                        <h4 className="text-secondary-foreground text-right text-sm font-medium">
                           {cartProduct.shopProduct.product.name}
                         </h4>
                         <button
@@ -170,7 +170,7 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
                                 cartProduct.quantity - 1,
                               )
                             }
-                            className="hover:bg-secondary h-5 w-5 rounded-sm border border-[#8b4513]/30"
+                            className="hover:bg-secondary border-primary/30 h-5 w-5 rounded-sm border"
                           >
                             <Minus className="h-4 w-4" />
                           </button>
@@ -186,7 +186,7 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
                                 parseInt(e.target.value) || 1,
                               )
                             }
-                            className="w-16 border border-[#8b4513]/30 text-center text-sm"
+                            className="border-primary/30 w-16 border text-center text-sm"
                           />
 
                           <button
@@ -196,13 +196,13 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
                                 cartProduct.quantity + 1,
                               );
                             }}
-                            className="hover:bg-secondary h-5 w-5 rounded-sm border border-[#8b4513]/30"
+                            className="hover:bg-secondary border-primary/30 h-5 w-5 rounded-sm border"
                           >
                             <Plus className="h-4 w-4" />
                           </button>
                         </div>
 
-                        <span className="text-sm text-[#6d4c41]">
+                        <span className="text-muted-foreground text-sm">
                           {getUnitLabel(
                             cartProduct.shopProduct.product.unitForRetail,
                           )}
@@ -210,7 +210,7 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
                       </div>
 
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-[#6d4c41]">
+                        <span className="text-muted-foreground">
                           $
                           {(cartProduct.isWholesale
                             ? cartProduct.shopProduct.product.prieceForWholeSale
@@ -223,7 +223,7 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
                             </Badge>
                           )}
                         </span>
-                        <span className="font-semibold text-[#8b4513]">
+                        <span className="text-primary font-semibold">
                           $
                           {(
                             (cartProduct.isWholesale
@@ -243,17 +243,17 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[#6d4c41]">عدد القطع:</span>
-                  <span className="font-medium text-[#5d4037]">
+                  <span className="text-muted-foreground">عدد القطع:</span>
+                  <span className="text-secondary-foreground font-medium">
                     {cartItemsCount}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between text-lg">
-                  <span className="font-semibold text-[#5d4037]">
+                  <span className="text-secondary-foreground font-semibold">
                     الإجمالي:
                   </span>
-                  <span className="text-xl font-bold text-[#8b4513]">
+                  <span className="text-primary text-xl font-bold">
                     ${cartTotal.toFixed(2)}
                   </span>
                 </div>

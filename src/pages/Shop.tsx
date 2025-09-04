@@ -137,57 +137,41 @@ function Shop() {
   return (
     <HomeLayout>
       <div className="text-right">
-        <h1 className="text-3xl font-bold text-[#5d4037]">المحل</h1>
+        <h1 className="text-2xl font-bold text-[#5d4037] md:text-3xl">المحل</h1>
         <p className="mt-1 text-[#6d4c41]">عرض شامل لمنتجات وإحصائيات المحل</p>
       </div>
 
       {/* Shop Overview Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         <Card className="border-[#8b4513]/20">
           <CardContent className="p-4 text-center">
-            <Package className="mx-auto mb-2 h-8 w-8 text-[#8b4513]" />
-            <div className="text-2xl font-bold text-[#5d4037]">
+            <Package className="mx-auto mb-2 h-6 w-6 text-[#8b4513] md:h-8 md:w-8" />
+            <div className="text-xl font-bold text-[#5d4037] md:text-2xl">
               {data?.totalCount}
             </div>
-            <p className="text-sm text-[#6d4c41]">إجمالي المنتجات</p>
+            <p className="text-xs text-[#6d4c41] md:text-sm">إجمالي المنتجات</p>
           </CardContent>
         </Card>
 
-        {/* <Card className="border-green-200">
-          <CardContent className="p-4 text-center">
-            <DollarSign className="mx-auto mb-2 h-8 w-8 text-green-600" />
-            <div className="text-2xl font-bold text-green-700">
-              $
-              {shopProducts
-                .reduce(
-                  (total, shopProduct) =>
-                    total +
-                    shopProduct.quantity * shopProduct.product.priceForRetail,
-                  0,
-                )
-                .toFixed(2)}
-            </div>
-            <p className="text-sm text-green-600">قيمة المخزون</p>
-          </CardContent>
-        </Card> */}
-
         <Card className="border-blue-200">
           <CardContent className="p-4 text-center">
-            <ShoppingBag className="mx-auto mb-2 h-8 w-8 text-blue-600" />
-            <div className="text-2xl font-bold text-blue-700">
+            <ShoppingBag className="mx-auto mb-2 h-6 w-6 text-blue-600 md:h-8 md:w-8" />
+            <div className="text-xl font-bold text-blue-700 md:text-2xl">
               {/* {shopStats.totalSales} */}
             </div>
-            <p className="text-sm text-blue-600">إجمالي المبيعات</p>
+            <p className="text-xs text-blue-600 md:text-sm">إجمالي المبيعات</p>
           </CardContent>
         </Card>
 
         <Card className="border-purple-200">
           <CardContent className="p-4 text-center">
-            <BarChart3 className="mx-auto mb-2 h-8 w-8 text-purple-600" />
-            <div className="text-2xl font-bold text-purple-700">
+            <BarChart3 className="mx-auto mb-2 h-6 w-6 text-purple-600 md:h-8 md:w-8" />
+            <div className="text-xl font-bold text-purple-700 md:text-2xl">
               {/* ${shopStats.totalRevenue.toFixed(2)} */}
             </div>
-            <p className="text-sm text-purple-600">إجمالي الإيرادات</p>
+            <p className="text-xs text-purple-600 md:text-sm">
+              إجمالي الإيرادات
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -203,9 +187,9 @@ function Shop() {
       />
 
       {/* Results Summary */}
-      <div className="flex items-center justify-between">
+      <div className="mt-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2">
-          <p className="text-[#6d4c41]">
+          <p className="text-sm text-[#6d4c41] md:text-base">
             عرض {shopProducts.length} من أصل {data?.totalCount || 0} منتج
           </p>
         </div>
@@ -222,7 +206,7 @@ function Shop() {
       </div>
 
       {/* Products Display */}
-      <Card className="border-[#8b4513]/20">
+      <Card className="mt-4 border-[#8b4513]/20">
         <CardHeader>
           <CardTitle className="text-[#5d4037]">كتالوج المنتجات</CardTitle>
         </CardHeader>
@@ -242,117 +226,12 @@ function Shop() {
               </p>
             </div>
           ) : (
-            // <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            //   {shopProducts.map((shopProduct) => {
-            //     return (
-            //       <Card
-            //         key={shopProduct.id}
-            //         className="cursor-pointer border-[#8b4513]/10 transition-shadow hover:shadow-md"
-            //         onClick={() => setShowProductModal(shopProduct)}
-            //       >
-            //         <CardContent className="space-y-3 p-5">
-            //           {/* Product Icon */}
-            //           <div className="flex justify-center">
-            //             <div className="bg-secondary flex h-12 w-12 items-center justify-center rounded-lg">
-            //               <Package />
-            //             </div>
-            //           </div>
-
-            //           {/* Product Details */}
-            //           <div className="space-y-2 text-center">
-            //             <h3 className="line-clamp-2 font-semibold text-[#5d4037]">
-            //               {shopProduct.product.name}
-            //             </h3>
-            //             <p className="text-sm text-[#6d4c41]">
-            //               الفئة:{" "}
-            //               <Badge variant="outline">
-            //                 {shopProduct.product.categoryName}
-            //               </Badge>
-            //             </p>
-            //             {shopProduct.product.subCategoryName && (
-            //               <p className="text-sm text-[#6d4c41]">
-            //                 الفئة الفرعية:{" "}
-            //                 <Badge variant="outline">
-            //                   {shopProduct.product.subCategoryName}
-            //                 </Badge>
-            //               </p>
-            //             )}
-
-            //             <div className="mt-3 flex items-center justify-between">
-            //               <div className="flex flex-col items-center gap-1">
-            //                 <div className="font-bold text-[#8b4513]">
-            //                   ${shopProduct.product.priceForRetail.toFixed(2)}
-            //                 </div>
-            //                 <div className="text-sm text-[#6d4c41]">
-            //                   لكل{" "}
-            //                   {
-            //                     unitOptions.find(
-            //                       (unit) =>
-            //                         unit.value ===
-            //                         shopProduct.product.unitForRetail,
-            //                     )?.label
-            //                   }{" "}
-            //                   بالتجزئة
-            //                 </div>
-            //               </div>
-
-            //               <div className="flex flex-col items-center gap-1">
-            //                 <div className="font-bold text-[#8b4513]">
-            //                   $
-            //                   {shopProduct.product.prieceForWholeSale.toFixed(
-            //                     2,
-            //                   )}
-            //                 </div>
-            //                 <div className="text-sm text-[#6d4c41]">
-            //                   لكل{" "}
-            //                   {
-            //                     unitOptions.find(
-            //                       (unit) =>
-            //                         unit.value ===
-            //                         shopProduct.product.unitForWholeSale,
-            //                     )?.label
-            //                   }{" "}
-            //                   بالجملة
-            //                 </div>
-            //               </div>
-
-            //               <div className="flex flex-col items-center gap-1">
-            //                 <div className="space-x-1 text-sm font-semibold text-[#5d4037]">
-            //                   <span className="pt-1">
-            //                     {shopProduct.quantity}
-            //                   </span>
-            //                   <span>
-            //                     {
-            //                       unitOptions.find(
-            //                         (unit) =>
-            //                           unit.value ===
-            //                           shopProduct.product.unitForRetail,
-            //                       )?.label
-            //                     }
-            //                   </span>
-            //                 </div>
-            //                 <div className="text-sm text-[#6d4c41]">متوفر</div>
-            //               </div>
-            //             </div>
-
-            //             {/* {popularity > 0 && (
-            //               <Badge variant="secondary" className="text-xs">
-            //                 <Star className="ml-1 h-3 w-3" />
-            //                 {popularity} مبيعة
-            //               </Badge>
-            //             )} */}
-            //           </div>
-            //         </CardContent>
-            //       </Card>
-            //     );
-            //   })}
-            // </div>
             <div className="space-y-3">
               {shopProducts.map((shopProduct) => {
                 return (
                   <Card key={shopProduct.id} className="border-[#8b4513]/10">
                     <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
+                      <div className="flex flex-col items-center gap-4 sm:flex-row sm:space-x-4">
                         {/* Product Icon */}
                         <div className="bg-secondary flex h-12 w-12 items-center justify-center rounded-lg">
                           <Package />
@@ -364,20 +243,22 @@ function Shop() {
                             <h3 className="font-bold text-[#5d4037]">
                               {shopProduct.product.name}
                             </h3>
-                            <p className="text-sm text-[#6d4c41]">
-                              الفئة:{" "}
-                              <Badge variant="outline">
-                                {shopProduct.product.categoryName}
-                              </Badge>
-                            </p>
-                            {shopProduct.product.subCategoryName && (
+                            <div className="flex flex-wrap gap-2">
                               <p className="text-sm text-[#6d4c41]">
-                                الفئة الفرعية:{" "}
+                                الفئة:{" "}
                                 <Badge variant="outline">
-                                  {shopProduct.product.subCategoryName}
+                                  {shopProduct.product.categoryName}
                                 </Badge>
                               </p>
-                            )}
+                              {shopProduct.product.subCategoryName && (
+                                <p className="text-sm text-[#6d4c41]">
+                                  الفئة الفرعية:{" "}
+                                  <Badge variant="outline">
+                                    {shopProduct.product.subCategoryName}
+                                  </Badge>
+                                </p>
+                              )}
+                            </div>
                           </div>
 
                           <div className="text-center">
@@ -391,7 +272,7 @@ function Shop() {
                             <p className="font-bold text-[#8b4513]">
                               ${shopProduct.product.priceForRetail.toFixed(2)}
                             </p>
-                            <p className="text-sm text-[#6d4c41]">
+                            <p className="text-xs text-[#6d4c41] md:text-sm">
                               لكل{" "}
                               {getUnitLabel(shopProduct.product.unitForRetail)}
                               {"   "}
@@ -406,7 +287,7 @@ function Shop() {
                                 2,
                               )}
                             </p>
-                            <p className="text-sm text-[#6d4c41]">
+                            <p className="text-xs text-[#6d4c41] md:text-sm">
                               لكل{" "}
                               {getUnitLabel(
                                 shopProduct.product.unitForWholeSale,
@@ -418,21 +299,23 @@ function Shop() {
                         </div>
 
                         {userRole === "admin" && (
-                          <ProductDeleteDialog
-                            productName={shopProduct.product.name}
-                            onClick={() =>
-                              deleteShopProduct({
-                                id: shopProduct.id.toString(),
-                                data: {
-                                  quantity: 0,
-                                  smallBoxesPerBigBox: 0,
-                                  fullBigBoxesCount: 0,
-                                  openedBigBoxRemaining: 0,
-                                  openedRollRemaining: 0,
-                                },
-                              })
-                            }
-                          />
+                          <div className="flex justify-end sm:justify-center">
+                            <ProductDeleteDialog
+                              productName={shopProduct.product.name}
+                              onClick={() =>
+                                deleteShopProduct({
+                                  id: shopProduct.id.toString(),
+                                  data: {
+                                    quantity: 0,
+                                    smallBoxesPerBigBox: 0,
+                                    fullBigBoxesCount: 0,
+                                    openedBigBoxRemaining: 0,
+                                    openedRollRemaining: 0,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
                         )}
                       </div>
                     </CardContent>

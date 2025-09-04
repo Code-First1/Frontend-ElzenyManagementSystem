@@ -7,15 +7,11 @@ import {
   ShoppingBag,
   TrendingUp,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../components/common/Popover";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card";
+import { Popover, PopoverContent, PopoverTrigger } from "../../common/Popover";
 import { useState } from "react";
-import Calendar from "../components/common/Calender";
-import type { Invoice } from "../types/invoice.interfaces";
+import Calendar from "../../common/Calender";
+import type { Invoice } from "../../../types/invoice.interfaces";
 
 type ReportsProps = {
   selectedDate: Date;
@@ -40,16 +36,16 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
       {/* Header */}
 
       {/* Date Selection */}
-      <Card className="my-5 border-[#8b4513]/20">
+      <Card className="border-primary/20 my-5">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between text-[#5d4037]">
+          <CardTitle className="text-secondary-foreground flex items-center justify-between">
             <div className="flex items-center">
               <CalendarIcon className="ml-2 h-5 w-5" />
               اختيار التاريخ
             </div>
             <button
               //   onClick={handlePrint}
-              className="flex items-center rounded-md border border-[#8b4513]/30 px-4 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+              className="border-primary/30 text-secondary-foreground flex items-center rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
             >
               <Download className="ml-1 h-4 w-4" />
               <span>طباعة التقرير</span>
@@ -60,7 +56,7 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
           <div className="flex items-center space-x-4">
             <Popover isOpen={isCalendarOpen} setIsOpen={setIsCalendarOpen}>
               <PopoverTrigger>
-                <button className="flex w-80 items-center justify-start rounded-md border border-[#8b4513]/30 px-4 py-2 text-right">
+                <button className="border-primary/30 flex w-80 items-center justify-start rounded-md border px-4 py-2 text-right">
                   <CalendarIcon className="ml-2 h-4 w-4" />
                   {formatDate(selectedDate)}
                 </button>
@@ -82,7 +78,7 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
             <div className="flex space-x-2">
               <button
                 onClick={() => setSelectedDate(new Date())}
-                className="rounded-md border border-[#8b4513]/30 px-4 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+                className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
               >
                 اليوم
               </button>
@@ -92,7 +88,7 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
                   yesterday.setDate(yesterday.getDate() - 1);
                   setSelectedDate(yesterday);
                 }}
-                className="rounded-md border border-[#8b4513]/30 px-4 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+                className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
               >
                 أمس
               </button>
@@ -110,13 +106,13 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
 
         {/* Daily Statistics */}
         <div className="stats grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="stat-card border-[#8b4513]/20">
+          <Card className="stat-card border-primary/20">
             <CardContent className="p-4 text-center">
-              <ShoppingBag className="mx-auto mb-2 h-8 w-8 text-[#8b4513]" />
-              <div className="text-2xl font-bold text-[#5d4037]">
+              <ShoppingBag className="text-primary mx-auto mb-2 h-8 w-8" />
+              <div className="text-secondary-foreground text-2xl font-bold">
                 {/* {dailyStats.totalSales} */}
               </div>
-              <p className="text-sm text-[#6d4c41]">إجمالي العمليات</p>
+              <p className="text-muted-foreground text-sm">إجمالي العمليات</p>
             </CardContent>
           </Card>
 
@@ -153,9 +149,9 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
 
         {/* Sales by User */}
         {/* {Object.keys(dailyStats.salesByUser).length > 0 && (
-          <Card className="border-[#8b4513]/20">
+          <Card className="border-primary/20">
             <CardHeader>
-              <CardTitle className="flex items-center text-[#5d4037]">
+              <CardTitle className="flex items-center text-secondary-foreground">
                 <User className="ml-2 h-5 w-5" />
                 المبيعات حسب البائع
               </CardTitle>
@@ -165,10 +161,10 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
                 {Object.entries(dailyStats.salesByUser).map(([user, count]) => (
                   <div
                     key={user}
-                    className="rounded-lg border border-[#8b4513]/10 p-3"
+                    className="rounded-lg border border-primary/10 p-3"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-[#5d4037]">
+                      <span className="font-semibold text-secondary-foreground">
                         {user}
                       </span>
                       <Badge variant="secondary">{count} عملية</Badge>
@@ -181,9 +177,9 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
         )} */}
 
         {/* Detailed Transactions */}
-        <Card className="transactions mt-5 border-[#8b4513]/20">
+        <Card className="transactions border-primary/20 mt-5">
           <CardHeader>
-            <CardTitle className="flex items-center text-[#5d4037]">
+            <CardTitle className="text-secondary-foreground flex items-center">
               <FileText className="ml-2 h-5 w-5" />
               تفاصيل العمليات
             </CardTitle>
@@ -191,11 +187,11 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
           <CardContent>
             {invoices.length === 0 ? (
               <div className="py-8 text-center">
-                <ShoppingBag className="mx-auto mb-4 h-12 w-12 text-[#8b4513]/50" />
-                <h3 className="mb-2 text-lg font-semibold text-[#5d4037]">
+                <ShoppingBag className="text-primary/50 mx-auto mb-4 h-12 w-12" />
+                <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
                   لا توجد مبيعات
                 </h3>
-                <p className="text-[#6d4c41]">
+                <p className="text-muted-foreground">
                   لم يتم تسجيل أي مبيعات في هذا التاريخ
                 </p>
               </div>
@@ -205,23 +201,23 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
                   return (
                     <div
                       key={invoice.id}
-                      className="transaction rounded-lg border border-[#8b4513]/10 p-4"
+                      className="transaction border-primary/10 rounded-lg border p-4"
                     >
                       {/* Transaction Header */}
-                      <div className="transaction-header mb-3 flex items-center justify-between border-b border-[#8b4513]/10 pb-2">
+                      <div className="transaction-header border-primary/10 mb-3 flex items-center justify-between border-b pb-2">
                         <div className="text-right">
-                          <div className="font-semibold text-[#5d4037]">
+                          <div className="text-secondary-foreground font-semibold">
                             عملية رقم {invoice.id}
                           </div>
-                          <div className="text-sm text-[#6d4c41]">
+                          <div className="text-muted-foreground text-sm">
                             البائع: {invoice.userName}
                           </div>
                         </div>
                         <div className="text-left">
-                          <div className="font-bold text-[#8b4513]">
+                          <div className="text-primary font-bold">
                             ${invoice.total}
                           </div>
-                          <div className="text-sm text-[#6d4c41]">
+                          <div className="text-muted-foreground text-sm">
                             {invoice.dateTime.split("T")[0]}
                           </div>
                         </div>
@@ -249,17 +245,17 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
                                 />
                               </div>
                               <div>
-                                <div className="font-semibold text-[#5d4037]">
+                                <div className="text-secondary-foreground font-semibold">
                                   {product?.productName}
                                 </div>
-                                <div className="text-sm text-[#6d4c41]">
+                                <div className="text-muted-foreground text-sm">
                                   {product.quantity} وحدة × $
                                   {product.pricePerUnit?.toFixed(2) || "0.00"}
                                 </div>
                               </div>
                             </div>
                             <div className="text-left">
-                              <div className="font-bold text-[#8b4513]">
+                              <div className="text-primary font-bold">
                                 $
                                 {product.quantity * product.pricePerUnit ||
                                   "0.00"}

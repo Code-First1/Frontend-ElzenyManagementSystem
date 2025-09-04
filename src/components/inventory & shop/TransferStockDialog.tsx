@@ -90,10 +90,10 @@ export default function TransferStockDialog({
       <DialogOverlay open={!!showTransferModal} />
       <DialogContent open={!!showTransferModal} className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2 text-[#5d4037]">
+          <DialogTitle className="text-secondary-foreground flex items-center space-x-2">
             <span>نقل مخزون</span>
           </DialogTitle>
-          <DialogDescription className="text-right text-[#6d4c41]">
+          <DialogDescription className="text-muted-foreground text-right">
             أدخل الكمية التي تريد نقلها من المخزون الحالي
           </DialogDescription>
         </DialogHeader>
@@ -110,10 +110,10 @@ export default function TransferStockDialog({
                     <Package />
                   </div>
                   <div className="flex-1 text-right">
-                    <h4 className="font-semibold text-[#5d4037]">
+                    <h4 className="text-secondary-foreground font-semibold">
                       {inventoryProduct.product.name}
                     </h4>
-                    <p className="text-sm text-[#6d4c41]">
+                    <p className="text-muted-foreground text-sm">
                       المخزون المتاح: {inventoryProduct.quantity}{" "}
                       {getUnitLabel(inventoryProduct.product.unitForWholeSale)}
                     </p>
@@ -121,7 +121,10 @@ export default function TransferStockDialog({
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="transfer-quantity" className="text-[#5d4037]">
+                  <Label
+                    htmlFor="transfer-quantity"
+                    className="text-secondary-foreground"
+                  >
                     الكمية المراد نقلها
                   </Label>
                   <Input
@@ -132,11 +135,11 @@ export default function TransferStockDialog({
                     )})`}
                     value={transferQuantity}
                     onChange={(e) => setTransferQuantity(e.target.value)}
-                    className="border-[#8b4513]/30 text-right"
+                    className="border-primary/30 text-right"
                     min="1"
                     max={inventoryProduct.quantity}
                   />
-                  <p className="text-right text-sm text-[#6d4c41]">
+                  <p className="text-muted-foreground text-right text-sm">
                     الحد الأقصى: {inventoryProduct.quantity}{" "}
                     {getUnitLabel(inventoryProduct.product.unitForWholeSale)}
                   </p>
@@ -171,7 +174,7 @@ export default function TransferStockDialog({
         <DialogFooter className="flex space-x-2">
           <button
             onClick={closeTransferModal}
-            className="rounded-md border border-[#8b4513]/30 px-4 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+            className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
           >
             إلغاء
           </button>

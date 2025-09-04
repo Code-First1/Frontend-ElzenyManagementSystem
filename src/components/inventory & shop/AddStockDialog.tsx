@@ -91,10 +91,10 @@ function AddStockDialog({
       <DialogOverlay open={!!showAddStockModal} />
       <DialogContent open={!!showAddStockModal} className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2 text-[#5d4037]">
+          <DialogTitle className="text-secondary-foreground flex items-center space-x-2">
             <span>إضافة مخزون</span>
           </DialogTitle>
-          <DialogDescription className="text-right text-[#6d4c41]">
+          <DialogDescription className="text-muted-foreground text-right">
             أدخل الكمية التي تريد إضافتها إلى المخزون الحالي
           </DialogDescription>
         </DialogHeader>
@@ -113,10 +113,10 @@ function AddStockDialog({
                     </div>
                   </div>
                   <div className="flex-1 text-right">
-                    <h4 className="font-semibold text-[#5d4037]">
+                    <h4 className="text-secondary-foreground font-semibold">
                       {invenotryProducts.product.name}
                     </h4>
-                    <p className="text-sm text-[#6d4c41]">
+                    <p className="text-muted-foreground text-sm">
                       المخزون الحالي: {invenotryProducts.quantity}{" "}
                       {
                         unitOptions.find(
@@ -130,7 +130,10 @@ function AddStockDialog({
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="add-quantity" className="text-[#5d4037]">
+                  <Label
+                    htmlFor="add-quantity"
+                    className="text-secondary-foreground"
+                  >
                     الكمية المراد إضافتها
                   </Label>
                   <Input
@@ -145,7 +148,7 @@ function AddStockDialog({
                     })`}
                     value={addStockQuantity}
                     onChange={(e) => setAddStockQuantity(e.target.value)}
-                    className="border-[#8b4513]/30 text-right"
+                    className="border-primary/30 text-right"
                     min="1"
                   />
                 </div>
@@ -177,13 +180,13 @@ function AddStockDialog({
         <DialogFooter className="flex space-x-2">
           <button
             onClick={closeAddStockModal}
-            className="rounded-md border border-[#8b4513]/30 px-4 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+            className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
           >
             إلغاء
           </button>
           <button
             onClick={handleAddStock}
-            className="flex items-center gap-1 rounded-md bg-[#8b4513] px-4 py-2 text-white hover:bg-[#5d4037]"
+            className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
             disabled={
               !addStockQuantity ||
               isNaN(parseInt(addStockQuantity)) ||

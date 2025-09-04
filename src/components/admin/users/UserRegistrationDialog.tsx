@@ -267,7 +267,7 @@ export function UserRegistrationDialog({
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="hover:text-secondary-foreground absolute top-1/2 left-3 -translate-y-1/2 transform text-[#6d4c41]"
+                className="hover:text-secondary-foreground text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2 transform"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -303,7 +303,7 @@ export function UserRegistrationDialog({
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="hover:text-secondary-foreground absolute top-1/2 left-3 -translate-y-1/2 transform text-[#6d4c41]"
+                className="hover:text-secondary-foreground text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2 transform"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -321,7 +321,7 @@ export function UserRegistrationDialog({
               className={
                 formData.role === "admin"
                   ? "bg-primary text-white"
-                  : "text-secondary-foreground bg-[#f5e6d3]"
+                  : "text-secondary-foreground bg-secondary"
               }
             >
               {formData.role === "admin" ? (

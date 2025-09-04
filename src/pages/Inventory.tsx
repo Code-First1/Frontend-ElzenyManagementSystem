@@ -85,7 +85,6 @@ function Inventory() {
     return category?.subCategories || [];
   }, [selectedCategory, categories]);
 
-  // Convert stockFilter to backend number format
   const getStockFilterValue = (
     filter: typeof stockFilter,
   ): number | undefined => {
@@ -130,6 +129,7 @@ function Inventory() {
       });
     },
   });
+
   const inventoryProducts = useMemo(() => data?.data || [], [data]);
   const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / (data?.pageSize || 10));
@@ -212,9 +212,7 @@ function Inventory() {
 
   const { data: countsData } = useQuery({
     queryKey: ["inventoryCounts"],
-    queryFn: () => {
-      return InventoryDashboardCountsApi.getAll<GetInventoryCounts>();
-    },
+    queryFn: () => InventoryDashboardCountsApi.getAll<GetInventoryCounts>(),
   });
   const goodCount = countsData?.goodProductsCount;
   const criticalCount = countsData?.criticalProductsCount;
@@ -223,43 +221,38 @@ function Inventory() {
 
   const { data: goodProducts } = useQuery({
     queryKey: ["inventoryGoodProducts"],
-    queryFn: () => {
-      return InventoryDashboardGoodProductsApi.getAll();
-    },
+    queryFn: () => InventoryDashboardGoodProductsApi.getAll(),
   });
   const { data: criticalProducts } = useQuery({
     queryKey: ["inventoryCriticalProducts"],
-    queryFn: () => {
-      return InventoryDashboardCriticalProductsApi.getAll();
-    },
+    queryFn: () => InventoryDashboardCriticalProductsApi.getAll(),
   });
   const { data: emptyProducts } = useQuery({
     queryKey: ["inventoryEmptyProducts"],
-    queryFn: () => {
-      return InventoryDashboardEmptyProductsApi.getAll();
-    },
+    queryFn: () => InventoryDashboardEmptyProductsApi.getAll(),
   });
 
   return (
     <HomeLayout>
-      {/* Header */}
       <div className="text-right">
-        <h1 className="text-3xl font-bold text-[#5d4037]">إدارة المخزون</h1>
-        <p className="mt-1 text-[#6d4c41]">مراقبة وإدارة مستويات المخزون</p>
+        <h1 className="text-secondary-foreground text-3xl font-bold">
+          إدارة المخزون
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          مراقبة وإدارة مستويات المخزون
+        </p>
       </div>
 
-      {/* Inventory Overview Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-[#8b4513]/20">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="border-primary/20">
           <CardContent className="p-4 text-center">
-            <Package className="mx-auto mb-2 h-8 w-8 text-[#8b4513]" />
-            <div className="text-2xl font-bold text-[#5d4037]">
+            <Package className="text-primary mx-auto mb-2 h-8 w-8" />
+            <div className="text-secondary-foreground text-2xl font-bold">
               {allItemsCount}
             </div>
-            <p className="text-sm text-[#6d4c41]">إجمالي المنتجات</p>
+            <p className="text-muted-foreground text-sm">إجمالي المنتجات</p>
           </CardContent>
         </Card>
-
         <Card
           className="cursor-pointer border-green-200 transition-shadow hover:shadow-md"
           onClick={() => setShowStockModal("good")}
@@ -270,7 +263,6 @@ function Inventory() {
             <p className="text-sm text-green-600">مخزون جيد</p>
           </CardContent>
         </Card>
-
         <Card
           className="cursor-pointer border-yellow-200 transition-shadow hover:shadow-md"
           onClick={() => setShowStockModal("critical")}
@@ -283,7 +275,6 @@ function Inventory() {
             <p className="text-sm text-yellow-600">مخزون منخفض</p>
           </CardContent>
         </Card>
-
         <Card
           className="cursor-pointer border-red-200 transition-shadow hover:shadow-md"
           onClick={() => setShowStockModal("empty")}
@@ -296,7 +287,6 @@ function Inventory() {
         </Card>
       </div>
 
-      {/* Filters and Search */}
       <Filters
         forSection="inventory"
         filters={filters}
@@ -306,29 +296,27 @@ function Inventory() {
         availableSubcategories={availableSubcategories}
       />
 
-      {/* Results Summary */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <p className="text-[#6d4c41]">
-            عرض {inventoryProducts.length} من أصل {data?.totalCount || 0} منتج
-          </p>
-        </div>
+      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-muted-foreground">
+          عرض {inventoryProducts.length} من أصل {data?.totalCount || 0} منتج
+        </p>
         {(searchTerm ||
           selectedCategory !== "all" ||
           selectedSubcategory !== "all") && (
           <Badge
             variant="secondary"
-            className="text-secondary-foreground bg-[#f5e6d3]"
+            className="text-secondary-foreground bg-secondary"
           >
             تصفية نشطة
           </Badge>
         )}
       </div>
 
-      {/* Products Table */}
-      <Card className="border-[#8b4513]/20">
+      <Card className="border-primary/20">
         <CardHeader>
-          <CardTitle className="text-[#5d4037]">تفاصيل المخزون</CardTitle>
+          <CardTitle className="text-secondary-foreground">
+            تفاصيل المخزون
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -337,11 +325,11 @@ function Inventory() {
             </div>
           ) : inventoryProducts.length === 0 ? (
             <div className="py-8 text-center">
-              <Package className="mx-auto mb-4 h-12 w-12 text-[#8b4513]/50" />
-              <h3 className="mb-2 text-lg font-semibold text-[#5d4037]">
+              <Package className="text-primary/50 mx-auto mb-4 h-12 w-12" />
+              <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
                 لا توجد منتجات
               </h3>
-              <p className="text-[#6d4c41]">
+              <p className="text-muted-foreground">
                 لم يتم العثور على منتجات تطابق معايير البحث
               </p>
             </div>
@@ -351,40 +339,32 @@ function Inventory() {
                 const stockInfo = getStockStatus(inventoryProduct);
                 const StockIcon = stockInfo.icon;
                 return (
-                  <Card
-                    key={inventoryProduct.id}
-                    className="border-[#8b4513]/10"
-                  >
+                  <Card key={inventoryProduct.id} className="border-primary/10">
                     <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        {/* Product Icon */}
-                        <div className="bg-secondary flex h-12 w-12 items-center justify-center rounded-lg">
-                          <Package />
-                        </div>
-
-                        {/* Product Details */}
-                        <div className="grid flex-1 grid-cols-1 items-center gap-4 md:grid-cols-6">
-                          <div className="space-y-2 text-right md:col-span-2">
-                            <h3 className="font-bold text-[#5d4037]">
+                      <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+                        <div className="flex flex-1 items-center gap-4">
+                          <div className="bg-secondary flex h-12 w-12 shrink-0 items-center justify-center rounded-lg">
+                            <Package />
+                          </div>
+                          <div className="space-y-1 text-right">
+                            <h3 className="text-secondary-foreground font-bold">
                               {inventoryProduct.product.name}
                             </h3>
-                            <p className="text-sm text-[#6d4c41]">
-                              الفئة:{" "}
+                            <div className="flex flex-wrap items-center gap-2">
                               <Badge variant="outline">
                                 {inventoryProduct.product.categoryName}
                               </Badge>
-                            </p>
-                            {inventoryProduct.product.subCategoryName && (
-                              <p className="text-sm text-[#6d4c41]">
-                                الفئة الفرعية:{" "}
+                              {inventoryProduct.product.subCategoryName && (
                                 <Badge variant="outline">
                                   {inventoryProduct.product.subCategoryName}
                                 </Badge>
-                              </p>
-                            )}
+                              )}
+                            </div>
                           </div>
+                        </div>
 
-                          <div className="text-center">
+                        <div className="grid flex-shrink-0 grid-cols-2 items-center gap-x-6 gap-y-4 text-center sm:grid-cols-4 lg:gap-x-8">
+                          <div>
                             <div className="flex items-center justify-center space-x-2">
                               <StockIcon
                                 className="h-5 w-5"
@@ -398,51 +378,48 @@ function Inventory() {
                                         : "#22c55e",
                                 }}
                               />
-                              <span className="font-semibold text-[#5d4037]">
+                              <span className="text-secondary-foreground font-semibold">
                                 {inventoryProduct.quantity}{" "}
                                 {getUnitLabel(
                                   inventoryProduct.product.unitForWholeSale,
                                 )}
                               </span>
                             </div>
-                            <p className="text-sm text-[#6d4c41]">
+                            <p className="text-muted-foreground text-sm">
                               الحد الأدنى: {inventoryProduct.minimumQuantity}
                             </p>
                           </div>
-
-                          <div className="text-center">
-                            <p className="font-bold text-[#8b4513]">
+                          <div>
+                            <p className="text-primary font-bold">
                               $
                               {inventoryProduct.product.priceForRetail.toFixed(
                                 2,
                               )}
                             </p>
-                            <p className="text-sm text-[#6d4c41]">
+                            <p className="text-muted-foreground text-sm">
                               لكل{" "}
                               {getUnitLabel(
                                 inventoryProduct.product.unitForRetail,
                               )}{" "}
-                              بالتجزئة
+                              (تجزئة)
                             </p>
                           </div>
-
-                          <div className="text-center">
-                            <p className="font-bold text-[#8b4513]">
+                          <div>
+                            <p className="text-primary font-bold">
                               $
                               {inventoryProduct.product.prieceForWholeSale.toFixed(
                                 2,
                               )}
                             </p>
-                            <p className="text-sm text-[#6d4c41]">
+                            <p className="text-muted-foreground text-sm">
                               لكل{" "}
                               {getUnitLabel(
                                 inventoryProduct.product.unitForWholeSale,
                               )}{" "}
-                              بالجملة
+                              (جملة)
                             </p>
                           </div>
-
-                          <div className="text-center">
+                          <div className="flex justify-center">
                             <Badge
                               variant={stockInfo.variant}
                               className={stockInfo.color}
@@ -453,7 +430,7 @@ function Inventory() {
                         </div>
 
                         {userRole === "admin" && (
-                          <div className="flex gap-2">
+                          <div className="flex shrink-0 items-center justify-end gap-2">
                             <button
                               onClick={() => {
                                 setShowAddStockModal(
@@ -461,20 +438,20 @@ function Inventory() {
                                 );
                                 setAddStockQuantity("");
                               }}
-                              className="bg-primary hover:bg-secondary-foreground flex items-center justify-center rounded-md border border-[#8b4513]/30 px-4 py-2 text-white"
+                              className="bg-primary hover:bg-primary/90 flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm text-white"
                             >
-                              <Plus className="mt-1 h-4 w-4" />
-                              إضافة
+                              <Plus className="h-4 w-4" />
+                              <span>إضافة</span>
                             </button>
                             <button
                               onClick={() =>
                                 openTransferModal(inventoryProduct.id)
                               }
-                              className="flex items-center justify-center rounded-md border border-[#8b4513]/30 px-3 py-2 text-[#5d4037] hover:bg-[#f5f5dc]"
+                              className="border-primary/30 text-secondary-foreground hover:bg-secondary flex items-center justify-center gap-2 rounded-md border px-3 py-2 text-sm"
                               disabled={inventoryProduct.quantity === 0}
                             >
-                              <ArrowRightLeft className="mt-1 h-4 w-4" />
-                              نقل
+                              <ArrowRightLeft className="h-4 w-4" />
+                              <span>نقل</span>
                             </button>
                           </div>
                         )}
@@ -486,7 +463,6 @@ function Inventory() {
             </div>
           )}
 
-          {/* Server-side Pagination */}
           {totalPages > 1 && (
             <div className="mt-6 flex justify-center">
               <Pagination>
@@ -494,7 +470,11 @@ function Inventory() {
                   <PaginationItem>
                     <PaginationPrevious
                       onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                      className={page === 1 ? "opacity-50" : "cursor-pointer"}
+                      className={
+                        page === 1
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
                     />
                   </PaginationItem>
 
@@ -528,7 +508,9 @@ function Inventory() {
                         setPage((p) => Math.min(p + 1, totalPages))
                       }
                       className={
-                        page === totalPages ? "opacity-50" : "cursor-pointer"
+                        page === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
                       }
                     />
                   </PaginationItem>
@@ -539,7 +521,6 @@ function Inventory() {
         </CardContent>
       </Card>
 
-      {/* Stock Status Modal */}
       <StockStatusDialog
         showStockModal={showStockModal}
         setShowStockModal={setShowStockModal}
@@ -555,7 +536,6 @@ function Inventory() {
         categories={categories ?? []}
       />
 
-      {/* Add Stock Modal */}
       <AddStockDialog
         showAddStockModal={showAddStockModal}
         setShowAddStockModal={setShowAddStockModal}
@@ -564,7 +544,6 @@ function Inventory() {
         products={inventoryProducts}
       />
 
-      {/* Transfer Stock Modal */}
       <TransferStockDialog
         showTransferModal={showTransferModal}
         transferQuantity={transferQuantity}

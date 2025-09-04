@@ -35,7 +35,7 @@ function AdminHome() {
             className="bg-primary hover:bg-secondary-foreground flex items-center gap-2 rounded-lg px-4 py-2 text-white"
             onClick={() => navigate("/adminDashboard")}
           >
-            <Settings className="h-4 w-4" />
+            <Settings className="hidden h-4 w-4 lg:block" />
             <p className="pb-1">إدارة النظام</p>
           </button>
         </div>

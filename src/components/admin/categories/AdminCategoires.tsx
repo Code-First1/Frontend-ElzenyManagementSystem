@@ -76,7 +76,7 @@ function AdminCategories() {
       {/* Category Search Bar */}
       <div className="relative mt-4 w-full max-w-3xl">
         <div className="absolute inset-y-0 right-0 flex items-center pr-5">
-          <Search className="h-6 w-6 text-[#6d4c41]" />
+          <Search className="text-muted-foreground h-6 w-6" />
         </div>
         <Input
           type="text"

@@ -191,8 +191,10 @@ function Selling() {
         <div className="space-y-6 lg:col-span-2">
           {/* Header */}
           <div className="text-right">
-            <h1 className="text-3xl font-bold text-[#5d4037]">نقطة البيع</h1>
-            <p className="mt-1 text-[#6d4c41]">
+            <h1 className="text-secondary-foreground text-3xl font-bold">
+              نقطة البيع
+            </h1>
+            <p className="text-muted-foreground mt-1">
               اختر المنتجات لإضافتها إلى السلة
             </p>
           </div>
@@ -212,13 +214,13 @@ function Selling() {
               <Loader size="lg" color="text-primary" />
             </div>
           ) : shopProducts?.length === 0 ? (
-            <Card className="border-[#8b4513]/20">
+            <Card className="border-primary/20">
               <CardContent className="p-8 text-center">
-                <Package className="mx-auto mb-4 h-12 w-12 text-[#8b4513]/50" />
-                <h3 className="mb-2 text-lg font-semibold text-[#5d4037]">
+                <Package className="text-primary/50 mx-auto mb-4 h-12 w-12" />
+                <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
                   لا توجد منتجات متاحة
                 </h3>
-                <p className="text-[#6d4c41]">
+                <p className="text-muted-foreground">
                   لم يتم العثور على منتجات أو جميع المنتجات نفد مخزونها
                 </p>
               </CardContent>
@@ -229,7 +231,7 @@ function Selling() {
                 return (
                   <Card
                     key={shopProduct.id}
-                    className="border-[#8b4513]/20 transition-shadow hover:shadow-md"
+                    className="border-primary/20 transition-shadow hover:shadow-md"
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start space-x-3">
@@ -240,10 +242,10 @@ function Selling() {
                         <div className="flex-1 text-right">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h3 className="font-semibold text-[#5d4037]">
+                              <h3 className="text-secondary-foreground font-semibold">
                                 {shopProduct.product.name}
                               </h3>
-                              <p className="mb-1 text-sm text-[#6d4c41]">
+                              <p className="text-muted-foreground mb-1 text-sm">
                                 {shopProduct.product.description}
                               </p>
 
@@ -251,7 +253,7 @@ function Selling() {
                               <div className="mb-2 flex flex-wrap gap-1">
                                 <Badge
                                   variant="outline"
-                                  className="border-[#8b4513]/30 text-xs text-[#6d4c41]"
+                                  className="border-primary/30 text-muted-foreground text-xs"
                                 >
                                   {shopProduct.product.categoryName}
                                 </Badge>
@@ -267,10 +269,10 @@ function Selling() {
 
                               <div className="space-y-1">
                                 <div className="flex items-center justify-between gap-1">
-                                  <span className="text-sm text-[#6d4c41]">
+                                  <span className="text-muted-foreground text-sm">
                                     السعر:
                                   </span>
-                                  <span className="font-bold text-[#8b4513]">
+                                  <span className="text-primary font-bold">
                                     $
                                     {wholesaleMode[shopProduct.id]
                                       ? shopProduct.product.prieceForWholeSale.toFixed(
@@ -297,7 +299,7 @@ function Selling() {
                                 </div>
 
                                 {/* <div className="flex items-center justify-between">
-                                  <span className="text-sm text-[#6d4c41]">
+                                  <span className="text-sm text-muted-foreground">
                                     المتاح:
                                   </span>
                                   <div className="flex items-center space-x-1">
@@ -322,11 +324,11 @@ function Selling() {
                           </div>
 
                           <div className="mt-3 space-y-2">
-                            <div className="mt-4 rounded-lg border border-[#8b4513]/20 bg-[#f5f5dc]/50 p-3">
+                            <div className="border-primary/20 mt-4 rounded-lg border bg-[#f5f5dc]/50 p-3">
                               <div className="flex items-center justify-between">
                                 <Label
                                   htmlFor={`wholesale-switch-${shopProduct.id}`}
-                                  className="cursor-pointer text-base font-semibold text-[#5d4037]"
+                                  className="text-secondary-foreground cursor-pointer text-base font-semibold"
                                 >
                                   بيع بالجملة
                                 </Label>
@@ -364,13 +366,13 @@ function Selling() {
                                     e.target.value,
                                   )
                                 }
-                                className="border-[#8b4513]/30 text-center"
+                                className="border-primary/30 text-center"
                               />
                               <button
                                 onClick={() =>
                                   addCustomQuantityToCart(shopProduct)
                                 }
-                                className="w-30 rounded-md border border-[#8b4513]/30 text-[#5d4037] hover:bg-[#f5f5dc]"
+                                className="border-primary/30 text-secondary-foreground w-30 rounded-md border hover:bg-[#f5f5dc]"
                               >
                                 إضافة بالكمية
                               </button>

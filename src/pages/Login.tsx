@@ -63,7 +63,7 @@ function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="hover:text-secondary-foreground absolute bottom-1 left-3 -translate-y-1/2 transform text-[#6d4c41]"
+                className="hover:text-secondary-foreground text-muted-foreground absolute bottom-1 left-3 -translate-y-1/2 transform"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />

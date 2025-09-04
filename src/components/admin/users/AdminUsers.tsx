@@ -45,7 +45,9 @@ function AdminUsers() {
               <h3 className="text-secondary-foreground mb-2 text-lg font-semibold">
                 لا يوجد مستخدمين مسجلين
               </h3>
-              <p className="mb-4 text-[#6d4c41]">قم بإضافة أول مستخدم للنظام</p>
+              <p className="text-muted-foreground mb-4">
+                قم بإضافة أول مستخدم للنظام
+              </p>
               <button
                 onClick={() => setIsUserRegDialogOpen(true)}
                 className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
@@ -68,7 +70,7 @@ function AdminUsers() {
                     className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl shadow-sm transition-colors duration-200 ${
                       user.role === "Admin"
                         ? "border-primary/30 bg-primary/10 border"
-                        : "bg-[#f5e6d3]/90"
+                        : "bg-secondary/90"
                     }`}
                   >
                     {user.role === "Admin" ? (

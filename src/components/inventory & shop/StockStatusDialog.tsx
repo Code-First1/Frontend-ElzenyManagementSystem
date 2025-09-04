@@ -65,17 +65,17 @@ function StockStatusDialog({
       >
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <Package className="h-5 w-5 text-[#8b4513]" />
+            <Package className="text-primary h-5 w-5" />
             <span>{getModalTitle(showStockModal || "")}</span>
           </DialogTitle>
-          <DialogDescription className="mt-1 text-right text-sm text-[#6d4c41]">
+          <DialogDescription className="text-muted-foreground mt-1 text-right text-sm">
             عرض جميع المنتجات في هذه الفئة من حالة المخزون
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3">
           {modalProducts.length === 0 ? (
-            <p className="py-4 text-center text-[#6d4c41]">
+            <p className="text-muted-foreground py-4 text-center">
               لا توجد منتجات في هذه الفئة
             </p>
           ) : (
@@ -102,10 +102,10 @@ function StockStatusDialog({
                   </div>
 
                   <div className="flex-1 text-right">
-                    <h4 className="font-medium text-[#5d4037]">
+                    <h4 className="text-secondary-foreground font-medium">
                       {inventoryProduct.product.name}
                     </h4>
-                    <p className="text-sm text-[#6d4c41]">
+                    <p className="text-muted-foreground text-sm">
                       {inventoryProduct.quantity}{" "}
                       {getUnitLabel(inventoryProduct.product.unitForWholeSale)}{" "}
                       - {inventoryProduct.product.categoryName}

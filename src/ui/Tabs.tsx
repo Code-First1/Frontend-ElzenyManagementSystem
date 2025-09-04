@@ -39,7 +39,7 @@ export function TabsList({
 
   return (
     <div
-      className={`text-muted-foreground flex h-9 w-full items-center justify-center rounded-xl bg-[#f0ebe3] p-[3px] ${className}`}
+      className={`text-muted-foreground flex h-30 w-full items-center justify-center rounded-xl bg-[#f0ebe3] p-[3px] md:h-9 ${className}`}
     >
       {React.Children.map(children, (child) => {
         if (
@@ -78,7 +78,7 @@ export function TabsTrigger({
       className={`inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center rounded-xl border px-2 py-1 text-sm font-medium whitespace-nowrap transition-all ${
         isActive
           ? "bg-primary border-transparent text-white"
-          : "text-muted-foreground border-transparent hover:bg-[#f5e6d3]"
+          : "text-muted-foreground hover:bg-secondary border-transparent"
       } focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:outline-primary disabled: focus-visible:ring-[3px] focus-visible:outline-1 disabled:opacity-50 ${className}`}
     >
       {children}

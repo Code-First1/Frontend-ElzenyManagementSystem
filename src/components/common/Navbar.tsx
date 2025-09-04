@@ -118,7 +118,11 @@ function Navbar() {
                 <NavbarLink to="/" icon={Home} text="الرئيسية" />
                 <NavbarLink to="/products" icon={Package} text="المنتجات" />
                 <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
-                <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
+                {currentUser?.role === "Admin" && (
+                  <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
+                )}
+                <NavbarLink to="/shop" icon={Store} text="المحل" />
+
                 {currentUser?.role === "Admin" && (
                   <NavbarLink
                     to="/adminDashboard"
