@@ -34,3 +34,9 @@ export const getCurrentUser = async (): Promise<User> => {
     method: "GET",
   });
 };
+
+export const deleteUser = async (userName: string): Promise<void> => {
+  return api<void>(`/Auth/${userName}`, {
+    method: "DELETE",
+  });
+};

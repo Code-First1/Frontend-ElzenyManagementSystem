@@ -10,8 +10,16 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
 import { useAppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
-function SellerHome() {
+function SellerHome({
+  revenueToday,
+  lowStockProducts,
+}: {
+  revenueToday: number;
+  lowStockProducts: number;
+}) {
+  const navigate = useNavigate();
   const { currentUser } = useAppContext();
   const products = [""];
   return (
@@ -39,9 +47,9 @@ function SellerHome() {
           </CardHeader>
           <CardContent>
             <div className="text-secondary-foreground text-2xl font-bold">
-              $0.00
+              ${revenueToday}
             </div>
-            <p className="text-muted-foreground text-sm">5 مبيعة</p>
+            <p className="text-muted-foreground text-sm">مبيعة</p>
           </CardContent>
         </Card>
 
@@ -69,7 +77,7 @@ function SellerHome() {
           </CardHeader>
           <CardContent>
             <div className="text-secondary-foreground text-2xl font-bold">
-              1
+              {lowStockProducts}
             </div>
             <p className="text-muted-foreground text-sm">منتجات تحتاج انتباه</p>
           </CardContent>
@@ -86,7 +94,7 @@ function SellerHome() {
         <CardContent>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             <button
-              onClick={() => {}}
+              onClick={() => navigate("selling")}
               className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-green-600 text-white hover:bg-green-700"
             >
               <ShoppingCart className="h-6 w-6" />
@@ -94,7 +102,7 @@ function SellerHome() {
             </button>
 
             <button
-              onClick={() => {}}
+              onClick={() => navigate("products")}
               className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
             >
               <Package className="h-6 w-6" />
@@ -102,7 +110,7 @@ function SellerHome() {
             </button>
 
             <button
-              onClick={() => {}}
+              onClick={() => navigate("inventory")}
               className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-orange-600 text-white hover:bg-orange-700"
             >
               <Archive className="h-6 w-6" />

@@ -4,22 +4,37 @@ import {
   Download,
   FileText,
   Package,
+  Search,
   ShoppingBag,
-  TrendingUp,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card";
 import { Popover, PopoverContent, PopoverTrigger } from "../../common/Popover";
 import { useState } from "react";
 import Calendar from "../../common/Calender";
 import type { Invoice } from "../../../types/invoice.interfaces";
+import { Input } from "../../common/Input";
 
 type ReportsProps = {
   selectedDate: Date;
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
   invoices: Invoice[];
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  totalInvoices: number;
+  totalRevenue: number;
+  handleSearch: () => void;
 };
 
-function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
+function Reports({
+  invoices,
+  selectedDate,
+  setSelectedDate,
+  search,
+  setSearch,
+  totalInvoices,
+  totalRevenue,
+  handleSearch,
+}: ReportsProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const formatDate = (date: Date) => {
@@ -31,10 +46,40 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
     });
   };
 
+  const handlePrint = () => {
+    const printContent = document.getElementById("daily-report-content");
+    if (printContent) {
+      const printWindow = window.open("", "_blank");
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>تقرير مبيعات يوم ${formatDate(selectedDate)}</title>
+              <style>
+                body { font-family: Arial, sans-serif; direction: rtl; padding: 20px; }
+                .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #8b4513; padding-bottom: 10px; }
+                .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+                .stat-card { border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
+                .transactions { margin-top: 20px; }
+                .transaction { border: 1px solid #ddd; margin-bottom: 10px; padding: 10px; border-radius: 5px; }
+                .transaction-header { font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 5px; }
+                .sale-item { margin: 5px 0; padding: 5px; background-color: #f9f9f9; }
+                @media print { body { margin: 0; } }
+              </style>
+            </head>
+            <body>
+              ${printContent.innerHTML}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+      }
+    }
+  };
+
   return (
     <div>
-      {/* Header */}
-
       {/* Date Selection */}
       <Card className="border-primary/20 my-5">
         <CardHeader>
@@ -44,7 +89,7 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
               اختيار التاريخ
             </div>
             <button
-              //   onClick={handlePrint}
+              onClick={handlePrint}
               className="border-primary/30 text-secondary-foreground flex items-center rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
             >
               <Download className="ml-1 h-4 w-4" />
@@ -75,22 +120,39 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
               </PopoverContent>
             </Popover>
 
-            <div className="flex space-x-2">
+            <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+              <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+                <button
+                  onClick={() => setSelectedDate(new Date())}
+                  className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
+                >
+                  اليوم
+                </button>
+                <button
+                  onClick={() => {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    setSelectedDate(yesterday);
+                  }}
+                  className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
+                >
+                  أمس
+                </button>
+              </div>
+              <div className="relative w-full sm:w-auto sm:min-w-[250px]">
+                <Search className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform text-[#6d4c41]" />
+                <Input
+                  placeholder="ادخل اسم المستخدم..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="border-primary/30 w-full pr-10 text-right"
+                />
+              </div>
               <button
-                onClick={() => setSelectedDate(new Date())}
-                className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
+                onClick={handleSearch}
+                className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
               >
-                اليوم
-              </button>
-              <button
-                onClick={() => {
-                  const yesterday = new Date();
-                  yesterday.setDate(yesterday.getDate() - 1);
-                  setSelectedDate(yesterday);
-                }}
-                className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
-              >
-                أمس
+                <span>بحث</span>
               </button>
             </div>
           </div>
@@ -104,77 +166,44 @@ function Reports({ invoices, selectedDate, setSelectedDate }: ReportsProps) {
           <h1>محلات الزيني - تقرير مبيعات يوم {formatDate(selectedDate)}</h1>
         </div>
 
-        {/* Daily Statistics */}
-        <div className="stats grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="stat-card border-primary/20">
-            <CardContent className="p-4 text-center">
-              <ShoppingBag className="text-primary mx-auto mb-2 h-8 w-8" />
-              <div className="text-secondary-foreground text-2xl font-bold">
-                {/* {dailyStats.totalSales} */}
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Total Operations Card */}
+          <Card className="border-[#8b4513]/20">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center space-x-4">
+                <div className="rounded-full bg-[#8b4513]/10 p-3">
+                  <ShoppingBag className="h-8 w-8 text-[#8b4513]" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-[#5d4037]">
+                    {totalInvoices}
+                  </div>
+                  <p className="mt-1 text-sm text-[#6d4c41]">إجمالي العمليات</p>
+                </div>
               </div>
-              <p className="text-muted-foreground text-sm">إجمالي العمليات</p>
             </CardContent>
           </Card>
 
-          <Card className="stat-card border-green-200">
-            <CardContent className="p-4 text-center">
-              <DollarSign className="mx-auto mb-2 h-8 w-8 text-green-600" />
-              <div className="text-2xl font-bold text-green-700">
-                {/* ${dailyStats.totalRevenue.toFixed(2)} */}
+          {/* Total Revenue Card */}
+          <Card className="border-[#8b4513]/20">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center space-x-4">
+                <div className="rounded-full bg-green-100 p-3">
+                  <DollarSign className="h-8 w-8 text-green-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-green-700">
+                    {totalRevenue}
+                  </div>
+                  <p className="mt-1 text-sm text-[#6d4c41]">
+                    إجمالي الإيرادات
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-green-600">إجمالي الإيرادات</p>
-            </CardContent>
-          </Card>
-
-          <Card className="stat-card border-blue-200">
-            <CardContent className="p-4 text-center">
-              <Package className="mx-auto mb-2 h-8 w-8 text-blue-600" />
-              <div className="text-2xl font-bold text-blue-700">
-                {/* {dailyStats.totalQuantity} */}
-              </div>
-              <p className="text-sm text-blue-600">إجمالي القطع المباعة</p>
-            </CardContent>
-          </Card>
-
-          <Card className="stat-card border-purple-200">
-            <CardContent className="p-4 text-center">
-              <TrendingUp className="mx-auto mb-2 h-8 w-8 text-purple-600" />
-              <div className="text-2xl font-bold text-purple-700">
-                {/* {dailyStats.uniqueProducts} */}
-              </div>
-              <p className="text-sm text-purple-600">منتجات مختلفة</p>
             </CardContent>
           </Card>
         </div>
-
-        {/* Sales by User */}
-        {/* {Object.keys(dailyStats.salesByUser).length > 0 && (
-          <Card className="border-primary/20">
-            <CardHeader>
-              <CardTitle className="flex items-center text-secondary-foreground">
-                <User className="ml-2 h-5 w-5" />
-                المبيعات حسب البائع
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {Object.entries(dailyStats.salesByUser).map(([user, count]) => (
-                  <div
-                    key={user}
-                    className="rounded-lg border border-primary/10 p-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-secondary-foreground">
-                        {user}
-                      </span>
-                      <Badge variant="secondary">{count} عملية</Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )} */}
 
         {/* Detailed Transactions */}
         <Card className="transactions border-primary/20 mt-5">

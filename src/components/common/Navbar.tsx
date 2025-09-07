@@ -3,7 +3,6 @@ import {
   Home,
   LogOut,
   Menu,
-  Package,
   Settings,
   Shield,
   ShoppingCart,
@@ -50,7 +49,7 @@ function Navbar() {
           {/* Desktop Navigation */}
           <nav className="flex items-center space-x-3 space-x-reverse">
             <NavbarLink to="/" icon={Home} text="الرئيسية" />
-            <NavbarLink to="/products" icon={Package} text="المنتجات" />
+            {/* <NavbarLink to="/products" icon={Package} text="المنتجات" /> */}
             <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
             <NavbarLink to="/inventory" icon={Archive} text="المخزون" />
             <NavbarLink to="/shop" icon={Store} text="المحل" />
@@ -116,7 +115,7 @@ function Navbar() {
               {/* Mobile Navigation */}
               <nav className="flex flex-col space-y-3">
                 <NavbarLink to="/" icon={Home} text="الرئيسية" />
-                <NavbarLink to="/products" icon={Package} text="المنتجات" />
+                {/* <NavbarLink to="/products" icon={Package} text="المنتجات" /> */}
                 <NavbarLink to="/selling" icon={ShoppingCart} text="البيع" />
                 {currentUser?.role === "Admin" && (
                   <NavbarLink to="/inventory" icon={Archive} text="المخزون" />

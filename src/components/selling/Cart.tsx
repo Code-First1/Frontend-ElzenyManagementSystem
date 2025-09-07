@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InvoiceApi, type CreateInvoice } from "../../types/invoice.interfaces";
 import { getUnitLabel } from "../../utils/helper";
+import { useState } from "react";
 
 type CartProps = {
   shopProducts: ShopProduct[];
@@ -22,6 +23,10 @@ type CartProps = {
 };
 
 function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
+  const [transferDetails, setTransferDetails] = useState<
+    { productName: string; transferCount: number }[]
+  >([]);
+
   const cartTotal = cart.reduce(
     (sum, item) =>
       sum +
@@ -79,7 +84,14 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
 
   const queryClient = useQueryClient();
   const { mutate: createProduct } = useMutation<
-    CreateInvoice,
+    {
+      id: number;
+      items: {
+        productName: string;
+        productId: number;
+        transferCount: number;
+      }[];
+    },
     unknown,
     CreateInvoice
   >({
@@ -101,9 +113,24 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
       typing: item.isWholesale,
     }));
 
-    createProduct({ shopId: 1, items: cartItems });
-    toast.success(
-      `تم بيع ${cartItemsCount} منتج بقيمة $${cartTotal.toFixed(2)}`,
+    createProduct(
+      { shopId: 1, items: cartItems },
+      {
+        onSuccess: (data) => {
+          toast.success(
+            `تم بيع ${cartItemsCount} منتج بقيمة $${cartTotal.toFixed(2)}`,
+          );
+
+          setTransferDetails(data.items);
+
+          setCart([]);
+          setCustomQuantity({});
+        },
+        onError: (error) => {
+          toast.error("حدث خطأ أثناء إتمام البيع");
+          console.error("Sale processing error:", error);
+        },
+      },
     );
 
     setCart([]);
@@ -112,6 +139,32 @@ function Cart({ cart, shopProducts, setCart, setCustomQuantity }: CartProps) {
 
   return (
     <div className="mt-22 space-y-6">
+      {transferDetails.length > 0 && (
+        <div className="border-primary/30 rounded-md border bg-white p-3">
+          <h3 className="text-secondary-foreground mb-2 font-semibold">
+            تفاصيل النقل:
+          </h3>
+
+          <table className="text-muted-foreground w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b">
+                <th className="px-3 py-2 text-right">اسم المنتج</th>
+                <th className="px-3 py-2 text-right">العدد المنقول</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transferDetails.map((item, index) => (
+                <tr key={index} className="border-b last:border-0">
+                  <td className="px-3 py-2">{item.productName}</td>
+                  <td className="px-3 py-2 font-medium">
+                    {item.transferCount}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       <Card className="border-primary/20 sticky top-30">
         <CardHeader>
           <CardTitle className="text-secondary-foreground flex items-center justify-between">

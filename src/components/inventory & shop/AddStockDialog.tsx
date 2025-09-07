@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Pencil } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,91 +20,122 @@ import { unitOptions } from "../../types/adminDashboard.interfaces";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type AddStockDialog = {
-  showAddStockModal: string | null;
-  setShowAddStockModal: React.Dispatch<React.SetStateAction<string | null>>;
-  addStockQuantity: string;
-  setAddStockQuantity: React.Dispatch<React.SetStateAction<string>>;
+type StockDialogProps = {
+  mode: "add" | "edit";
+  showModal: string | null;
+  setShowModal: React.Dispatch<React.SetStateAction<string | null>>;
+  stockQuantity: string;
+  setStockQuantity: React.Dispatch<React.SetStateAction<string>>;
   products: InventoryProduct[];
 };
 
-function AddStockDialog({
-  showAddStockModal,
-  setShowAddStockModal,
-  addStockQuantity,
-  setAddStockQuantity,
+function StockDialog({
+  mode,
+  showModal,
+  setShowModal,
+  stockQuantity,
+  setStockQuantity,
   products,
-}: AddStockDialog) {
+}: StockDialogProps) {
   const queryClient = useQueryClient();
   const { mutate: updateQuantity } = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateInventoryProduct }) =>
       InventoryProductApi.update(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inventoryProducts"] });
-      toast.success("تم تحديث المنتج بنجاح");
+      queryClient.invalidateQueries({
+        queryKey: ["inventoryProducts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["inventoryCounts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["inventoryEmptyProducts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["inventoryGoodProducts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["inventoryCriticalProducts"],
+      });
+      toast.success(
+        mode === "add" ? "تم إضافة الكمية بنجاح" : "تم تعديل الكمية بنجاح",
+      );
     },
     onError: () => {
       toast.error("حدث خطأ أثناء تحديث المنتج");
     },
   });
 
-  const handleAddStock = () => {
-    if (!showAddStockModal) return;
+  const handleSubmit = () => {
+    if (!showModal) return;
 
-    const quantity = parseInt(addStockQuantity);
+    const quantity = parseInt(stockQuantity);
     if (isNaN(quantity) || quantity <= 0) {
       toast.error("يرجى إدخال كمية صحيحة");
       return;
     }
 
-    const product = products.find((p) => p.id.toString() === showAddStockModal);
+    const product = products.find((p) => p.id.toString() === showModal);
     if (!product) return;
 
-    const newStock = product.quantity + quantity;
+    const newStock = mode === "add" ? product.quantity + quantity : quantity;
 
     updateQuantity({
-      id: showAddStockModal,
+      id: showModal,
       data: { quantity: newStock, minimumQuantity: product.minimumQuantity },
     });
 
     toast.success(
-      `تم إضافة ${quantity} ${
-        unitOptions.find(
-          (unit) => unit.value === product.product.unitForWholeSale,
-        )?.label
-      } إلى مخزون ${product.product.name}`,
+      mode === "add"
+        ? `تم إضافة ${quantity} ${
+            unitOptions.find(
+              (unit) => unit.value === product.product.unitForWholeSale,
+            )?.label
+          } إلى مخزون ${product.product.name}`
+        : `تم تعديل مخزون ${product.product.name} إلى ${quantity} ${
+            unitOptions.find(
+              (unit) => unit.value === product.product.unitForWholeSale,
+            )?.label
+          }`,
     );
-    setShowAddStockModal(null);
-    setAddStockQuantity("");
+
+    closeModal();
   };
 
-  const closeAddStockModal = () => {
-    setShowAddStockModal(null);
-    setAddStockQuantity("");
+  const closeModal = () => {
+    setShowModal(null);
+    setStockQuantity("");
   };
 
   return (
-    <Dialog
-      open={!!showAddStockModal}
-      onOpenChange={(open) => !open && closeAddStockModal()}
-    >
-      <DialogOverlay open={!!showAddStockModal} />
-      <DialogContent open={!!showAddStockModal} className="max-w-md">
+    <Dialog open={!!showModal} onOpenChange={(open) => !open && closeModal()}>
+      <DialogOverlay open={!!showModal} />
+      <DialogContent open={!!showModal} className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-secondary-foreground flex items-center space-x-2">
-            <span>إضافة مخزون</span>
+            {mode === "add" ? (
+              <>
+                <Plus className="h-5 w-5" />
+                <span>إضافة مخزون</span>
+              </>
+            ) : (
+              <>
+                <Pencil className="h-5 w-5" />
+                <span>تعديل المخزون</span>
+              </>
+            )}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground text-right">
-            أدخل الكمية التي تريد إضافتها إلى المخزون الحالي
+            {mode === "add"
+              ? "أدخل الكمية التي تريد إضافتها إلى المخزون الحالي"
+              : "أدخل الكمية الجديدة للمخزون"}
           </DialogDescription>
         </DialogHeader>
 
-        {showAddStockModal &&
+        {showModal &&
           (() => {
-            const invenotryProducts = products.find(
-              (p) => p.id.toString() === showAddStockModal,
-            );
-            return invenotryProducts ? (
+            const product = products.find((p) => p.id.toString() === showModal);
+            return product ? (
               <div className="space-y-4">
                 <div className="flex items-center space-x-3 rounded-lg border bg-[#f5f5dc]/50 p-3">
                   <div className="flex-shrink-0">
@@ -114,15 +145,14 @@ function AddStockDialog({
                   </div>
                   <div className="flex-1 text-right">
                     <h4 className="text-secondary-foreground font-semibold">
-                      {invenotryProducts.product.name}
+                      {product.product.name}
                     </h4>
                     <p className="text-muted-foreground text-sm">
-                      المخزون الحالي: {invenotryProducts.quantity}{" "}
+                      المخزون الحالي: {product.quantity}{" "}
                       {
                         unitOptions.find(
                           (unit) =>
-                            unit.value ===
-                            invenotryProducts.product.unitForWholeSale,
+                            unit.value === product.product.unitForWholeSale,
                         )?.label
                       }
                     </p>
@@ -131,46 +161,66 @@ function AddStockDialog({
 
                 <div className="space-y-2">
                   <Label
-                    htmlFor="add-quantity"
+                    htmlFor="quantity"
                     className="text-secondary-foreground"
                   >
-                    الكمية المراد إضافتها
+                    {mode === "add"
+                      ? "الكمية المراد إضافتها"
+                      : "الكمية الجديدة"}
                   </Label>
                   <Input
-                    id="add-quantity"
+                    id="quantity"
                     type="number"
-                    placeholder={`أدخل الكمية (${
+                    placeholder={`${
+                      mode === "add"
+                        ? "أدخل الكمية للإضافة"
+                        : "أدخل الكمية الجديدة"
+                    } (${
                       unitOptions.find(
                         (unit) =>
-                          unit.value ===
-                          invenotryProducts.product.unitForWholeSale,
+                          unit.value === product.product.unitForWholeSale,
                       )?.label
                     })`}
-                    value={addStockQuantity}
-                    onChange={(e) => setAddStockQuantity(e.target.value)}
+                    value={stockQuantity}
+                    onChange={(e) => setStockQuantity(e.target.value)}
                     className="border-primary/30 text-right"
                     min="1"
                   />
                 </div>
 
-                {addStockQuantity &&
-                  !isNaN(parseInt(addStockQuantity)) &&
-                  parseInt(addStockQuantity) > 0 && (
-                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-                      <p className="text-right text-sm text-blue-700">
-                        المخزون الجديد سيكون:{" "}
-                        <strong>
-                          {invenotryProducts.quantity +
-                            parseInt(addStockQuantity)}{" "}
-                          {
-                            unitOptions.find(
-                              (unit) =>
-                                unit.value ===
-                                invenotryProducts.product.unitForWholeSale,
-                            )?.label
-                          }
-                        </strong>
-                      </p>
+                {stockQuantity &&
+                  !isNaN(parseInt(stockQuantity)) &&
+                  parseInt(stockQuantity) > 0 && (
+                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-right text-sm text-blue-700">
+                      {mode === "add" ? (
+                        <>
+                          المخزون الجديد سيكون:{" "}
+                          <strong>
+                            {product.quantity + parseInt(stockQuantity)}{" "}
+                            {
+                              unitOptions.find(
+                                (unit) =>
+                                  unit.value ===
+                                  product.product.unitForWholeSale,
+                              )?.label
+                            }
+                          </strong>
+                        </>
+                      ) : (
+                        <>
+                          سيتم تحديث المخزون إلى:{" "}
+                          <strong>
+                            {parseInt(stockQuantity)}{" "}
+                            {
+                              unitOptions.find(
+                                (unit) =>
+                                  unit.value ===
+                                  product.product.unitForWholeSale,
+                              )?.label
+                            }
+                          </strong>
+                        </>
+                      )}
                     </div>
                   )}
               </div>
@@ -179,22 +229,31 @@ function AddStockDialog({
 
         <DialogFooter className="flex space-x-2">
           <button
-            onClick={closeAddStockModal}
+            onClick={closeModal}
             className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
           >
             إلغاء
           </button>
           <button
-            onClick={handleAddStock}
-            className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
+            onClick={handleSubmit}
             disabled={
-              !addStockQuantity ||
-              isNaN(parseInt(addStockQuantity)) ||
-              parseInt(addStockQuantity) <= 0
+              !stockQuantity ||
+              isNaN(parseInt(stockQuantity)) ||
+              parseInt(stockQuantity) <= 0
             }
+            className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
           >
-            <Plus className="mt-1 h-4 w-4" />
-            <span>إضافة المخزون</span>
+            {mode === "add" ? (
+              <>
+                <Plus className="mt-1 h-4 w-4" />
+                <span>إضافة المخزون</span>
+              </>
+            ) : (
+              <>
+                <Pencil className="mt-1 h-4 w-4" />
+                <span>تعديل المخزون</span>
+              </>
+            )}
           </button>
         </DialogFooter>
       </DialogContent>
@@ -202,4 +261,4 @@ function AddStockDialog({
   );
 }
 
-export default AddStockDialog;
+export default StockDialog;

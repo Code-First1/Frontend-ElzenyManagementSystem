@@ -275,9 +275,11 @@ function Selling() {
                                   <span className="text-primary font-bold">
                                     $
                                     {wholesaleMode[shopProduct.id]
-                                      ? shopProduct.product.prieceForWholeSale.toFixed(
-                                          2,
-                                        )
+                                      ? (
+                                          shopProduct.product
+                                            .quantityForOrigin *
+                                          shopProduct.product.prieceForWholeSale
+                                        ).toFixed(2)
                                       : shopProduct.product.priceForRetail.toFixed(
                                           2,
                                         )}

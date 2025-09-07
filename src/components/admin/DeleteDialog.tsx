@@ -9,17 +9,17 @@ import {
   AlertDialogOverlay,
   AlertDialogTrigger,
   AlertDialogTitle,
-} from "../../../ui/AlertDialog";
+} from "../../ui/AlertDialog";
 import { useState } from "react";
 import { AlertTriangle, Trash2 } from "lucide-react";
 
-function ProductDeleteDialog({
-  productName,
-  onClick,
-}: {
-  productName: string;
+type DeleteDialogProps = {
+  entityName: string;
+  itemName: string;
   onClick: () => void;
-}) {
+};
+
+function DeleteDialog({ entityName, itemName, onClick }: DeleteDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,17 +29,19 @@ function ProductDeleteDialog({
           <Trash2 className="h-5 w-5" />
         </button>
       </AlertDialogTrigger>
+
       <AlertDialogOverlay open={isOpen} onClose={() => setIsOpen(false)} />
       <AlertDialogContent open={isOpen} onClose={() => setIsOpen(false)}>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-orange-500" />
-            <span>حذف المنتج</span>
+            <span>حذف {entityName}</span>
           </AlertDialogTitle>
           <AlertDialogDescription className="text-right">
-            هل أنت متأكد من حذف "{productName}"؟ لا يمكن التراجع عن هذا الإجراء.
+            هل أنت متأكد من حذف "{itemName}"؟ لا يمكن التراجع عن هذا الإجراء.
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter className="mt-5">
           <AlertDialogCancel onClick={() => setIsOpen(false)}>
             إلغاء
@@ -59,4 +61,4 @@ function ProductDeleteDialog({
   );
 }
 
-export default ProductDeleteDialog;
+export default DeleteDialog;

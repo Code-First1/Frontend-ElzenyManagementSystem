@@ -1,10 +1,10 @@
 import { Card, CardContent } from "../../../ui/Card";
-import ProductDeleteDialog from "./ProductDeleteDialog";
 import { type Product } from "../../../types/adminDashboard.interfaces";
 import ProductAddDialog from "./ProductAddDialog";
 import { Badge } from "../../common/Badge";
 import { useProductForm } from "./useProductForm";
 import { getUnitLabel } from "../../../utils/helper";
+import DeleteDialog from "../DeleteDialog";
 
 function ProductList({ products }: { products: Product[] }) {
   const { deleteProduct } = useProductForm();
@@ -22,8 +22,9 @@ function ProductList({ products }: { products: Product[] }) {
                 </h3>
                 <div className="flex space-x-2">
                   <ProductAddDialog product={product} />
-                  <ProductDeleteDialog
-                    productName={product.name}
+                  <DeleteDialog
+                    entityName="منتج"
+                    itemName={product.name}
                     onClick={() => {
                       deleteProduct({ id: product.id });
                     }}
@@ -120,14 +121,18 @@ function ProductList({ products }: { products: Product[] }) {
                     السعر لكل {getUnitLabel(product.unitForWholeSale)}
                   </p>
                   <p className="text-primary text-lg font-bold">
-                    ${product.prieceForWholeSale.toFixed(2)}
+                    $
+                    {(
+                      product.prieceForWholeSale * product.quantityForOrigin
+                    ).toFixed(2)}
                   </p>
                 </div>
 
                 <div className="flex space-x-2">
                   <ProductAddDialog product={product} />
-                  <ProductDeleteDialog
-                    productName={product.name}
+                  <DeleteDialog
+                    entityName="منتج"
+                    itemName={product.name}
                     onClick={() => {
                       deleteProduct({ id: product.id });
                     }}

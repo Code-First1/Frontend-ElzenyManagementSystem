@@ -121,20 +121,23 @@ function PopoverContent({
   ...props
 }: PopoverContentProps) {
   const { isOpen, triggerRef, contentRef } = usePopoverContext();
-  const [position, setPosition] = React.useState({ top: 0, left: 0 });
+  const [position, setPosition] = React.useState({ top: 459, left: 914.5 });
 
   React.useEffect(() => {
     if (isOpen && triggerRef.current && contentRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const contentRect = contentRef.current.getBoundingClientRect();
 
+      const isSmallScreen = window.innerWidth < 640;
+
       setPosition({
         top: triggerRect.bottom + window.scrollY + sideOffset,
-        left:
-          triggerRect.left +
-          window.scrollX +
-          triggerRect.width / 2 -
-          contentRect.width / 2,
+        left: isSmallScreen
+          ? Math.max(16, triggerRect.left + window.scrollX - 50)
+          : triggerRect.left +
+            window.scrollX +
+            triggerRect.width / 2 -
+            contentRect.width / 2,
       });
     }
   }, [isOpen, triggerRef, contentRef, sideOffset]);
@@ -148,7 +151,7 @@ function PopoverContent({
       ref={contentRef}
       role="dialog"
       style={{ top: `${position.top}px`, left: `${position.left}px` }}
-      className={`absolute z-50 w-72 rounded-md border bg-white p-4 shadow-md transition-all duration-200 outline-none ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"} dark:border-gray-700 dark:bg-gray-900 ${className} `}
+      className={`absolute z-50 w-20 rounded-md border bg-white p-4 shadow-md transition-all duration-200 outline-none ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"} dark:border-gray-700 dark:bg-gray-900 ${className} `}
       {...props}
     >
       {children}

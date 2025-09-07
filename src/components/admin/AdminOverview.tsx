@@ -1,16 +1,29 @@
-import { BarChart3 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
 import QuickStats from "./QuickStats";
+import { useQuery } from "@tanstack/react-query";
+import { createCrudApi } from "../../services/apiCrud";
 
 function AdminOverview() {
-  const products = [];
+  const { data: revenueToday } = useQuery({
+    queryKey: ["revenueToday"],
+    queryFn: () => createCrudApi("Dashboard/revenue").getAll({ days: 1 }),
+    select: (data) => Number(data) || 0,
+  });
+
+  const { data: lowStockProducts } = useQuery({
+    queryKey: ["lowStockProducts"],
+    queryFn: () => createCrudApi("Dashboard/low-stock-products").getAll(),
+    select: (data) => Number(data) || 0,
+  });
   return (
     <div>
       {/* Quick Stats */}
-      <QuickStats />
+      <QuickStats
+        revenueToday={revenueToday ?? 0}
+        lowStockProducts={lowStockProducts ?? 0}
+      />
 
       {/* Tob Products */}
-      <Card className="border-primary/20 mt-10">
+      {/* <Card className="border-primary/20 mt-10">
         <CardHeader>
           <CardTitle className="text-secondary-foreground flex items-center">
             <BarChart3 className="ml-2 h-5 w-5" />
@@ -24,7 +37,7 @@ function AdminOverview() {
             </p>
           ) : (
             <div className="space-y-3">
-              {/* {topProductsList.map(([productName, quantity], index) => (
+              {topProductsList.map(([productName, quantity], index) => (
                 <div
                   key={`top-product-${index}-${productName}`}
                   className="flex items-center justify-between rounded-lg bg-[#faf8f5] p-3"
@@ -44,11 +57,11 @@ function AdminOverview() {
                     {quantity} مباع
                   </span>
                 </div>
-              ))} */}
+              ))}
             </div>
           )}
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }

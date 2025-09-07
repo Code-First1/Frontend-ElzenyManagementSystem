@@ -1,7 +1,27 @@
 import { AlertTriangle, DollarSign, Package, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
+import { createCrudApi } from "../../services/apiCrud";
+import { useQuery } from "@tanstack/react-query";
 
-function QuickStats() {
+function QuickStats({
+  revenueToday,
+  lowStockProducts,
+}: {
+  revenueToday: number;
+  lowStockProducts: number;
+}) {
+  const { data: totalProductsDashboard } = useQuery({
+    queryKey: ["totalProductsDashboard"],
+    queryFn: () => createCrudApi("Dashboard/total-products").getAll(),
+    select: (data) => Number(data) || 0,
+  });
+
+  const { data: revenueWeek } = useQuery({
+    queryKey: ["revenueWeek"],
+    queryFn: () => createCrudApi("Dashboard/revenue").getAll({ days: 7 }),
+    select: (data) => Number(data) || 0,
+  });
+
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <Card className="border-primary/20">
@@ -13,7 +33,7 @@ function QuickStats() {
         </CardHeader>
         <CardContent>
           <div className="text-secondary-foreground text-2xl font-bold">
-            $0.00
+            ${revenueToday}
           </div>
           <p className="text-muted-foreground text-sm"> مبيعة</p>
         </CardContent>
@@ -28,7 +48,7 @@ function QuickStats() {
         </CardHeader>
         <CardContent>
           <div className="text-secondary-foreground text-2xl font-bold">
-            $0.00
+            ${revenueWeek}
           </div>
           <p className="text-muted-foreground text-sm">مبيعة</p>
         </CardContent>
@@ -42,7 +62,9 @@ function QuickStats() {
           <Package className="text-primary h-5 w-5" />
         </CardHeader>
         <CardContent>
-          <div className="text-secondary-foreground text-2xl font-bold">7</div>
+          <div className="text-secondary-foreground text-2xl font-bold">
+            {totalProductsDashboard}
+          </div>
           <p className="text-muted-foreground text-sm">منتجات نشطة</p>
         </CardContent>
       </Card>
@@ -55,7 +77,9 @@ function QuickStats() {
           <AlertTriangle className="text-primary h-5 w-5" />
         </CardHeader>
         <CardContent>
-          <div className="text-secondary-foreground text-2xl font-bold">2</div>
+          <div className="text-secondary-foreground text-2xl font-bold">
+            {lowStockProducts}
+          </div>
           <p className="text-muted-foreground text-sm">تحتاج إلى انتباه</p>
         </CardContent>
       </Card>

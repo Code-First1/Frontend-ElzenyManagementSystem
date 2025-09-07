@@ -136,17 +136,22 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
           >
             <SelectTrigger>
               <SelectValue>
-                {unitOptions.find(
-                  (unit) => unit.value === formData.unitForRetail,
-                )?.label || "اختر الوحدة"}
+                {unitOptions
+                  .filter(
+                    (unit) => unit.value !== "Roll" && unit.value !== "box",
+                  )
+                  .find((unit) => unit.value === formData.unitForRetail)
+                  ?.label || "اختر الوحدة"}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {unitOptions.map((unit) => (
-                <SelectItem key={unit.value} value={unit.value}>
-                  {unit.label}
-                </SelectItem>
-              ))}
+              {unitOptions
+                .filter((unit) => unit.value !== "Roll" && unit.value !== "box")
+                .map((unit) => (
+                  <SelectItem key={unit.value} value={unit.value}>
+                    {unit.label}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
@@ -186,11 +191,18 @@ function ProductFormFields({ editingProduct }: { editingProduct?: Product }) {
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {unitOptions.map((unit) => (
-                <SelectItem key={unit.value} value={unit.value}>
-                  {unit.label}
-                </SelectItem>
-              ))}
+              {unitOptions
+                .filter(
+                  (unit) =>
+                    unit.value !== "Meter" &&
+                    unit.value !== "Piece" &&
+                    unit.value !== "SpongeRoll",
+                )
+                .map((unit) => (
+                  <SelectItem key={unit.value} value={unit.value}>
+                    {unit.label}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>

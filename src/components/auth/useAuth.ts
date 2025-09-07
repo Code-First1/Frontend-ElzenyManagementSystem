@@ -7,6 +7,7 @@ import type {
   User,
 } from "../../types/auth.interfaces";
 import {
+  deleteUser,
   getAllUsers,
   getCurrentUser,
   login,
@@ -72,5 +73,19 @@ export const useGetCurrentUserQuery = () => {
   return useQuery<User, APIError>({
     queryKey: ["user"],
     queryFn: getCurrentUser,
+  });
+};
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, APIError, string>({
+    mutationFn: (userName: string) => deleteUser(userName),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("تم حذف المستخدم بنجاح");
+    },
+    onError: (err) => {
+      toast.error(err.errorMessage);
+    },
   });
 };

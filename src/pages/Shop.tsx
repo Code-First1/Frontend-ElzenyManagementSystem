@@ -1,4 +1,4 @@
-import { BarChart3, Package, ShoppingBag, Store } from "lucide-react";
+import { Package, Store } from "lucide-react";
 import HomeLayout from "../layouts/HomeLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Filters from "../components/common/Filters";
@@ -25,8 +25,8 @@ import ProductDetailsDialog from "../components/inventory & shop/ProductDetailsD
 import { SHOP_PAGE_SIZE } from "../constants";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
-import ProductDeleteDialog from "../components/admin/products/ProductDeleteDialog";
 import { getUnitLabel } from "../utils/helper";
+import DeleteDialog from "../components/admin/DeleteDialog";
 
 function Shop() {
   const { userRole } = useAppContext();
@@ -152,28 +152,6 @@ function Shop() {
             <p className="text-xs text-[#6d4c41] md:text-sm">إجمالي المنتجات</p>
           </CardContent>
         </Card>
-
-        <Card className="border-blue-200">
-          <CardContent className="p-4 text-center">
-            <ShoppingBag className="mx-auto mb-2 h-6 w-6 text-blue-600 md:h-8 md:w-8" />
-            <div className="text-xl font-bold text-blue-700 md:text-2xl">
-              {/* {shopStats.totalSales} */}
-            </div>
-            <p className="text-xs text-blue-600 md:text-sm">إجمالي المبيعات</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-purple-200">
-          <CardContent className="p-4 text-center">
-            <BarChart3 className="mx-auto mb-2 h-6 w-6 text-purple-600 md:h-8 md:w-8" />
-            <div className="text-xl font-bold text-purple-700 md:text-2xl">
-              {/* ${shopStats.totalRevenue.toFixed(2)} */}
-            </div>
-            <p className="text-xs text-purple-600 md:text-sm">
-              إجمالي الإيرادات
-            </p>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Filters and Search */}
@@ -283,9 +261,10 @@ function Shop() {
                           <div className="text-center">
                             <p className="font-bold text-[#8b4513]">
                               $
-                              {shopProduct.product.prieceForWholeSale.toFixed(
-                                2,
-                              )}
+                              {(
+                                shopProduct.product.prieceForWholeSale *
+                                shopProduct.product.quantityForOrigin
+                              ).toFixed(2)}
                             </p>
                             <p className="text-xs text-[#6d4c41] md:text-sm">
                               لكل{" "}
@@ -300,8 +279,9 @@ function Shop() {
 
                         {userRole === "admin" && (
                           <div className="flex justify-end sm:justify-center">
-                            <ProductDeleteDialog
-                              productName={shopProduct.product.name}
+                            <DeleteDialog
+                              entityName="منتج"
+                              itemName={shopProduct.product.name}
                               onClick={() =>
                                 deleteShopProduct({
                                   id: shopProduct.id.toString(),

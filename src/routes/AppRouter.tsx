@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import Home from "../pages/Home";
 import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoute from "./ProtectedRoute";
-import Products from "../pages/Products";
 import Inventory from "../pages/Inventory";
 import Shop from "../pages/Shop";
 import Selling from "../pages/Selling";
@@ -27,14 +26,14 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  {
-    path: "/products",
-    element: (
-      <ProtectedRoute allowedRoles={["admin", "seller"]}>
-        <Products />
-      </ProtectedRoute>
-    ),
-  },
+  // {
+  //   path: "/products",
+  //   element: (
+  //     <ProtectedRoute allowedRoles={["admin", "seller"]}>
+  //       <Products />
+  //     </ProtectedRoute>
+  //   ),
+  // },
   {
     path: "/inventory",
     element: (

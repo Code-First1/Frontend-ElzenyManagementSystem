@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   ArrowRightLeft,
   CheckCircle,
+  Edit,
   Package,
   Plus,
 } from "lucide-react";
@@ -54,7 +55,11 @@ function Inventory() {
   const [showAddStockModal, setShowAddStockModal] = useState<string | null>(
     null,
   );
+  const [showEditStockModal, setShowEditStockModal] = useState<string | null>(
+    null,
+  );
   const [addStockQuantity, setAddStockQuantity] = useState<string>("");
+  const [editStockQuantity, setEditStockQuantity] = useState<string>("");
   const [showTransferModal, setShowTransferModal] = useState<string | null>(
     null,
   );
@@ -407,9 +412,10 @@ function Inventory() {
                           <div>
                             <p className="text-primary font-bold">
                               $
-                              {inventoryProduct.product.prieceForWholeSale.toFixed(
-                                2,
-                              )}
+                              {(
+                                inventoryProduct.product.prieceForWholeSale *
+                                inventoryProduct.product.quantityForOrigin
+                              ).toFixed(2)}
                             </p>
                             <p className="text-muted-foreground text-sm">
                               لكل{" "}
@@ -452,6 +458,17 @@ function Inventory() {
                             >
                               <ArrowRightLeft className="h-4 w-4" />
                               <span>نقل</span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowEditStockModal(
+                                  inventoryProduct.id.toString(),
+                                );
+                                setEditStockQuantity("");
+                              }}
+                              className="bg-background border-primary/30 rounded-md border px-3 py-2 shadow-sm"
+                            >
+                              <Edit className="h-5 w-5" />
                             </button>
                           </div>
                         )}
@@ -537,10 +554,19 @@ function Inventory() {
       />
 
       <AddStockDialog
-        showAddStockModal={showAddStockModal}
-        setShowAddStockModal={setShowAddStockModal}
-        addStockQuantity={addStockQuantity}
-        setAddStockQuantity={setAddStockQuantity}
+        mode="add"
+        showModal={showAddStockModal}
+        setShowModal={setShowAddStockModal}
+        stockQuantity={addStockQuantity}
+        setStockQuantity={setAddStockQuantity}
+        products={inventoryProducts}
+      />
+      <AddStockDialog
+        mode="edit"
+        showModal={showEditStockModal}
+        setShowModal={setShowEditStockModal}
+        stockQuantity={editStockQuantity}
+        setStockQuantity={setEditStockQuantity}
         products={inventoryProducts}
       />
 

@@ -29,6 +29,7 @@ export interface GetAllInvoicesResponse {
   pageIndex: number;
   pageSize: number;
   totalCount: number;
+  grandTotal: number;
   data: Invoice[];
 }
 /////////////////////////////////// Create API instances //////////////////////////////

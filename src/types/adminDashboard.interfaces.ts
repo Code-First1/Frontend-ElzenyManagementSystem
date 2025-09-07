@@ -17,6 +17,10 @@ export const Unit = {
     value: "box",
     label: "كرتونة",
   },
+  SpongeRoll: {
+    value: "SpongeRoll",
+    label: "فرخ",
+  },
 } as const;
 
 export type UnitValue = keyof typeof Unit;

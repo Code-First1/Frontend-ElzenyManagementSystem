@@ -18,20 +18,39 @@ import {
 
 function AdminSalesReports() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [search, setSearch] = useState("");
+  const [submittedSearch, setSubmittedSearch] = useState("");
   const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery({
-    queryKey: ["invoices", { page, CreateAt: selectedDate.toISOString() }],
+    queryKey: [
+      "invoices",
+      {
+        page,
+        CreateAt: selectedDate.toLocaleDateString("en-CA"),
+        Username: submittedSearch,
+      },
+    ],
     queryFn: () => {
       return InvoiceApi.getAll<GetAllInvoicesResponse>({
-        CreateAt: selectedDate.toISOString(),
+        CreateAt: selectedDate.toLocaleDateString("en-CA"),
         pageIndex: page,
         pageSize: DASHBOARD_INVOICES_PAGE_SIZE,
+        Username: submittedSearch,
       });
     },
   });
+
+  const handleSearch = () => {
+    setPage(1);
+    setSubmittedSearch(search);
+  };
+
   const inovices = data?.data;
   const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / (data?.pageSize || 10));
+  const totalInvoices = data?.totalCount;
+  const totalRevenue = data?.grandTotal;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -49,6 +68,11 @@ function AdminSalesReports() {
             invoices={inovices ?? []}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            search={search}
+            setSearch={setSearch}
+            totalInvoices={Number(totalInvoices)}
+            totalRevenue={totalRevenue ?? 0}
+            handleSearch={handleSearch}
           />
 
           {/* Server-side Pagination */}
