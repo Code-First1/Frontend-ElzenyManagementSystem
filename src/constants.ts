@@ -1,0 +1,8 @@
+export const BASE_URL = "https://localhost:44396/api";
+export const PRODUCTS_PAGE_SIZE = "5";
+export const SELLING_PAGE_SIZE = "4";
+export const INVENTORY_PAGE_SIZE = "5";
+export const SHOP_PAGE_SIZE = "6";
+export const DASHBOARD_PRODUCTS_PAGE_SIZE = "4";
+export const DASHBOARD_CATEGORIES_PAGE_SIZE = "4";
+export const DASHBOARD_INVOICES_PAGE_SIZE = "3";
