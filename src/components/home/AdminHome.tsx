@@ -74,13 +74,13 @@ function AdminHome({
               <span>بيع منتج</span>
             </button>
 
-            <button
+            {/* <button
               className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
               onClick={() => navigate("/products")}
             >
               <Package className="h-6 w-6" />
               <span>عرض المنتجات</span>
-            </button>
+            </button> */}
 
             <button
               className="flex h-20 flex-col items-center justify-center space-y-2 rounded-md bg-orange-600 text-white hover:bg-orange-700"
