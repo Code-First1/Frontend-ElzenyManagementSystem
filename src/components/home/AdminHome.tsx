@@ -1,7 +1,6 @@
 import {
   AlertTriangle,
   Archive,
-  Package,
   Plus,
   Settings,
   ShoppingCart,
