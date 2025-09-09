@@ -22,6 +22,8 @@ function AdminUsers() {
       throw new Error("اسم المستخدم موجود بالفعل");
     }
   };
+
+  console.log(currentUser);
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -63,7 +65,7 @@ function AdminUsers() {
           </Card>
         ) : (
           users
-            ?.filter((user) => user.userName !== currentUser?.userName)
+            ?.filter((user) => user.displayName !== currentUser?.displayName)
             .map((user, i) => (
               <Card
                 key={i}
