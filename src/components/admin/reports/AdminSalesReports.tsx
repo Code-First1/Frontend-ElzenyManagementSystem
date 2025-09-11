@@ -1,4 +1,3 @@
-import { Loader } from "lucide-react";
 import {
   InvoiceApi,
   type GetAllInvoicesResponse,
@@ -15,19 +14,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../../../ui/Pagination";
+import { useGetAllUsersQuery } from "../../auth/useAuth";
+import Loader from "../../common/Loader";
 
 function AdminSalesReports() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [search, setSearch] = useState("");
-  const [submittedSearch, setSubmittedSearch] = useState("");
+  const [selectedUser, setSelectedUser] = useState<string>("all");
   const [page, setPage] = useState(1);
+  const { data: users } = useGetAllUsersQuery();
   const { data, isLoading } = useQuery({
     queryKey: [
       "invoices",
       {
         page,
         CreateAt: selectedDate.toLocaleDateString("en-CA"),
-        Username: submittedSearch,
+        DisplayName: selectedUser,
       },
     ],
     queryFn: () => {
@@ -35,15 +36,10 @@ function AdminSalesReports() {
         CreateAt: selectedDate.toLocaleDateString("en-CA"),
         pageIndex: page,
         pageSize: DASHBOARD_INVOICES_PAGE_SIZE,
-        Username: submittedSearch,
+        DisplayName: selectedUser === "all" ? undefined : selectedUser,
       });
     },
   });
-
-  const handleSearch = () => {
-    setPage(1);
-    setSubmittedSearch(search);
-  };
 
   const inovices = data?.data;
   const totalCount = data?.totalCount || 0;
@@ -60,7 +56,7 @@ function AdminSalesReports() {
       </div>
       {isLoading ? (
         <div className="flex h-30 w-full items-center justify-center">
-          <Loader color="text-primary" />
+          <Loader />
         </div>
       ) : (
         <>
@@ -68,11 +64,11 @@ function AdminSalesReports() {
             invoices={inovices ?? []}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            search={search}
-            setSearch={setSearch}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            users={users ?? []}
             totalInvoices={Number(totalInvoices)}
             totalRevenue={totalRevenue ?? 0}
-            handleSearch={handleSearch}
           />
 
           {/* Server-side Pagination */}
