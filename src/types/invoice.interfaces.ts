@@ -5,6 +5,7 @@ export interface Invoice {
   total: number;
   userName: string;
   dateTime: string;
+  number: number;
   invoiceProduct: InvoiceProduct[];
 }
 
