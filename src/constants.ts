@@ -1,5 +1,3 @@
-export const BASE_URL = "https://localhost:44396/api";
-// export const BASE_URL = "https://elzenyapp.runasp.net/api";
 export const PRODUCTS_PAGE_SIZE = "5";
 export const SELLING_PAGE_SIZE = "4";
 export const INVENTORY_PAGE_SIZE = "5";
