@@ -1,4 +1,4 @@
-import { BASE_URL } from "../constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export interface APIError {
   statusCode: number;
