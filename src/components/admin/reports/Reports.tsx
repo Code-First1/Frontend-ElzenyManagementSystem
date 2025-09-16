@@ -258,7 +258,7 @@ function Reports({
                       <div className="transaction-header border-primary/10 mb-3 flex items-center justify-between border-b pb-2">
                         <div className="text-right">
                           <div className="text-secondary-foreground font-semibold">
-                            عملية رقم {invoice.id}
+                            عملية رقم {invoice.number}
                           </div>
                           <div className="text-muted-foreground text-sm">
                             البائع: {invoice.userName}
