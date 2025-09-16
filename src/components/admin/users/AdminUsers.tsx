@@ -23,7 +23,6 @@ function AdminUsers() {
     }
   };
 
-  console.log(currentUser);
   return (
     <div>
       <div className="flex items-center justify-between">

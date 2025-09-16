@@ -4,7 +4,6 @@ import {
   Download,
   FileText,
   Package,
-  Search,
   ShoppingBag,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card";
@@ -12,28 +11,34 @@ import { Popover, PopoverContent, PopoverTrigger } from "../../common/Popover";
 import { useState } from "react";
 import Calendar from "../../common/Calender";
 import type { Invoice } from "../../../types/invoice.interfaces";
-import { Input } from "../../common/Input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "../../common/Select";
+import type { User } from "../../../types/auth.interfaces";
 
 type ReportsProps = {
   selectedDate: Date;
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
   invoices: Invoice[];
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  users: User[];
+  selectedUser: string;
+  setSelectedUser: React.Dispatch<React.SetStateAction<string>>;
   totalInvoices: number;
   totalRevenue: number;
-  handleSearch: () => void;
 };
 
 function Reports({
   invoices,
+  users,
   selectedDate,
   setSelectedDate,
-  search,
-  setSearch,
+  selectedUser,
+  setSelectedUser,
   totalInvoices,
   totalRevenue,
-  handleSearch,
 }: ReportsProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
@@ -124,7 +129,11 @@ function Reports({
               <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
                 <button
                   onClick={() => setSelectedDate(new Date())}
-                  className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
+                  className={`border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 ${
+                    selectedDate.toDateString() === new Date().toDateString()
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/50"
+                  }`}
                 >
                   اليوم
                 </button>
@@ -134,26 +143,39 @@ function Reports({
                     yesterday.setDate(yesterday.getDate() - 1);
                     setSelectedDate(yesterday);
                   }}
-                  className="border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 hover:bg-[#f5f5dc]"
+                  className={`border-primary/30 text-secondary-foreground rounded-md border px-4 py-2 ${
+                    selectedDate.toDateString() ===
+                    (() => {
+                      const yesterday = new Date();
+                      yesterday.setDate(yesterday.getDate() - 1);
+                      return yesterday.toDateString();
+                    })()
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/50"
+                  }`}
                 >
                   أمس
                 </button>
               </div>
               <div className="relative w-full sm:w-auto sm:min-w-[250px]">
-                <Search className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform text-[#6d4c41]" />
-                <Input
-                  placeholder="ادخل اسم المستخدم..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="border-primary/30 w-full pr-10 text-right"
-                />
+                <Select
+                  value={selectedUser}
+                  onValueChange={(value) => setSelectedUser(value)}
+                >
+                  <SelectTrigger>
+                    {users?.find((u) => u.userName === selectedUser)
+                      ?.displayName || "جميع المستخدمين"}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">جميع المستخدمين</SelectItem>
+                    {users?.map((user) => (
+                      <SelectItem key={user.userName} value={user.userName}>
+                        {user.displayName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <button
-                onClick={handleSearch}
-                className="bg-primary hover:bg-secondary-foreground flex items-center gap-1 rounded-md px-4 py-2 text-white"
-              >
-                <span>بحث</span>
-              </button>
             </div>
           </div>
         </CardContent>
@@ -236,7 +258,7 @@ function Reports({
                       <div className="transaction-header border-primary/10 mb-3 flex items-center justify-between border-b pb-2">
                         <div className="text-right">
                           <div className="text-secondary-foreground font-semibold">
-                            عملية رقم {invoice.id}
+                            عملية رقم {invoice.number}
                           </div>
                           <div className="text-muted-foreground text-sm">
                             البائع: {invoice.userName}
