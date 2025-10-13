@@ -18,6 +18,7 @@ import {
   SelectTrigger,
 } from "../../common/Select";
 import type { User } from "../../../types/auth.interfaces";
+import { formatTo12Hour } from "../../../utils/helper";
 
 type ReportsProps = {
   selectedDate: Date;
@@ -270,6 +271,12 @@ function Reports({
                           </div>
                           <div className="text-muted-foreground text-sm">
                             {invoice.dateTime.split("T")[0]}
+                          </div>
+                          <div
+                            dir="ltr"
+                            className="text-muted-foreground text-sm"
+                          >
+                            {formatTo12Hour(invoice.dateTime)}
                           </div>
                         </div>
                       </div>
