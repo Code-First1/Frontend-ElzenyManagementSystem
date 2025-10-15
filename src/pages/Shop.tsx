@@ -1,4 +1,4 @@
-import { Package, Store } from "lucide-react";
+import { Edit, Package, Store } from "lucide-react";
 import HomeLayout from "../layouts/HomeLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Filters from "../components/common/Filters";
@@ -27,8 +27,13 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import { getUnitLabel } from "../utils/helper";
 import DeleteDialog from "../components/admin/DeleteDialog";
+import EditShopProductDialog from "../components/inventory & shop/EditShopProductDialog";
 
 function Shop() {
+  const [showEditStockModal, setShowEditStockModal] = useState<string | null>(
+    null,
+  );
+  const [editStockQuantity, setEditStockQuantity] = useState<string>("");
   const { userRole } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -278,7 +283,18 @@ function Shop() {
                         </div>
 
                         {userRole === "admin" && (
-                          <div className="flex justify-end sm:justify-center">
+                          <div className="flex justify-end gap-2 sm:justify-center">
+                            <button
+                              onClick={() => {
+                                setShowEditStockModal(
+                                  shopProduct.id.toString(),
+                                );
+                                setEditStockQuantity("");
+                              }}
+                              className="bg-background border-primary/30 rounded-md border px-3 py-2 shadow-sm"
+                            >
+                              <Edit className="h-5 w-5" />
+                            </button>
                             <DeleteDialog
                               entityName="منتج"
                               itemName={shopProduct.product.name}
@@ -362,6 +378,15 @@ function Shop() {
       <ProductDetailsDialog
         showProductModal={showProductModal}
         setShowProductModal={setShowProductModal}
+      />
+
+      {/* Edit Shop Product Stock Modal */}
+      <EditShopProductDialog
+        showModal={showEditStockModal}
+        setShowModal={setShowEditStockModal}
+        products={shopProducts}
+        stockQuantity={editStockQuantity}
+        setStockQuantity={setEditStockQuantity}
       />
     </HomeLayout>
   );
